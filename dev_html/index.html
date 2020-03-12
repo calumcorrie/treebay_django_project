@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TreeBay</title>
+		<script type = "text/javascript" src = "jquery-3.4.1.js"></script>		
+		<link rel="stylesheet" type="text/css" href="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/test.css">
+		<script>
+			$(document).ready( function(){
+				$(".panLeft,.panRight").click( function(){
+					var container = $(this).parent();
+					var kids = container.children(".slide");
+					var firstchild = kids.first();
+					
+					var nkids = kids.length;
+					var fullmv = firstchild.outerWidth();
+					
+					//alert(nkids);
+					
+					var vp_left = 0;
+					var vp_right = container.outerWidth();
+					
+					var first_L_pos = firstchild.position().left;
+					var	last_R_pos = (fullmv * nkids) + first_L_pos;
+					
+					var scrollleft = $(this).attr("class") == "pan panLeft";
+					var mv = 0;
+					
+					//alert("LEFT? "+scrollleft+" | vp "+vp_left + " < " + vp_right + " | sp " + first_L_pos + " < " + last_R_pos + " | nk " + nkids );
+					
+					if(scrollleft){
+						if( vp_left <= first_L_pos ){
+							//We are at left end, do nothing
+							mv = 0;
+						} else if( vp_left <= (first_L_pos + fullmv) ){
+							//We are within one width of the left end
+							mv = vp_left - first_L_pos;
+						} else {
+							mv = fullmv;
+						}
+					} else {
+						if( last_R_pos <= vp_right ){
+							//We at right end, do nothing
+							mv = 0;
+						} else if( (last_R_pos - fullmv) <= vp_right ){
+							//We are within a width... add 5 margin
+							mv = last_R_pos - vp_right + 5;
+						} else {
+							mv = fullmv;
+						}
+						mv *= -1;
+					}
+					
+					var new_p = first_L_pos + mv;
+					
+					kids.animate({left:new_p+"px"},"slow");					
+				});
+			});
+
+		</script>
+	</head>
+	<body>	
+		<div class="header">
+			<span style="width:33.33%;float:left;padding-top:12px;">
+				<p style="margin:0px;padding:0px 0px 0px 10px;">
+					<strong>Home</strong> // 
+					<a href="">About</a> // 
+					<a href="">MyTreeBay</a>
+				</p>
+			</span>
+			<span style="width:33.33%;float:left;text-align:center;padding-top:3px;padding-bottom:3px;">
+				<h1>
+					TreeBay
+				</h1>
+			</span>
+			<span style="width:33.33%;float:left;text-align:right;padding-top:12px;">
+				<p style="margin:0px;padding:0px 10px 0px 0px">
+					<a href="">LOGIN/REGISTER</a>
+				</p>
+			</span>
+			<br style="clear: left;">
+			<hr style="margin-top:10px;">
+		</div>
+		
+		<div id="main">
+			<span id="mainbanner">
+				<img src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo2.png" id="mainbannerimage" />
+				<h1 id="mainbannertext">TreeBay - Find a new home for your plants today!</h2>
+				<br style="clear:both;" />
+			</span>
+			
+			<h3>Most recent</h3>
+			<div class="slidecontainer" >
+				<div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg"/>
+					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Five<br />Amsterdam</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Six<br />Murano</p>
+				</div>
+				<span class="pan panLeft">
+					<img class="panicon" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/chevron_left-24px.svg" />
+				</span>
+				<span class="pan panRight">
+					<img class="panicon right" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/chevron_right-24px.svg" />
+				</span>
+			</div>
+
+			<h3>Latest added</h3>
+			<div class="slidecontainer">
+				<div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Five<br />Amsterdam</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Six<br />Murano</p>
+				</div>
+				<span class="pan panLeft" >
+					<img class="panicon" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/chevron_left-24px.svg" />
+				</span>
+				<span class="pan panRight">
+					<img class="panicon right" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/chevron_right-24px.svg" />
+				</span>
+			</div>
+			
+			<h3>Most viewed</h3>
+			<div class="slidecontainer">
+				<div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Five<br />Amsterdam</p>
+				</div><div class="slide">
+					<img class="slideimg" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/logo.jpg" />
+					<p class="slidecontent">Six<br />Murano</p>
+				</div>
+				<span class="pan panLeft" >
+					<img class="panicon" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/chevron_left-24px.svg" />
+				</span>
+				<span class="pan panRight">
+					<img class="panicon right" src="file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/chevron_right-24px.svg" />
+				</span>
+			</div>
+			
+			<div id="sidebar">
+				<span class="tag">#potted</span>
+				<span class="tag">#spikey</span>
+				<span class="tag">#round</span>
+				<span class="tag">#square</span>
+				<span class="tag">#blue</span>
+				<span class="tag">#shrt</span>
+				<span class="tag">#especiallylongtag</span>
+				<span class="tag">#lol</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#potted</span>
+				<span class="tag">#spikey</span>
+				<span class="tag">#round</span>
+				<span class="tag">#square</span>
+				<span class="tag">#blue</span>
+				<span class="tag">#shrt</span>
+				<span class="tag">#especiallylongtag</span>
+				<span class="tag">#lol</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+				<span class="tag">#weed</span>
+			</div>
+			
+			<div id="footer" >
+				<hr />
+				<p id="footertext">Powered by Django</p>
+			</div>
+			
+		</div>
+	
+	</body>
+</html>
