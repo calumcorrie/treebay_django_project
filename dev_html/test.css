@@ -1,6 +1,6 @@
 
 body {
-	background-image:url("file:///C:/Users/Owner/Documents/University/2WAD%20-%20Web%20App%20Dev/grass.jpg");
+	background-image:url("./grass.jpg");
 	background-repeat:repeat;
 }
 
@@ -163,7 +163,7 @@ span.tag {
 	width:600px;
 	position:relative;
 	background-color:powderblue;
-	margin: 10% auto 10% auto;
+	margin: 7% auto;
 	border-radius: 0px 70px;
 }
 
@@ -171,7 +171,7 @@ div.halfloginframe {
 	width:calc(50% - 3px);
 	background-color:pink;
 	height:100%;
-	border-radius:0px 70px;
+	border-radius:0px 0px 0px 70px;
 	position: absolute;
 	top: 0px;
 }
@@ -187,6 +187,7 @@ div.halfloginframe {
 
 #signinhalf{
 	left: calc(50% + 3px);
+	border-radius: 0px 70px 0px 0px;
 }
 
 
