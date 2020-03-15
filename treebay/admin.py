@@ -1,3 +1,5 @@
 from django.contrib import admin
+from treebay.models import Category, Plant
 
-# Register your models here.
+admin.site.register(Category)
+admin.site.register(Plant)
