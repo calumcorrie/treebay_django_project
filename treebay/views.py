@@ -40,5 +40,5 @@ def show_category(request, category_name_slug):
         context_dict['category'] = None
         context_dict['plants'] = None
 
-    # Go render the response and return it to the client.
+    # Render the response and return it to the client.
     return render(request, 'treebay/category.html', context=context_dict)

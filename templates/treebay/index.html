@@ -181,7 +181,7 @@
 			<div id="sidebar">
                 {% if categories %}
                     {% for category in categories %}
-                        <a class="tag" href="category/{{ category.slug }}/">#{{ category.name }}</a>
+                        <a class="tag" href="{{ category.slug }}/">#{{ category.name }}</a>
                     {% endfor %}
                 {% else %}
                     <strong>There are no tags present.</strong>

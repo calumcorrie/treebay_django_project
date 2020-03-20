@@ -2,6 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
+
 class UserProfile(models.Model):
     # Link UserProfile to a User model instance
     # The User model has username, email, password, date_joined and is_active attributes
