@@ -111,7 +111,7 @@ def populate():
                   'medical': {'description': 'For the brownies'},
                   'succulent': {'description': 'The family of that Aloe you killed for face moisturizer'},
                   'herbs': {'description': 'Herbal tea or mojito? Your call!'},
-                  'cactus': {'description': 'Has been lonely in the desert for so long, kinda'},
+                  'cactus': {'description': 'Has been lonely in the desert for so long, kinda stubborn, but a good company'},
                   'orchid': {'description': 'If you want to adopt one of these beautiful creatures, keep in mind that '
                                             'they want as much attention as a woman '},
                   }
