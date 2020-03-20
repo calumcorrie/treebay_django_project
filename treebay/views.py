@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from treebay.models import Category, Plant
 
+# Create your views here.
 
+# View for the homepage
 def index(request):
     # Query database for all categories
     category_list = Category.objects.all()
@@ -21,7 +23,6 @@ def index(request):
 
     # Render the response and send it back!
     return render(request, 'treebay/index.html', context=context_dict)
-
 
 # View for the about page
 def about(request):
@@ -47,7 +48,6 @@ def show_plant(request, plant_name):
 
     # Render response to return to client
     return render(request, 'treebay/show_plant.html', context=context_dict)
-
 
 def show_category(request, category_name_slug):
     # Create a context dictionary which we can pass
