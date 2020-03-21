@@ -11,19 +11,22 @@ h1 {
 
 h3 {
 	margin-top:25px;
-	/*! margin-left:30px; */
 	margin-bottom: 10px;
 }
 
+div.stickyheader {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index:2;
+}
 
 div.header {
-	position:sticky;
 	width:100%;
 	background-color:rgb(182,236,138);
 }
 
 #main {
-	/*border-style:solid;*/
 	margin-left:auto;
 	margin-right:auto;
 	width:70%;
@@ -43,7 +46,7 @@ div.header {
 	height:100px;
 	overflow:hidden;
 	position:relative;
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 
 #mainbannerimage {
@@ -129,7 +132,7 @@ img.panicon.right {
 #sidebar{
 	position: absolute;
 	float: right;
-	top: 202px;
+	top: 177px;
 	left: 61%;
 	margin: 0px 20px 0px 20px;
 	border-style: solid;
@@ -190,4 +193,90 @@ div.halfloginframe {
 	border-radius: 0px 70px 0px 0px;
 }
 
+#centeredbanner {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	width: min-content;
+	margin-top: 40px;
+	font-size: xxx-large;
+	text-decoration: underline;
+}
 
+p.strapline {
+	margin: 25px auto 40px auto;
+	width: 75%;
+	text-align: center;
+	font-size: 1.05em;
+}
+
+#sortheader {
+	margin: 11px 1px;
+}
+
+div.adcontainer{
+	margin:20px 0px;
+	padding:10px 15px;
+	overflow: auto;
+	position: relative;
+	background-color: rgba(255,255,255,0.4);
+	border-radius: 20px;
+}
+
+img.adimage{
+	height:130px;
+	float: left;
+}
+
+span.addetail1{
+	float:left;
+	height: 120px;
+	margin: 5px 20px;
+	position: relative;
+}
+
+p.adtitle {
+	margin:0px;
+	font-size: 1.3em
+}
+
+p.adloc {
+	margin: 3px 0px 0px 0px;
+	font-size:0.85em
+}
+
+p.adinterest {
+	margin: 0px;
+	position: absolute;
+	top:100%;
+	transform: translateY(-110%);
+}
+
+span.addetail2 {
+	position: absolute;
+	left: 55%;
+	margin-top: 5px;
+	font-size: 1.1em;
+}
+
+span.addetail3{
+	float:right;
+	margin: 5px 0px 0px 0px;
+	height: 125px;
+	position: relative;
+}
+
+p.adprice {
+	margin: 0px;
+	text-align: right;
+	font-size: 1.27em;
+}
+
+p.adposter {
+	position:absolute;
+	top:100%;
+	left: 100%;
+	transform: translate(-100%,-100%);
+	margin: 0px;
+	font-size: 0.85em;
+}
