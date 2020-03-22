@@ -1,7 +1,10 @@
-from django.shortcuts import render
-from treebay.models import Category, Plant
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from treebay.models import Category, Plant, UserProfile, User
+from treebay.forms import PlantForm, UserForm, UserProfileForm
 
-# Create your views here.
 
 # View for the homepage
 def index(request):
@@ -24,22 +27,27 @@ def index(request):
     # Render the response and send it back!
     return render(request, 'treebay/index.html', context=context_dict)
 
+
 # View for the about page
 def about(request):
     return render(request, 'treebay/about')
 
 
 # View for a single plant
-def show_plant(request, plant_name):
+def show_plant(request, plant_slug):
+
     # Context dictionary to hold data we need to pass through to template
     context_dict = {}
 
-    # Find the plant using the passed through plant name, which is unique
+    # Find the plant using the passed through plant slug, which is unique
     try:
-        plant = Plant.objects.get(name=plant_name)
-
+        plant = Plant.objects.get(slug=plant_slug)
         # Add it to the dictionary
         context_dict['plant'] = plant
+        # Get associated plant categories
+        plant_cats = plant.categories.all()
+        # Add them to the context dict
+        context_dict['cats'] = plant_cats
 
     except Plant.DoesNotExist:
         # If we get here plant does not exist
@@ -48,6 +56,7 @@ def show_plant(request, plant_name):
 
     # Render response to return to client
     return render(request, 'treebay/show_plant.html', context=context_dict)
+
 
 def show_category(request, category_name_slug):
     # Create a context dictionary which we can pass
@@ -75,3 +84,95 @@ def show_category(request, category_name_slug):
 
     # Render the response and return it to the client.
     return render(request, 'treebay/category.html', context=context_dict)
+
+
+# View for adding a plant
+# User must be logged in
+@login_required
+def add_plant(request):
+    form = PlantForm(request.user)
+    if request.method == 'POST':
+        form = PlantForm(request.user, request.POST)
+
+        # Check if form is valid
+        if form.is_valid():
+            #
+            plant = form.save(commit=False)
+            # set owner to the current user uploading plant
+            # TODO - Owner linking to current user not working yet
+            user = User.objects.get(id=request.user.id)
+            profile = UserProfile.objects.get(user=user)
+            plant.owner = profile
+            plant.save()
+            # redirect to homepage for now, can also redirect to a success page or such like
+            return redirect('')
+        else:
+            # print form error
+            print(form.errors)
+    else:
+        form = PlantForm(request.user)
+
+    return render(request, 'treebay/add_plant.html', {'form':form})
+
+
+def register(request):
+
+    # a boolean for telling the template whether registration was successful
+    # set to false initially, code changes value to true when reg succeeds
+    registered = False
+
+    # if it is a HTTP Post we want to process data
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            registered = True
+
+        else:
+            print(user_form.errors, profile_form.errors)
+
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    return render(request,
+                  'treebay/register.html',
+                  context={'user_form': user_form,
+                           'profile_form': profile_form,
+                           'registered': registered})
+
+
+def user_login(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+
+            if user.is_active:
+                login(request, user)
+                return redirect('index')
+            else:
+                return HttpResponse("Your Treebay account is disabled.")
+        else:
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'treebay/login.html')
