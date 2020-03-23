@@ -12,13 +12,13 @@ def index(request):
     category_list = Category.objects.all()
 
     # Query database for top 5 (can be extended if required) most viewed Plants
-    plant_list_views = Plant.objects.order_by('-views')[:5]
+    plant_list_views = Plant.objects.order_by('-views')[:6]
 
     # Query database for top 5 plants in terms of interest
-    plant_list_interest = Plant.objects.order_by('-stars')[:5]
+    plant_list_interest = Plant.objects.order_by('-stars')[:6]
 
     # Query database for 5 most recently added plants
-    plant_list_date = Plant.objects.order_by('-uploadDate')[:5]
+    plant_list_date = Plant.objects.order_by('-uploadDate')[:6]
 
     # Context dictionary we fill with our lists and pass to template
     context_dict = {'categories': category_list, 'plant_interest': plant_list_interest, 'plant_date': plant_list_date,
@@ -34,14 +34,14 @@ def about(request):
 
 
 # View for a single plant
-def show_plant(request, plant_slug):
+def show_plant(request, plant_slug, plant_id):
 
     # Context dictionary to hold data we need to pass through to template
     context_dict = {}
 
     # Find the plant using the passed through plant slug, which is unique
     try:
-        plant = Plant.objects.get(slug=plant_slug)
+        plant = Plant.objects.get(id=plant_id)
         # Add it to the dictionary
         context_dict['plant'] = plant
         # Get associated plant categories

@@ -11,7 +11,7 @@
 			$(document).ready( function(){
 				$(".panLeft,.panRight").click( function(){
 					var container = $(this).parent();
-					var kids = container.children(".slide");
+					var kids = container.children().children(".slide");
 					var firstchild = kids.first();
 					
 					var nkids = kids.length;
@@ -25,7 +25,7 @@
 					var first_L_pos = firstchild.position().left;
 					var	last_R_pos = (fullmv * nkids) + first_L_pos;
 					
-					var scrollleft = $(this).attr("class") == "pan panLeft";
+					var scrollleft = $(this).attr("class") === "pan panLeft";
 					var mv = 0;
 					
 					//alert("LEFT? "+scrollleft+" | vp "+vp_left + " < " + vp_right + " | sp " + first_L_pos + " < " + last_R_pos + " | nk " + nkids );
@@ -93,25 +93,18 @@
 			
 			<h3>Most recent</h3>
 			<div class="slidecontainer" >
-				<div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Five<br />Amsterdam</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Six<br />Murano</p>
-				</div>
+                {% if plant_date %}
+                    {% for plant in plant_date %}
+                        <a href="{% url 'treebay:show_plant' plant.slug plant.id %}">
+                            <div class="slide">
+                                <img class="slideimg" src="{% static "images/logo.jpg" %}" />
+                                <p class="slidecontent">{{ plant.name }}<br/>{{ plant.location }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <strong>There are no plants present.</strong>
+                {% endif %}
 				<span class="pan panLeft" >
 					<img class="panicon" src="{% static "svg/chevron_left-24px.svg" %}" />
 				</span>
@@ -120,27 +113,20 @@
 				</span>
 			</div>
 
-			<h3>Latest added</h3>
+			<h3>Most interest</h3>
 			<div class="slidecontainer">
-				<div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Five<br />Amsterdam</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Six<br />Murano</p>
-				</div>
+				{% if plant_interest %}
+                    {% for plant in plant_date %}
+                        <a href="{% url 'treebay:show_plant' plant.slug plant.id %}">
+                            <div class="slide">
+                                <img class="slideimg" src="{% static "images/logo.jpg" %}" />
+                                <p class="slidecontent">{{ plant.name }}<br/>{{ plant.location }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <strong>There are no plants present.</strong>
+                {% endif %}
 				<span class="pan panLeft" >
 					<img class="panicon" src="{% static "svg/chevron_left-24px.svg" %}" />
 				</span>
@@ -151,25 +137,18 @@
 			
 			<h3>Most viewed</h3>
 			<div class="slidecontainer">
-				<div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Five<br />Amsterdam</p>
-				</div><div class="slide">
-					<img class="slideimg" src="{% static "images/logo.jpg" %}" />
-					<p class="slidecontent">Six<br />Murano</p>
-				</div>
+				{% if plant_views %}
+                    {% for plant in plant_date %}
+                        <a href="{% url 'treebay:show_plant' plant.slug plant.id %}">
+                            <div class="slide">
+                                <img class="slideimg" src="{% static "images/logo.jpg" %}" />
+                                <p class="slidecontent">{{ plant.name }}<br/>{{ plant.location }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <strong>There are no plants present.</strong>
+                {% endif %}
 				<span class="pan panLeft" >
 					<img class="panicon" src="{% static "svg/chevron_left-24px.svg" %}" />
 				</span>
@@ -181,23 +160,13 @@
 			<div id="sidebar">
                 {% if categories %}
                     {% for category in categories %}
-                        <a class="tag" href="category/{{ category.slug }}/">#{{ category.name }}</a>
+                        <a class="tag" href="{% url 'treebay:show_category' category.slug %}">#{{ category.name }}</a>
                     {% endfor %}
                 {% else %}
                     <strong>There are no tags present.</strong>
                 {% endif %}
 			</div>
 
-            <div>
-                {% if plant_interest %}
-                    {% for plant in plant_interest %}
-                        <a href="plant/{{ plant.slug }}">{{ plant.name }}</a>
-                    {% endfor %}
-                {% else %}
-                    <strong>There are no tags present.</strong>
-                {% endif %}
-			</div>
-			
 			<div id="footer" >
 				<hr />
 				<p id="footertext">Powered by Django</p>
