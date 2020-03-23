@@ -15,6 +15,7 @@ def populate():
 
     # all plants
     plants = pd.read_excel("treebay_testing_data/plants.xlsx", index_col=0)
+    plants['categories'] = plants.categories.apply(lambda x: x.split(', '))
     # all users
     users = pd.read_excel("treebay_testing_data/users.xlsx", index_col=0).to_dict("index")
 
