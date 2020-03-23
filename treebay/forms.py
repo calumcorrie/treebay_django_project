@@ -20,8 +20,8 @@ class UserProfileForm(forms.ModelForm):
 # Form for adding a new plant
 class PlantForm(forms.ModelForm):
 
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
+    def __init__(self, instance, *args, **kwargs):
+        self.instance = instance
         super(PlantForm, self).__init__(*args, **kwargs)
 
 

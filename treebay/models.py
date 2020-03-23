@@ -43,7 +43,7 @@ class Plant(models.Model):
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
     description = models.CharField(max_length=DESCRIPTION_MAX_LENGTH)
     # TODO - add default image for when the user decides to omit it
-    picture = models.ImageField(upload_to='plant_images', blank=True, null=True)
+    picture = models.ImageField(upload_to='plant_images', blank=True)
     uploadDate = models.DateTimeField(auto_now_add=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     location = models.CharField(max_length=LOCATION_MAX_LENGTH)

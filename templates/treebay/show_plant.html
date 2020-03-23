@@ -9,6 +9,7 @@
      <h1>{{ plant.name }}</h1>
      <h1>{{ plant.location }}</h1>
      <h1>{{ plant.description }}</h1>
+    <h1>Uploaded by: {{ plant.owner.user.username }}</h1>
     <h1> Categories</h1>
      {% for cat in cats %}
         <h3>{{ cat.name }}</h3>

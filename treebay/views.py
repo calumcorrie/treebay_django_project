@@ -90,22 +90,26 @@ def show_category(request, category_name_slug):
 # User must be logged in
 @login_required
 def add_plant(request):
-    form = PlantForm(request.user)
+    form = PlantForm(request.user.profile)
     if request.method == 'POST':
         form = PlantForm(request.user, request.POST)
 
         # Check if form is valid
         if form.is_valid():
-            #
+
             plant = form.save(commit=False)
+
             # set owner to the current user uploading plant
             # TODO - Owner linking to current user not working yet
-            user = User.objects.get(id=request.user.id)
-            profile = UserProfile.objects.get(user=user)
-            plant.owner = profile
+            plant.owner = request.user.profile
+
+            if 'picture' in request.FILES:
+                plant.picture = request.FILES['picture']
+
             plant.save()
+            form.save_m2m()
             # redirect to homepage for now, can also redirect to a success page or such like
-            return redirect('')
+            return redirect('index')
         else:
             # print form error
             print(form.errors)
