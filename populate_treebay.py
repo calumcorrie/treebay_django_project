@@ -81,6 +81,10 @@ def delete_users():
         if not user_profile.user.is_staff:
             user_profile.delete()
 
+    for user in User.objects.all():
+        if not user.is_staff:
+            user.delete()
+
 
 def delete_categories():
     for cat in Category.objects.all():

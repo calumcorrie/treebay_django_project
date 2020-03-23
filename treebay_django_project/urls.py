@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
@@ -20,13 +21,10 @@ from treebay import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
-                  path('admin/', admin.site.urls),
-                  path('', views.index, name='index'),
-                  path('about/', views.about, name='about'),
-                  path('category/<slug:category_name_slug>/', views.show_category, name='show_category'),
-                  path('plant/<slug:plant_slug>/', views.show_plant, name='show_plant'),
-                  path('add_plant/', views.add_plant, name='add_plant'),
-                  path('register/', views.register, name='register'),
-                  path('login/', views.user_login, name='login'),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('', views.index, name='index'),
+    path('treebay/', include('treebay.urls')),
+    # The above maps any URLs starting with treebay/ to be handled by treebay.
+    path('admin/', admin.site.urls),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
