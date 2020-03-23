@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-        <form id="add_plant_form" method="post" action="/add_plant/" enctype="multipart/form-data">
+        <form id="add_plant_form" method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" name="submit" value="Add Plant"/>

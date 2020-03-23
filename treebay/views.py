@@ -86,6 +86,13 @@ def show_category(request, category_name_slug):
     return render(request, 'treebay/category.html', context=context_dict)
 
 
+# View for a users dashboard
+# User must be logged in
+@login_required
+
+
+
+
 # View for adding a plant
 # User must be logged in
 @login_required
@@ -107,9 +114,10 @@ def add_plant(request):
                 plant.picture = request.FILES['picture']
 
             plant.save()
+            # Below line needed to save the m2m field category for the plant
             form.save_m2m()
             # redirect to homepage for now, can also redirect to a success page or such like
-            return redirect('index')
+            return redirect('treebay:index')
         else:
             # print form error
             print(form.errors)
@@ -172,7 +180,7 @@ def user_login(request):
 
             if user.is_active:
                 login(request, user)
-                return redirect('index')
+                return redirect('treebay:index')
             else:
                 return HttpResponse("Your Treebay account is disabled.")
         else:
