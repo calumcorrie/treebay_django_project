@@ -153,8 +153,8 @@ span.tag {
 }
 
 #loginframe {
-	height:400px;
-	width:600px;
+	height:450px;
+	width:800px;
 	position:relative;
 	background-color:powderblue;
 	margin: 7% auto;
@@ -167,6 +167,7 @@ div.halfloginframe {
 	height:100%;
 	border-radius:0px 0px 0px 70px;
 	position: absolute;
+	padding: 20px;
 	top: 0px;
 }
 
