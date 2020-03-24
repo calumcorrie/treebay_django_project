@@ -7,8 +7,6 @@
 		<script>
 			$(document).ready( function(){
 				$("a.scrollback").click( function(e){
-					//document.body.scrollTop = 0; // For Safari
-					//document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 					window.scrollTo({top: 0, behavior: 'smooth'});
 					e.preventDefault();
 				} )
@@ -17,34 +15,32 @@
 	</head>
 	<body>	
 		<div class="header">
-			<span style="width:33.33%;float:left;padding-top:12px;">
-				<p style="margin:0px;padding:0px 0px 0px 10px;">
+			<span id="headerleft">
+				<p>
 					<a href="">Home</a> // 
 					<a href="">About</a> // 
 					<a href="">MyTreeBay</a>
 				</p>
 			</span>
-			<span style="width:33.33%;float:left;text-align:center;padding-top:3px;padding-bottom:3px;">
+			<span id="headercentre">
 				<h1>
 					TreeBay
 				</h1>
 			</span>
-			<span style="width:33.33%;float:left;text-align:right;padding-top:12px;">
-				<p style="margin:0px;padding:0px 10px 0px 0px">
+			<span id="headerright">
+				<p>
 					<a href="">LOGIN/REGISTER</a>
 				</p>
 			</span>
-			<br style="clear: left;">
-			<hr style="margin-top:10px;">
 		</div>
 		
 		<div id="main">
-			<div style="margin: 0px 7%">
+			<div id="innerwrapper">
 				<span id="mainbanner">
-					<h1 id="centeredbanner">#cactus</h2>
+					<h2 id="centeredbanner">#cactus</h2>
 					<br style="clear:both;" />
 				</span>
-				<p class="strapline">Lorem ipsum dolor sit amet blah blah blah balh balh blah blah blah blah blah blah blah balh balh blah blah blah blah blah blah blah balh balh blah blah blah blah</p>
+				<p id="strapline">Lorem ipsum dolor sit amet blah blah blah balh balh blah blah blah blah blah blah blah balh balh blah blah blah blah blah blah blah balh balh blah blah blah blah</p>
 				<hr />
 				<div id="sortheader">
 					<span>Sort by:
@@ -63,105 +59,105 @@
 				<hr />
 				
 				<div class="adcontainer">
-					<img class="adimage" src="./logo.jpg" />
-					<span class="addetail1">
-						<p class="adtitle">
+					<img src="./logo.jpg" />
+					<span class="detail1">
+						<p class="title">
 							<a href="">One Spikey Boi</a>
 						</p>
-						<p class="adloc">Maryhill, Glasgow</p>
-						<p class="adinterest">&#9734; - 500</p>
+						<p class="loc">Maryhill, Glasgow</p>
+						<p class="interest">&#9734; - 500</p>
 					</span>
-					<span class="addetail2">
-						<span style="color:red;">&#128903;</span> - Hot
+					<span class="detail2">
+						<span class="labelhot">&#128901;</span> - Hot
 					</span>
-					<span class="addetail3">
-						<p class="adprice">£10,000</p>
-						<p class="adposter">
+					<span class="detail3">
+						<p class="price">£10,000</p>
+						<p class="poster">
 							<a href="">Lonely_Gal</a>
 						</p>
 					</span>
 				</div>
 				
 				<div class="adcontainer">
-					<img class="adimage" src="./logo.jpg" />
-					<span class="addetail1">
-						<p class="adtitle">
+					<img src="./logo.jpg" />
+					<span class="detail1">
+						<p class="title">
 							<a href="">Tall Green Boi</a>
 						</p>
-						<p class="adloc">Jordanhill, Glasgow</p>
-						<p class="adinterest">&#9734; - 294</p>
+						<p class="loc">Jordanhill, Glasgow</p>
+						<p class="interest">&#9734; - 294</p>
 					</span>
-					<span class="addetail3">
-						<p class="adprice">£5</p>
-						<p class="adposter">
+					<span class="detail3">
+						<p class="price">£5</p>
+						<p class="poster">
 							<a href="">LookMomNoHands</a>
 						</p>
 					</span>
 				</div>
 				
 				<div class="adcontainer">
-					<img class="adimage" src="./logo.jpg" />
-					<span class="addetail1">
-						<p class="adtitle">
+					<img src="./logo.jpg" />
+					<span class="detail1">
+						<p class="title">
 							<a href="">Fuzzy Red Boi</a>
 						</p>
-						<p class="adloc">Murano, Glasgow</p>
-						<p class="adinterest">&#9734; - 12</p>
+						<p class="loc">Murano, Glasgow</p>
+						<p class="interest">&#9734; - 12</p>
 					</span>
-					<span class="addetail3">
-						<p class="adprice">£50</p>
-						<p class="adposter">
+					<span class="detail3">
+						<p class="price">£50</p>
+						<p class="poster">
 							<a href="">AnotherTosser</a>
 						</p>
 					</span>
 				</div>
 				
 				<div class="adcontainer">
-					<img class="adimage" src="./logo.jpg" />
-					<span class="addetail1">
-						<p class="adtitle">
+					<img src="./logo.jpg" />
+					<span class="detail1">
+						<p class="title">
 							<a href="">Spice Boi</a>
 						</p>
-						<p class="adloc">Edinburgh</p>
-						<p class="adinterest">&#9734; - 3</p>
+						<p class="loc">Edinburgh</p>
+						<p class="interest">&#9734; - 3</p>
 					</span>
-					<span class="addetail3">
-						<p class="adprice">£0.50</p>
-						<p class="adposter">
+					<span class="detail3">
+						<p class="price">£0.50</p>
+						<p class="poster">
 							<a href="">Where's_Wallace?</a>
 						</p>
 					</span>
 				</div>
 				
 				<div class="adcontainer">
-					<img class="adimage" src="./logo.jpg" />
-					<span class="addetail1">
-						<p class="adtitle">
+					<img src="./logo.jpg" />
+					<span class="detail1">
+						<p class="title">
 							<a href="">Orange Boi</a>
 						</p>
-						<p class="adloc">1600 Pennsylvania Avenue NW</p>
-						<p class="adinterest">&#9734; - 0</p>
+						<p class="loc">1600 Pennsylvania Avenue NW</p>
+						<p class="interest">&#9734; - 0</p>
 					</span>
-					<span class="addetail3">
-						<p class="adprice">£1,000,000</p>
-						<p class="adposter">
+					<span class="detail3">
+						<p class="price">£1,000,000</p>
+						<p class="poster">
 							<a href="">GoBackToMexico</a>
 						</p>
 					</span>
 				</div>
 				
 				<div class="adcontainer">
-					<img class="adimage" src="./logo.jpg" />
-					<span class="addetail1">
-						<p class="adtitle">
+					<img src="./logo.jpg" />
+					<span class="detail1">
+						<p class="title">
 							<a href="">Not Cool Boi</a>
 						</p>
-						<p class="adloc">SW1A 2AA</p>
-						<p class="adinterest">&#9734; - 0</p>
+						<p class="loc">SW1A 2AA</p>
+						<p class="interest">&#9734; - 0</p>
 					</span>
-					<span class="addetail3">
-						<p class="adprice">£2</p>
-						<p class="adposter">
+					<span class="detail3">
+						<p class="price">£2</p>
+						<p class="poster">
 							<a href="">SomeOfYouMayDie</a>
 						</p>
 					</span>
@@ -169,9 +165,9 @@
 				
 				<hr />
 				
-				<div style="position:relative;overflow:auto;">
+				<div id="catpagenav">
 					<a href="">&lt; Prev</a>
-					<p style="position:absolute;left:50%;transform:translateX(-50%);margin: 0px;top: 0px;">1 - 6 of 42  ~  <a class="scrollback" href=":)">Back to Top</a></p>
+					<p>1 - 6 of 42  ~  <a class="scrollback" href=":)">Back to Top</a></p>
 					<a href="" style="float:right;">Next &gt;</a>
 				</div>
 				
