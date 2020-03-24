@@ -54,7 +54,7 @@ def populate():
         if 'plants' in user_data.keys():
             for plant_data in user_data['plants']:
                 add_plant(user_profile, plant_data['name'], plant_data['description'], plant_data['location'],
-                          plant_data['categories'], plant_data['price'])
+                          plant_data['categories'], plant_data['views'], plant_data['price'])
                 
     # add favorite plants to user
     for username, user_data in users.items():
@@ -86,8 +86,8 @@ def add_cat(name, description):
     return c
 
 
-def add_plant(owner, name, description, location, categories, price=0.0):
-    p = Plant.objects.get_or_create(owner=owner, name=name, description=description, price=price, location=location)[0]
+def add_plant(owner, name, description, location, categories, views, price=0.0):
+    p = Plant.objects.get_or_create(owner=owner, name=name, description=description, price=price, location=location, views=views)[0]
     p.categories.add(*Category.objects.filter(name__in=categories))
     p.picture.save(p.slug + str(p.id) + ".jpg",
                               File(open('./static/images/plants/' + p.slug + '.jpg', 'rb')))
