@@ -116,7 +116,7 @@
 			<h3>Most interest</h3>
 			<div class="slidecontainer">
 				{% if plant_interest %}
-                    {% for plant in plant_date %}
+                    {% for plant in plant_interest %}
                         <a href="{% url 'treebay:show_plant' plant.slug plant.id %}">
                             <div class="slide">
                                 <img class="slideimg" src="{% static "images/logo.jpg" %}" />
@@ -138,7 +138,7 @@
 			<h3>Most viewed</h3>
 			<div class="slidecontainer">
 				{% if plant_views %}
-                    {% for plant in plant_date %}
+                    {% for plant in plant_views %}
                         <a href="{% url 'treebay:show_plant' plant.slug plant.id %}">
                             <div class="slide">
                                 <img class="slideimg" src="{% static "images/logo.jpg" %}" />

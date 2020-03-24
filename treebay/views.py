@@ -12,16 +12,13 @@ def index(request):
     # Query database for all categories
     category_list = Category.objects.all()
 
-    # Query database for top 5 (can be extended if required) most viewed Plants
+    # Query database for top 6 most viewed Plants
     plant_list_views = Plant.objects.order_by('-views')[:6]
 
+    # Query database for top 6 plants in terms of interest
+    plant_list_interest = Plant.objects.annotate(star_num=Count('starred')).order_by('-star_num')[:6]
 
-    # Query database for top 5 plants in terms of interest
-    plant_list_interest = Plant.objects.order_by('-stars')[:6]
-	# I suggest vvv but cant make it work
-    #plant_list_interest = Plant.objects.all().annotate(num_stats = Count('UserProfile_set')).order_by('-num_stars')[:6]
-
-    # Query database for 5 most recently added plants
+    # Query database for 6 most recently added plants
     plant_list_date = Plant.objects.order_by('-uploadDate')[:6]
 
     # Context dictionary we fill with our lists and pass to template
@@ -34,12 +31,11 @@ def index(request):
 
 # View for the about page
 def about(request):
-    return render(request, 'treebay/about')
+    return render(request, 'treebay/about.html')
 
 
 # View for a single plant
 def show_plant(request, plant_slug, plant_id):
-
     # Context dictionary to hold data we need to pass through to template
     context_dict = {}
 
@@ -93,10 +89,6 @@ def show_category(request, category_name_slug):
 # View for a users dashboard
 # User must be logged in
 @login_required
-
-
-
-
 # View for adding a plant
 # User must be logged in
 @login_required
@@ -112,7 +104,7 @@ def add_plant(request):
 
             # set owner to the current user uploading plant
             # TODO - Owner linking to current user not working yet
-            plant.owner = request.user.profile
+            plant.owner = request.user.profile.user
 
             if 'picture' in request.FILES:
                 plant.picture = request.FILES['picture']
@@ -128,11 +120,10 @@ def add_plant(request):
     else:
         form = PlantForm(request.user)
 
-    return render(request, 'treebay/add_plant.html', {'form':form})
+    return render(request, 'treebay/add_plant.html', {'form': form})
 
 
 def register(request):
-
     # a boolean for telling the template whether registration was successful
     # set to false initially, code changes value to true when reg succeeds
     registered = False
@@ -173,7 +164,6 @@ def register(request):
 
 
 def user_login(request):
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')

@@ -68,11 +68,9 @@ div.slidecontainer {
 }
 
 div.slide {
-	width: 130px;
+	width: 160px;
 	/*border-style:dotted;*/
-	padding:15px;
-	padding-top:5px;
-	padding-bottom:10px;
+	padding: 5px 15px 10px;
 	display:inline-block;
 	position:relative;
 }
@@ -131,11 +129,12 @@ img.panicon.right {
 	line-height: 190%;
 }
 
-span.tag {
+a.tag {
 	background-color:powderblue;
 	border-style:solid;
 	border-radius:8px;
 	padding:2px 5px;
+	font-size: 14pt;
 }
 
 

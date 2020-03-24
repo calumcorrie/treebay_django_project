@@ -26,6 +26,17 @@ admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
 
+class UserInline(admin.StackedInline):
+    model = UserProfile.starred.through
+
+
+class PlantAdmin(admin.ModelAdmin):
+    # This line displays the users who starred each plant
+    inlines = [
+        UserInline,
+    ]
+
+
 class PlantInline(admin.TabularInline):
     model = Plant.categories.through
 
@@ -42,4 +53,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 # Update the registration to include this customised interface
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Plant)
+admin.site.register(Plant, PlantAdmin)

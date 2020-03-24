@@ -57,7 +57,6 @@ def add_user(username, email, password):
     return user
 
 
-# TODO add picture
 def add_user_profile(user):
     user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
     user_profile.picture.save(user_profile.user.username + str(user_profile.id) + ".jpg",

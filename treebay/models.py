@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     # The additional attributes
     # TODO - add default image for when the user decides to omit it
     picture = models.ImageField(upload_to='profile_images', blank=True)
+    starred = models.ManyToManyField('Plant', related_name='starred')
 
     def __str__(self):
         return self.user.username
@@ -59,8 +60,3 @@ class Plant(models.Model):
 
     def __str__(self):
         return self.name
-
-# Python is run as a script, even when imported so we can make changes
-#  to the class attributes after we have declared it in the main program
-#  scope.
-UserProfile.stars = models.ManyToManyField(Plant, related_name='stars')
