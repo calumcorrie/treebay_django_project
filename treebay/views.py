@@ -103,8 +103,8 @@ def add_plant(request):
             plant = form.save(commit=False)
 
             # set owner to the current user uploading plant
-            # TODO - Owner linking to current user not working yet
-            plant.owner = request.user.profile.user
+            # This now works
+            plant.owner = request.user.profile
 
             if 'picture' in request.FILES:
                 plant.picture = request.FILES['picture']
