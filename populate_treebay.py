@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import math
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'treebay_django_project.settings')
@@ -27,6 +28,12 @@ def populate():
     # all categories
     categories = pd.read_excel("treebay_testing_data/categories.xlsx", index_col=0).to_dict("index")
 
+    for user in users:
+        if type(users[user]["starred"]) is str:
+            users[user]["starred"] = users[user]["starred"].split(", ")
+        else:
+            users[user]["starred"] = []
+
     # clear all users except for staff
     delete_users()
     # clear categories and plants
@@ -48,6 +55,14 @@ def populate():
             for plant_data in user_data['plants']:
                 add_plant(user_profile, plant_data['name'], plant_data['description'], plant_data['location'],
                           plant_data['categories'], plant_data['price'])
+                
+    # add favorite plants to user
+    for username, user_data in users.items():
+        if 'starred' in user_data.keys():
+            user = User.objects.get_or_create(username=username, email=user_data['email'])[0]
+            user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
+            for starred_plant in user_data['starred']:
+                user_profile.starred.add(Plant.objects.get_or_create(name=starred_plant)[0])
 
 
 def add_user(username, email, password):
