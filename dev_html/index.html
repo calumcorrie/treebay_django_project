@@ -6,9 +6,9 @@
 		<link rel="stylesheet" type="text/css" href="./test.css">
 		<script>
 			$(document).ready( function(){
-				$(".panLeft,.panRight").click( function(){
-					var container = $(this).parent();
-					var kids = container.children(".slide");
+				$("div.slidecontainer span.pan").click( function(){
+					var container = $(this).parent("div.slidecontainer");
+					var kids = container.children("div");
 					var firstchild = kids.first();
 					
 					var nkids = kids.length;
@@ -71,164 +71,159 @@
 				  }
 				};
 				*/
-
-
-				
 			});
 
 		</script>
 	</head>
 	<body>	
 		<div class="header">
-			<span style="width:33.33%;float:left;padding-top:12px;">
-				<p style="margin:0px;padding:0px 0px 0px 10px;">
+			<span id="headerleft">
+				<p>
 					<strong>Home</strong> // 
 					<a href="">About</a> // 
 					<a href="">MyTreeBay</a>
 				</p>
 			</span>
-			<span style="width:33.33%;float:left;text-align:center;padding-top:3px;padding-bottom:3px;">
+			<span id="headercentre" >
 				<h1>
 					TreeBay
 				</h1>
 			</span>
-			<span style="width:33.33%;float:left;text-align:right;padding-top:12px;">
-				<p style="margin:0px;padding:0px 10px 0px 0px">
+			<span id="headerright">
+				<p>
 					<a href="">LOGIN/REGISTER</a>
 				</p>
 			</span>
-			<br style="clear: left;">
-			<hr style="margin-top:10px;">
 		</div>
 		
 		<div id="main">
 			<span id="mainbanner">
-				<img src="./logo2.png" id="mainbannerimage" />
-				<h1 id="mainbannertext">TreeBay - Find a new home for your plants today!</h2>
+				<img src="./logo2.png" />
+				<h1>TreeBay - Find a new home for your plants today!</h2>
 				<br style="clear:both;" />
 			</span>
 			
 			<h3>Most recent</h3>
 			<div class="slidecontainer" >
-				<div class="slide">
-					<img class="slideimg" src="./logo.jpg"/>
-					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Five<br />Amsterdam</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Six<br />Murano</p>
+				<div><!-- class="slide"> -->
+					<img src="./logo.jpg"/><!-- class="slideimg" -->
+					<p>One<br />Maryhill, Glasgow</p><!-- class="slidecontent" -->
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Two<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Three<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Four<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Five<br />Amsterdam</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Six<br />Murano</p>
 				</div>
 				<span class="pan panLeft">
-					<img class="panicon" src="./chevron_left-24px.svg" />
+					<img src="./chevron_left-24px.svg" />
 				</span>
 				<span class="pan panRight">
-					<img class="panicon right" src="./chevron_right-24px.svg" />
+					<img class="right" src="./chevron_right-24px.svg" />
 				</span>
 			</div>
 
 			<h3>Latest added</h3>
 			<div class="slidecontainer">
-				<div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Five<br />Amsterdam</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Six<br />Murano</p>
+				<div>
+					<img src="./logo.jpg" />
+					<p>One<br />Maryhill, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Two<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Three<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Four<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Five<br />Amsterdam</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Six<br />Murano</p>
 				</div>
 				<span class="pan panLeft" >
-					<img class="panicon" src="./chevron_left-24px.svg" />
+					<img src="./chevron_left-24px.svg" />
 				</span>
 				<span class="pan panRight">
-					<img class="panicon right" src="./chevron_right-24px.svg" />
+					<img class="right" src="./chevron_right-24px.svg" />
 				</span>
 			</div>
 			
 			<h3>Most viewed</h3>
 			<div class="slidecontainer">
-				<div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">One<br />Maryhill, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Two<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Three<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Four<br />Johnston, Glasgow</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Five<br />Amsterdam</p>
-				</div><div class="slide">
-					<img class="slideimg" src="./logo.jpg" />
-					<p class="slidecontent">Six<br />Murano</p>
+				<div>
+					<img src="./logo.jpg" />
+					<p>One<br />Maryhill, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Two<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Three<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Four<br />Johnston, Glasgow</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Five<br />Amsterdam</p>
+				</div><div>
+					<img src="./logo.jpg" />
+					<p>Six<br />Murano</p>
 				</div>
 				<span class="pan panLeft" >
-					<img class="panicon" src="./chevron_left-24px.svg" />
+					<img src="./chevron_left-24px.svg" />
 				</span>
 				<span class="pan panRight">
-					<img class="panicon right" src="./chevron_right-24px.svg" />
+					<img class="right" src="./chevron_right-24px.svg" />
 				</span>
 			</div>
 			
 			<div id="sidebar">
-				<span class="tag">#potted</span>
-				<span class="tag">#spikey</span>
-				<span class="tag">#round</span>
-				<span class="tag">#square</span>
-				<span class="tag">#blue</span>
-				<span class="tag">#shrt</span>
-				<span class="tag">#especiallylongtag</span>
-				<span class="tag">#lol</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#potted</span>
-				<span class="tag">#spikey</span>
-				<span class="tag">#round</span>
-				<span class="tag">#square</span>
-				<span class="tag">#blue</span>
-				<span class="tag">#shrt</span>
-				<span class="tag">#especiallylongtag</span>
-				<span class="tag">#lol</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
-				<span class="tag">#weed</span>
+				<span>#potted</span><!-- class="tag" -->
+				<span>#spikey</span>
+				<span>#round</span>
+				<span>#square</span>
+				<span>#blue</span>
+				<span>#shrt</span>
+				<span>#especiallylongtag</span>
+				<span>#lol</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#potted</span>
+				<span>#spikey</span>
+				<span>#round</span>
+				<span>#square</span>
+				<span>#blue</span>
+				<span>#shrt</span>
+				<span>#especiallylongtag</span>
+				<span>#lol</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
+				<span>#weed</span>
 			</div>
 			
 			<div id="footer" >
 				<hr />
-				<p id="footertext">Powered by Django</p>
+				<p>Powered by Django</p>
 			</div>
 			
 		</div>
