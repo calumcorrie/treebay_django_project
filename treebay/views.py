@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.db.models import Count
 from treebay.models import Category, Plant, UserProfile, User
 from treebay.forms import PlantForm, UserForm, UserProfileForm
 
@@ -14,8 +15,11 @@ def index(request):
     # Query database for top 5 (can be extended if required) most viewed Plants
     plant_list_views = Plant.objects.order_by('-views')[:6]
 
+
     # Query database for top 5 plants in terms of interest
     plant_list_interest = Plant.objects.order_by('-stars')[:6]
+	# I suggest vvv but cant make it work
+    #plant_list_interest = Plant.objects.all().annotate(num_stats = Count('UserProfile_set')).order_by('-num_stars')[:6]
 
     # Query database for 5 most recently added plants
     plant_list_date = Plant.objects.order_by('-uploadDate')[:6]

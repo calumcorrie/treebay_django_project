@@ -50,10 +50,6 @@ class Plant(models.Model):
     views = models.IntegerField(default=0)
     isSold = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    # Makes more sense to have this as an attribute "starred" in UserProfile
-    # But I can't reference the Plant model before defining it
-    # And it must be defined after UserProfile because of the "owner" attribute
-    stars = models.ManyToManyField(UserProfile, related_name='stars')
     categories = models.ManyToManyField(Category)
     slug = models.SlugField(unique=True)
 
@@ -63,3 +59,8 @@ class Plant(models.Model):
 
     def __str__(self):
         return self.name
+
+# Python is run as a script, even when imported so we can make changes
+#  to the class attributes after we have declared it in the main program
+#  scope.
+UserProfile.stars = models.ManyToManyField(Plant, related_name='stars')
