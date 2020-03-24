@@ -1,8 +1,9 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.db.models import Count
+from django.urls import reverse
 from treebay.models import Category, Plant, UserProfile, User
 from treebay.forms import PlantForm, UserForm, UserProfileForm
 
@@ -89,6 +90,22 @@ def show_category(request, category_name_slug):
 # View for a users dashboard
 # User must be logged in
 @login_required
+def dashboard(request):
+    # Create a context dictionary
+    context_dict = {}
+
+    # Get current user profile
+    current_user = request.user.profile
+    # Get that users plants
+    plants = Plant.objects.all().filter(owner=current_user)
+    # Add them to the context dictionary
+    context_dict['plants'] = plants
+    # add the users starred plants to dictionary
+    context_dict['starred'] = current_user.starred.all()
+
+    return render(request, 'treebay/dashboard.html', context=context_dict)
+
+
 # View for adding a plant
 # User must be logged in
 @login_required
@@ -121,6 +138,20 @@ def add_plant(request):
         form = PlantForm(request.user)
 
     return render(request, 'treebay/add_plant.html', {'form': form})
+
+
+# View for starring a plant
+def star_plant(request, plant_id):
+
+    # Get the current User
+    current_user = request.user.profile
+    # Get the current plant
+    plant = Plant.objects.get(id=plant_id)
+    current_user.starred.add(plant)
+
+    return redirect('treebay:dashboard')
+
+
 
 
 def register(request):
@@ -182,3 +213,9 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'treebay/login.html')
+
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('treebay:index'))

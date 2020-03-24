@@ -11,4 +11,7 @@ urlpatterns = [
                   path('add_plant/', views.add_plant, name='add_plant'),
                   path('register/', views.register, name='register'),
                   path('login/', views.user_login, name='login'),
+                  path('logout/', views.user_logout, name='logout'),
+                  path('dashboard/', views.dashboard, name='dashboard'),
+                  path('star/<int:plant_id>/', views.star_plant, name='star'),
               ]

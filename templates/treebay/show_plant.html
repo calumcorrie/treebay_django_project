@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<a href="{% url 'treebay:star' plant.id %}"> Add to my starred plants</a>
 {% if plant %}
      <h1>{{ plant.name }}</h1>
      <h1>{{ plant.location }}</h1>
