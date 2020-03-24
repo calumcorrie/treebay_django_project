@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TreeBay - Dashboard</title>
+		<script type = "text/javascript" src = "./jquery-3.4.1.js"></script>		
+		<link rel="stylesheet" type="text/css" href="./test.css">
+		<script>
+			function hideSmIfEmpty( table ){
+				if( typeof $("tbody tr:not(tr.visible)",table).first().attr('class') === 'undefined' ){
+					$("tfoot tr",table).hide();
+				}
+			}
+			
+			function navToA( a ){
+				window.location.href = a.attr("href");
+			}
+			
+			$(document).ready( function(){
+				$("tr.vt0").addClass("visible");
+				
+				$("a.tableexpand").each( function() {
+					hideSmIfEmpty( $(this).parents("table.expandingadtable") );
+				});
+				
+				$("a.tableexpand").click( function(e) {
+					e.preventDefault();
+					var parent = $(this).parents("table.expandingadtable");
+					var firstunclass = $("tbody tr:not(tr.visible)",parent).first().attr('class');
+					$("tr."+firstunclass,parent).addClass("visible");
+					hideSmIfEmpty(parent);
+				});
+				
+				$("div.largebutton").click( function(){
+					navToA($("a",this));
+				});
+				
+				$("div.largebutton a").click( function(e){
+					e.preventDefault();
+					navToA($(this));
+				});
+			});
+		</script>
+	</head>
+	<body>	
+		<div class="header">
+			<span id="headerleft">
+				<p id="headerleftcontent">
+					<a href="">Home</a> // 
+					<a href="">About</a> // 
+					<strong>MyTreeBay</strong>
+				</p>
+			</span>
+			<span id="headercentre">
+				<h1>
+					TreeBay
+				</h1>
+			</span>
+			<span id="headerright">
+				<p id="headerrightcontent">
+					<a href="">LOGIN/REGISTER</a>
+				</p>
+			</span>
+		</div>
+		
+		<div id="main">
+			<div id="innerwrapper">
+				<p class="mininav">
+					<a href="">Home</a> &gt; 
+					<strong>&lt;USERNAME&gt;</strong>
+				</p>
+				<h2 id="dashheader">Dashboard</h2>
+				
+				<h4 class="ditemhead">Adverts</h4>
+				
+				<div id="dashadframe" class="dashelmnt">
+					<table class="expandingadtable">
+						<thead>
+							<tr>
+								<th colspan=2>My Adverts</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- vt(view trigger)0 objects will be shown on first load,
+									other vt's are used to group the other objects to
+									load each expansion after. They do not need to be in
+									order, the function will make "all objects of the next
+									(layout-wise) non-visible class type in the
+									expandingadtable" visible. -->
+							<tr class="vt0">
+								<td>One Spikey Boi</td>
+								<td><span class="labelhot">&#128901;</span></td>
+							</tr>
+							<tr class="vt0">
+								<td>Another Spikey Boi</td>
+								<td><span class="labelsold">&#9651;</span></td>
+							</tr>
+							<tr class="vt0">
+								<td>More Spikey Bois</td>
+								<td><span class="labelactive">&#9634;</span></td>
+							</tr>
+							<tr class="vt0">
+								<td>One Spikey Boi</td>
+								<td></td>
+							</tr>
+							<tr class="vt1">
+								<td>Another Spikey Boi</td>
+								<td></td>
+							</tr>
+							<tr class="vt2">
+								<td>More Spikey Bois</td>
+								<td></td>
+							</tr>
+							<tr class="vt2">
+								<td>One Spikey Boi</td>
+								<td></td>
+							</tr>
+							<tr class="vt2">
+								<td>Another Spikey Boi</td>
+								<td></td>
+							</tr>
+							<tr class="vt3">
+								<td>More Spikey Bois</td>
+								<td></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan=2><a href="." class="tableexpand">See more...</a></td>
+							</tr>
+						</tfoot>
+					</table>
+					
+					<table class="expandingadtable">
+						<thead>
+							<tr>
+								<th colspan=2>Starred</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- Explain vts? See above -->
+							<tr class="vt0">
+								<td>One Spikey Boi</td>
+								<td><span class="labelhot">&#128901;</span></td>
+							</tr>
+							<tr class="vt0">
+								<td>Another Spikey Boi</td>
+								<td><span class="labelsold">&#9651;</span></td>
+							</tr>
+							<tr class="vt0">
+								<td>More Spikey Bois</td>
+								<td><span class="labelactive">&#9634;</span></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan=2><a href="." class="tableexpand">See more...</a></td>
+							</tr>
+						</tfoot>
+					</table>
+					
+					<div id="dashadrightpannel">
+					
+						<table>
+							<thead>
+								<tr>
+									<th colspan=2>
+										Legend
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><span class="labelhot">&#128901;</span></td>
+									<td> - Hot</td>
+								</tr>
+								<tr>
+									<td><span class="labelactive">&#9634;</span></td>
+									<td> - Active</td>
+								</tr>
+								<tr>
+									<td><span class="labelsold">&#9651;</span></td>
+									<td> - Sold</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<div class="largebutton">
+							<a href="">New Advert</a>
+						</div>
+					</div>
+					
+				</div>				
+
+				<h4 class="ditemhead">Account</h4>
+				
+				<div class="dashelmnt">
+				
+					<div id="dashaccimg">
+						<h5>Account photo</h5>
+						<div >
+							<img src="./logo2.png" />
+							<p style="margin-bottom:0px;">Change to:</p>
+							<input style="margin-top:5px" type="file" />
+						</div>
+					</div>
+					
+					<h5>Email</h5>
+					
+					<div>
+						<p>Primary Email Address: <input style="float:right;width:47%;" type="text"/></p>
+					</div>
+					
+					<h5>Password</h5>
+					
+					<div>
+						<table class="blanktable">
+							<tr>
+								<td>Current Password:</td>
+								<td><input class="dashaccinp" type="password"/></td>
+							</tr>
+							<tr>
+								<td>New Password:</td>
+								<td><input class="dashaccinp" type="password"/></td>
+							</tr>
+							<tr>
+								<td>Confirm New Password:</td>
+								<td><input class="dashaccinp" type="password"/></td>
+							</tr>
+						</table>
+					</div>
+					
+					<div id="dashaccsubmitbox">
+						<div class="largebutton">
+							<a href="">Save</a>
+						</div>
+						<div class="largebutton">
+							<a href="">Revert</a>
+						</div>
+					</div>
+				
+				</div>				
+
+
+			</div>
+			<div id="footer" >
+				<hr />
+				<p id="footertext">Powered by Django</p>
+			</div>
+		</div>
+	
+	</body>
+</html>
