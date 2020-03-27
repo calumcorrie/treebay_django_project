@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db.models import Count
 from django.urls import reverse
-from treebay.models import Category, Plant, UserProfile, User
+from treebay.models import Category, Plant
 from treebay.forms import PlantForm, UserForm, UserProfileForm
+from datetime import datetime
 
 
 # View for the homepage
@@ -35,12 +36,41 @@ def about(request):
     return render(request, 'treebay/about.html')
 
 
-# View for a single plant
+# A helper method
+def get_server_side_cookie(request, cookie, default_val=None):
+    val = request.session.get(cookie)
+    if not val:
+        val = default_val
+    return val
+
+
+def visitor_cookie_handler(request):
+    # Get the number of visits to a page.
+    # We use the COOKIES.get() function to obtain the visits cookie.
+    # If the cookie exists, the value returned is casted to an integer.
+    # If the cookie doesn't exist, then the default value of 1 is used.
+    visits = int(get_server_side_cookie(request, 'visits', '1'))
+    last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
+    # If it's been more than a day since the last visit...
+    if (datetime.now() - last_visit_time).days > 0:
+        visits = visits + 1
+        # Update the last visit cookie now that we have updated the count
+        request.session['last_visit'] = str(datetime.now())
+    else:
+        # Set the last visit cookie
+        request.session['last_visit'] = last_visit_cookie
+    # Update/set the visits cookie
+    request.session['visits'] = visits
+
+
+# View for a single plant ad
+# Plant slug is not used in the function, but is needed for the url mapping
 def show_plant(request, plant_slug, plant_id):
     # Context dictionary to hold data we need to pass through to template
     context_dict = {}
 
-    # Find the plant using the passed through plant slug, which is unique
+    # Find the plant using the unique plant id
     try:
         plant = Plant.objects.get(id=plant_id)
         # Add it to the dictionary
@@ -49,14 +79,18 @@ def show_plant(request, plant_slug, plant_id):
         plant_cats = plant.categories.all()
         # Add them to the context dict
         context_dict['cats'] = plant_cats
+        # Call to cookie handler that counts the visits
+        visitor_cookie_handler(request)
+        # Update view count of the ad
+        plant.views = request.session['visits']
 
     except Plant.DoesNotExist:
         # If we get here plant does not exist
         # Template should display message
         context_dict['plant'] = None
 
-    # Render response to return to client
-    return render(request, 'treebay/show_plant.html', context=context_dict)
+    response = render(request, 'treebay/show_plant.html', context=context_dict)
+    return response
 
 
 def show_category(request, category_name_slug):
