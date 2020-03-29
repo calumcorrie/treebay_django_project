@@ -5,8 +5,10 @@ from django.shortcuts import render, redirect
 from django.db.models import Count
 from django.urls import reverse
 from treebay.models import Category, Plant
-from treebay.forms import PlantForm, UserForm, UserProfileForm
+from treebay.forms import PlantForm, RegisterForm
 from datetime import datetime
+from django.contrib import messages
+from django.utils.safestring import mark_safe
 
 
 # View for the homepage
@@ -186,67 +188,72 @@ def star_plant(request, plant_id):
     return redirect('treebay:dashboard')
 
 
+def login_or_register(request):
+    if request.method == "POST":
+        if request.POST.get('submit') == 'Log In':
 
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-def register(request):
-    # a boolean for telling the template whether registration was successful
-    # set to false initially, code changes value to true when reg succeeds
-    registered = False
+            user = authenticate(username=username, password=password)
 
-    # if it is a HTTP Post we want to process data
-    if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('treebay:index')
+                else:
+                    messages.add_message(request, messages.ERROR, 'Your TreeBay account is disabled. Create a new one?')
+                    form = RegisterForm()
+                    return render(request,
+                                  'treebay/login.html',
+                                  context={'form': form})
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-
-            user.set_password(user.password)
-            user.save()
-
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-
-            profile.save()
-
-            registered = True
-
-        else:
-            print(user_form.errors, profile_form.errors)
-
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-
-    return render(request,
-                  'treebay/register.html',
-                  context={'user_form': user_form,
-                           'profile_form': profile_form,
-                           'registered': registered})
-
-
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(username=username, password=password)
-
-        if user:
-
-            if user.is_active:
-                login(request, user)
-                return redirect('treebay:index')
             else:
-                return HttpResponse("Your Treebay account is disabled.")
-        else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+                messages.add_message(request, messages.ERROR, 'Login failed. Invalid details.')
+                form = RegisterForm()
+                return render(request,
+                              'treebay/login.html',
+                              context={'form': form})
+
+        elif request.POST.get('submit') == 'Register':
+            form = RegisterForm(request.POST)
+
+            if form.is_valid():
+                user = form.save()
+                user.refresh_from_db()
+                user.email = form.cleaned_data.get('email')
+                if 'picture' in request.FILES:
+                    user.profile.picture = request.FILES['picture']
+
+                user.save()
+
+                # login user after registration
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=password)
+                login(request, user)
+
+                return redirect(reverse('treebay:index'))
+
+            # Invalid registration form
+            else:
+                # Get all errors from the form
+                message_text = ''
+                for subject, list_of_errors in form.errors.as_data().items():
+                    for error in list_of_errors:
+                        for message in error.messages:
+                            message_text += mark_safe(message + "<br/>")
+                messages.add_message(request, messages.ERROR, mark_safe('Registration failed. Errors:<br/>' + message_text))
+                form = RegisterForm()
+                return render(request,
+                              'treebay/login.html',
+                              context={'form': form})
+
     else:
-        return render(request, 'treebay/login.html')
+        form = RegisterForm()
+        return render(request,
+                      'treebay/login.html',
+                      context={'form': form})
 
 
 @login_required
