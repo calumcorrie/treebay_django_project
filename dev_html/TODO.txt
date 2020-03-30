@@ -1,0 +1,2 @@
+- Delete account link and jQuery confirm popup
+- Check for rendering glitches in browser dimention scaling

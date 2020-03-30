@@ -89,6 +89,7 @@ div.header #headerright p {
 	position:relative;
 	background-color:rgba(256,256,256,0.8);
 	padding: 20px 30px;
+	min-width: 564px;
 }
 
 #mainbanner {
@@ -189,17 +190,22 @@ span.pan img.right {
 	top: 177px;
 	left: 61%;
 	margin: 0px 20px 0px 20px;
+}
+
+div.tagholder {
 	border-style: solid;
 	padding: 15px;
 	line-height: 190%;
 }
 
 /*span.tag {*/
-#sidebar span {
+/*#sidebar span, #plantmain span{*/
+div.tagholder > span {
 	background-color:powderblue;
 	border-style:solid;
 	border-radius:8px;
 	padding:2px 5px;
+	cursor: pointer;
 }
 
 
@@ -425,6 +431,7 @@ table.expandingadtable tbody tr.visible {
 
 table.blanktable{
 	border: none;
+	width: auto;
 }
 
 table.blanktable td{
@@ -518,4 +525,156 @@ input.dashaccinp{
     left: 100%;
     transform: translateX(-100%);
     background-color: lightgray;
+}
+
+#aboutmain {
+    padding: 40px 30px 0px 30px;
+    overflow: auto;
+}
+
+#aboutmain > p {
+	   margin:0px;
+}
+
+#aboutmain > img {
+	float:left;
+	margin-right: 40px;
+	width: 200px;
+	height: 200px;
+	margin-bottom: 20px;
+}
+
+#plantmain {
+	margin: 20px 30px;
+	overflow: auto;
+}
+
+#plantmain > p.mininav {
+	margin-bottom: 15px;
+}
+
+div.leftsect {
+	width: 39.3%;
+	float: left;
+	margin-right: 35px;
+}
+
+div.leftsect > img {
+	width: 100%;
+}
+
+#plantseller {
+	border: 3px black solid;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 10px;
+}
+
+#plantseller > img {
+	height:110px;
+	float:left;
+	/*! padding: 10px 20px 10px 10px; */
+	margin-right: 20px;
+}
+
+#plantseller > p:first-of-type{
+	margin-top: 7px;
+}
+
+#plantmain h2 {
+	font-size: xx-large;
+	margin: 0px;
+	padding-top: 9px;
+}
+
+#plloc {
+	margin-top:0px;
+}
+
+#plprice {
+	font-size: x-large;
+	color:  green;
+}
+
+#pltags {
+	margin-top: 30px;
+	padding:20px;
+	border: none;
+}
+
+#plstar {
+	float:right;
+	font-size: xxx-large;
+	margin: 0;
+	cursor: pointer;
+}
+
+#plstar:hover{
+	color: gold;
+}
+
+
+
+#addeditmain {
+	margin: 20px 30px;
+	overflow: auto;
+}
+
+#addeditmain > h2 {
+	margin-top: 0;
+	text-align: center;
+	font-size: xx-large
+}
+
+#addeditmain div.leftsect > div.largebutton {
+	padding: 8px;
+}
+
+#addeditrighsection {
+	width: 39.3%;
+	float: left;
+	margin-right: 35px;
+}
+
+#addedittable {
+	margin-top: 20px;
+	width: 100%;
+}
+
+#addedittable td:nth-child(1) {
+	vertical-align: top;
+	width: 25%;
+}
+
+div.valid {
+	position: relative;
+	margin: 5px 0px 0px; 0px;
+}
+
+div.valid > p {
+	width: max-content;
+	margin: 0;
+}
+
+div.valid > p:nth-of-type(1){
+  visibility: hidden;
+	color: red;
+}
+
+div.valid > p:nth-of-type(2){
+	float:right;
+	position:absolute;
+	top:0px;
+	left: 100%;
+	transform: translateX(-100%);
+}
+
+#tagged {
+	border: 1px black solid;
+}
+
+.expand {
+	width: -moz-available;
+	width: -webkit-fill-available;
+	width: fill-available;
 }
