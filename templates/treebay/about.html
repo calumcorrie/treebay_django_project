@@ -1,0 +1,24 @@
+{% extends 'treebay/base.html' %}
+{% load staticfiles %}
+
+{% block nav_about %}
+					<strong>About</strong> //
+{% endblock %}
+
+{% block main_body %}
+		
+		<div class="aboutcontainer">
+				<img class="aboutlogo" src="{% static 'img/svg/treebay_logo_short.svg' %}" />
+
+				<div class="abouttext"><p >Nowadays, plants have become an essential part of our lives, yet we rarely pay much attention to
+					their impact on us. Nevertheless, entering a room full of your favourite flowers will brighten up
+					your day instantly! Our team strives to make that possible for everyone. Say, you've taken good care
+					of a big pot of herbs for years, but now you move house and can't take it with you. This website
+					will help you find someone who would love to adopt your plants. Or let's say you've made a few
+					attempts to grow a magnificent orchid but every time you buy one it just dies after a couple of
+					months despite your effort. Now you have the chance to find an orchid looking for a new home and
+					discuss every little detail about its needs with the experienced owner.  Whatever your favourite
+                    plant is, here you will find one that's just right for you! :) </p></div>
+		</div>
+	
+{% endblock %}
