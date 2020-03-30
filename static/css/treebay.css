@@ -130,8 +130,6 @@ div.slidecontainer {
 	position:relative;
 }
 
-/*div.slide {*/
-/*A div direct child of sc*/
 div.slidecontainer > div {
 	width: 130px;
 	padding:15px;
@@ -142,8 +140,6 @@ div.slidecontainer > div {
 	overflow: hidden;
 }
 
-/*img.slideimg {*/
-/*An img drct ch of div drct ch of cs*/
 div.slidecontainer > div > img {
 	height:100px;
 	width:100px;
@@ -152,8 +148,6 @@ div.slidecontainer > div > img {
 	margin-right:auto;
 }
 
-
-/*p.slidecontent {*/
 div.slidecontainer > div > p {
 	margin:0;
 }
@@ -165,6 +159,7 @@ div.slidecontainer span.pan {
 	height: 100%;
 	width:30px;
 	background:rgba(128, 128, 128, 0.15);
+	cursor: pointer;
 	
 }
 
@@ -266,7 +261,7 @@ div.halfloginframe {
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
-	width: min-content;
+	width: max-content;
 	margin-top: 40px;
 	font-size: xxx-large;
 	text-decoration: underline;
@@ -294,6 +289,7 @@ div.adcontainer{
 
 div.adcontainer img{
 	height:130px;
+	width:130px;
 	float: left;
 }
 
@@ -651,7 +647,7 @@ div.leftsect > img {
 
 div.valid {
 	position: relative;
-	margin: 5px 0px 0px; 0px;
+	margin: 5px 0px 0px 0px;
 }
 
 div.valid > p {

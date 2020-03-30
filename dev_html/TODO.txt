@@ -1,3 +1,5 @@
-- Delete account link and jQuery confirm popup
-- Check for rendering glitches in browser dimention scaling
-- Tag jQuery onclick redirect or <a> to category page
+- Delete account link and jQuery confirm popup 					: dashboard
+- Check for rendering glitches in browser dimention scaling 	: all
+- Tag jQuery onclick redirect or <a> 							: index, category
+- Define hot boundary for adverts								: category
+- Count stars and pass											: category

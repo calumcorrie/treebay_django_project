@@ -1,29 +1,89 @@
-<!DOCTYPE html>
+{% extends 'treebay/base.html' %}
+{% load staticfiles %}
 
-<html>
+{% if category %}
+	{% block title_block %}
+		 - #{{ category.name }}
+	{% endblock %}
+{% endif %}
 
-    <head>
-        <title>Treebay</title>
-    </head>
 
-    <body>
-    <div>
-    {% if category %}
-        <h1>{{ category.name }}</h1>
-        <h3>{{ category.description }}</h3>
-        {% if plants %}
-            <ul>
-                {% for plant in plants %}
-                    <li>{{ plant.name }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>No plants currently in category.</strong>
-        {% endif %}
-    {% else %}
-        The specified category does not exist.
-    {% endif %}
-    </div>
-    </body>
+{% block scripting %}
+		<script>
+			$(document).ready( function(){
+				$("a.scrollback").click( function(e){
+					window.scrollTo({top: 0, behavior: 'smooth'});
+					e.preventDefault();
+				} )
+			} );
+		</script>
+{% endblock %}
 
-</html>
+
+{% block main_body %}
+			<div id="innerwrapper">
+				<span id="mainbanner">
+					<h2 id="centeredbanner">
+						{% if category %}
+							#{{category.name}}
+						{% else %}
+							No such category
+						{% endif %}
+					</h2>
+				</span>
+				
+				{% if category %}
+				<p id="strapline">{{category.description}}</p>
+				<hr />
+				<div id="sortheader">
+					<span>Sort by:
+					<select id="sortby">
+						<option value="popular">Most Popular</option>
+						<option value="latest">Latest Added</option>
+						<option value="price_asc">Price (Lowest First)</option>
+						<option value="price_desc">Price (Highest First)</option>
+						<!-- Scope for AJAX use here? Or is there a simpler way? -->
+					</select>
+					</span>
+					<span style="float:right;">
+						Showing TODO - TODO of TODO
+					</span>
+				</div>
+				<hr />
+				
+				{% if plants %}
+					{% for plnt in plants %}
+				<div class="adcontainer">
+					<img src="{{plnt.picture.url}}" />
+					<span class="detail1">
+						<p class="title">
+							<a href="{% url 'treebay:show_plant' plnt.slug plnt.id %}">{{plnt.name}}</a>
+						</p>
+						<p class="loc">{{plnt.location}}</p>
+						<p class="interest">&#9734;&nbsp;-&nbsp;TODO(view,annotate)</p>
+					</span>
+					<span class="detail2">
+						<span class="labelhot">&#128901;</span>&nbsp;-&nbsp;TODO
+					</span>
+					<span class="detail3">
+						<p class="price">£{{plnt.price}}</p>
+						<p class="poster">
+							<a href="TODO{#{% url 'dashboard' %}plnt.owner.slug%}#}">{{plnt.owner}}</a>
+						</p>
+					</span>
+				</div>
+					{% endfor %}
+				{% else %}
+				<center><strong>No plants listed in this category</strong></center>
+				{% endif %}
+				<hr />
+				
+				<div id="catpagenav">
+					<a href="">&lt; Prev</a>
+					<p>TODO - TODO of TODO  ~  <a class="scrollback" href=":)">Back to Top</a></p>
+					<a href="" style="float:right;">Next &gt;</a>
+				</div>
+				<hr />	
+				{% endif %}
+			</div>
+{% endblock %}
