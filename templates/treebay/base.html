@@ -19,13 +19,13 @@
 			<span id="headerleft">
 				<p>
 					{% block nav_home %}
-                    <a href="/">Home</a> //
+                    <a href="{% url 'treebay:index' %}">Home</a> //
 					{% endblock %}
 					{% block nav_about %}
-					<a href="/about/">About</a> //
+					<a href="{% url 'treebay:about' %}">About</a> //
 					{% endblock %}
 					{% block nav_dash %}
-					<a href="/login/">MyTreeBay</a>
+                        <a href="{% url 'treebay:dashboard' %}">MyTreeBay</a>
 					{% endblock %}
 				</p>
 			</span>
@@ -37,7 +37,7 @@
 			<span id="headerright">
 				<p>
 					{% if user.is_authenticated %}
-					Hi {{user.username}}! <a href="">MyTreeBay</a>
+					Hi, {{user.username}}!    <a href="{% url 'treebay:logout' %}">LOGOUT</a>
 					{% else %}
 					<a href="">LOGIN&nbsp;&amp;&nbsp;REGISTER</a>
 					{% endif %}

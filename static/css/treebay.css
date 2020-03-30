@@ -220,6 +220,23 @@ div.tagholder > span {
 	margin: 20px 0px 0px 0px;
 }
 
+/*About*/
+
+.aboutcontainer{
+	padding: 30px;
+}
+
+img.aboutlogo{
+	height:250px;
+	width:250px;
+	float:left;
+	padding-right: 50px;
+}
+
+.abouttext{
+	overflow: hidden;
+	font-size: 16pt;
+}
 
 /*Logins*/
 
