@@ -1,0 +1,126 @@
+{% extends 'treebay/base.html' %}
+{% load staticfiles %}
+
+{% block scripting %}
+		<script>
+			$(document).ready( function(){
+				$("div.slidecontainer span.pan").click( function(){
+					var container = $(this).parent("div.slidecontainer");
+					var kids = container.children("div");
+					var firstchild = kids.first();
+					var fullmv = firstchild.outerWidth();
+					
+					var vp_left = 0;
+					var vp_right = vp_left + container.outerWidth();
+					
+					var first_L_pos = firstchild.position().left;
+					var	last_R_pos = (fullmv * kids.length) + first_L_pos;
+					
+					var scrollleft = $(this).attr("class") == "pan panLeft";
+					var mv = 0;
+					
+					//alert("LEFT? "+scrollleft+" | vp "+vp_left + " < " + vp_right + " | sp " + first_L_pos + " < " + last_R_pos + " | nk " + nkids );
+					
+					if(scrollleft){
+						if( vp_left <= first_L_pos ){
+							//We are at left end, do nothing
+							mv = 0;
+						} else if( vp_left <= (first_L_pos + fullmv) ){
+							//We are within one width of the left end
+							mv = vp_left - first_L_pos;
+						} else {
+							mv = fullmv;
+						}
+					} else {
+						if( last_R_pos <= vp_right ){
+							//We at right end, do nothing
+							mv = 0;
+						} else if( (last_R_pos - fullmv) <= vp_right ){
+							//We are within a width... add 5 margin
+							mv = last_R_pos - vp_right + 5;
+						} else {
+							mv = fullmv;
+						}
+						mv *= -1;
+					}
+					
+					var new_p = first_L_pos + mv;
+					
+					kids.animate({left:new_p+"px"},"slow");					
+				});
+			});
+		</script>
+{% endblock %}
+
+
+{% block nav_home %}
+					<strong>Home</strong> // 
+{% endblock %}
+
+
+{% block main_body %}
+			<span id="mainbanner">
+				<img src="{% static 'img/svg/treebay_logo_short.svg' %}" />
+				<h1>TreeBay - Find a new home for your plants today!</h1>
+			</span>
+				<div class="relcontainer">
+				{# The comment gaps are specific and necessary for inlineblock adjacency #}
+				<h3>Latest</h3>
+				<div class="slidecontainer" ><!--
+					{% for plnt in plant_date %}
+					--><div>
+						<img src="{{plnt.picture.url}}"/>
+						<p>{{plnt.name}}<br />{{plnt.location}}</p>
+					</div><!--
+					{% endfor %}
+					-->
+					<span class="pan panLeft">
+						<img src="{% static 'img/svg/chevron_left-24px.svg' %}" />
+					</span>
+					<span class="pan panRight">
+						<img class="right" src="{% static 'img/svg/chevron_right-24px.svg' %}" />
+					</span>
+				</div>
+
+				<h3>Most starred</h3>
+				<div class="slidecontainer" ><!--
+					{% for plnt in plant_interest %}
+					--><div>
+						<img src="{{plnt.picture.url}}"/>
+						<p>{{plnt.name}}<br />{{plnt.location}}</p>
+					</div><!--
+					{% endfor %}
+					-->
+					<span class="pan panLeft">
+						<img src="{% static 'img/svg/chevron_left-24px.svg' %}" />
+					</span>
+					<span class="pan panRight">
+						<img class="right" src="{% static 'img/svg/chevron_right-24px.svg' %}" />
+					</span>
+				</div>
+				
+				
+				<h3>Most viewed</h3>
+				<div class="slidecontainer" ><!--
+					{% for plnt in plant_views %}
+					--><div>
+						<img src="{{plnt.picture.url}}"/>
+						<p>{{plnt.name}}<br />{{plnt.location}}</p>
+					</div><!--
+					{% endfor %}
+					-->
+					<span class="pan panLeft">
+						<img src="{% static 'img/svg/chevron_left-24px.svg' %}" />
+					</span>
+					<span class="pan panRight">
+						<img class="right" src="{% static 'img/svg/chevron_right-24px.svg' %}" />
+					</span>
+				</div>
+
+				<div id="sidebar" class="tagholder">
+				{% for tag in categories %}
+					<span>#{{tag.name}}</span>
+				{% endfor %}
+				</div>
+			</div>
+{% endblock %}

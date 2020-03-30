@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+	<head>
+		<title>
+			TreeBay
+			{% block title_block %}
+			{% endblock %}
+		</title>
+		<script type = "text/javascript" src = "{% static 'js/jquery-3.4.1.js' %}"></script>		
+		<link rel="stylesheet" type="text/css" href="{% static 'css/treebay.css' %}">
+		{% block scripting %}
+		{% endblock %}
+	</head>
+	<body>
+		<div class="header">
+			<span id="headerleft">
+				<p>
+					{% block nav_home %}
+                    <a href="/">Home</a> //
+					{% endblock %}
+					{% block nav_about %}
+					<a href="/about/">About</a> //
+					{% endblock %}
+					{% block nav_dash %}
+					<a href="/login/">MyTreeBay</a>
+					{% endblock %}
+				</p>
+			</span>
+			<span id="headercentre" >
+				<h1>
+					TreeBay
+				</h1>
+			</span>
+			<span id="headerright">
+				<p>
+					{% if user.is_authenticated %}
+					Hi {{user.username}}! <a href="">MyTreeBay</a>
+					{% else %}
+					<a href="">LOGIN&nbsp;&amp;&nbsp;REGISTER</a>
+					{% endif %}
+				</p>
+			</span>
+		</div>
+		
+		{% block no-main %}
+		<div id="main" >
+			{% block main_body %}
+			{% endblock %}
+			<div id="footer">
+				<hr />
+				<p>Powered by Django</p>
+			</div>
+		</div>
+		{% endblock %}
+	
+	</body>
+</html>
