@@ -1,5 +1,12 @@
-- Delete account link and jQuery confirm popup 					: dashboard
-- Check for rendering glitches in browser dimention scaling 	: all
+- Delete account action and jQuery confirm popup 				: dashboard
+- Check for rendering glitches in browser dimention scaling 	: general
 - Tag jQuery onclick redirect or <a> 							: index, category
 - Define hot boundary for adverts								: category
 - Count stars and pass											: category
+- Change dashboard/ url to user/								: view-plant, category
+- Dashboard to show a category style list if accessed by any	: dashboard
+	other user, and normal dashboard if by self
+- Can we 404 on a bad object lookup?							: general
+- Remove xor implement plant condition field					: view-plant
+- Add views, maybe star count to template						: view-plant
+- Pass isStarred to template									: view-plant

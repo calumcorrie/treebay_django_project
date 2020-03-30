@@ -1,24 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<a href="{% url 'treebay:star' plant.id %}"> Add to my starred plants</a>
+{% extends 'treebay/base.html' %}
+{% load staticfiles %}
+
 {% if plant %}
-     <h1>{{ plant.name }}</h1>
-     <h1>{{ plant.location }}</h1>
-     <h1>{{ plant.description }}</h1>
-    <h1>Views: {{ plant.views }}</h1>
-    <h1>Uploaded by: {{ plant.owner.user.username }}</h1>
-    <h1> Categories</h1>
-     {% for cat in cats %}
-        <h3>{{ cat.name }}</h3>
-    {% endfor %}
-{% else %}
-    <h1>Plant does not exist</h1>
+	{% block title_block %}
+		 - {{ plant.name }}
+	{% endblock %}
 {% endif %}
 
-</body>
-</html>
+		
+{% block main_body %}
+			<div id="plantmain">
+				<p class="mininav">
+					<a href="{% url 'index' %}">Home</a> &gt; 
+					<strong>{{plant.name}}</strong>
+				</p>
+				
+				<div>
+					<div class="leftsect">
+						<img src="{{ plant.picture.url }}" />
+						<div class="largebutton">
+							<a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
+						</div>
+						<div id="plantseller">
+							<img src="{{ plant.owner.picture.url }}">
+							<p>{{ plant.owner.user.username }}</p>
+							<p>Member Since {{ plant.owner.date_joined }}</p>
+							<a href="TODO">View Profile</a>
+						</div>
+					</div>
+					<p id="plstar">&#9734;</p>
+					<h2>{{ plant.name }}</h2>
+					<p id="plloc">{{ plant.location }}</p>
+					<p id="plprice">£{{ plant.price }}</p>
+					<p id="plstrap">(See TODO) Plant in need of care</p>
+					<p id="pldesc">{{ plant.description }}</p>
+					<div id="pltags" class="tagholder">
+						{% for tag in cats %}
+						<span>#{{ tag.name }}</span>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+{% endblock %}

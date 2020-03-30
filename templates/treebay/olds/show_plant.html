@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="{% url 'treebay:star' plant.id %}"> Add to my starred plants</a>
+{% if plant %}
+     <h1>{{ plant.name }}</h1>
+     <h1>{{ plant.location }}</h1>
+     <h1>{{ plant.description }}</h1>
+    <h1>Views: {{ plant.views }}</h1>
+    <h1>Uploaded by: {{ plant.owner.user.username }}</h1>
+    <h1> Categories</h1>
+     {% for cat in cats %}
+        <h3>{{ cat.name }}</h3>
+    {% endfor %}
+{% else %}
+    <h1>Plant does not exist</h1>
+{% endif %}
+
+</body>
+</html>

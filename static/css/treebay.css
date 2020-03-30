@@ -571,6 +571,7 @@ div.leftsect > img {
 
 #plantseller > img {
 	height:110px;
+	/*width:110px;*/
 	float:left;
 	/*! padding: 10px 20px 10px 10px; */
 	margin-right: 20px;
