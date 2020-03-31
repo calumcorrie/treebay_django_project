@@ -10,35 +10,43 @@
 		
 {% block main_body %}
 			<div id="plantmain">
-				<p class="mininav">
-					<a href="{% url 'index' %}">Home</a> &gt; 
-					<strong>{{plant.name}}</strong>
-				</p>
-				
-				<div>
-					<div class="leftsect">
-						<img src="{{ plant.picture.url }}" />
-						<div class="largebutton">
-							<a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
-						</div>
-						<div id="plantseller">
-							<img src="{{ plant.owner.picture.url }}">
-							<p>{{ plant.owner.user.username }}</p>
-							<p>Member Since {{ plant.owner.date_joined }}</p>
-							<a href="TODO">View Profile</a>
-						</div>
-					</div>
-					<p id="plstar">&#9734;</p>
-					<h2>{{ plant.name }}</h2>
-					<p id="plloc">{{ plant.location }}</p>
-					<p id="plprice">£{{ plant.price }}</p>
-					<p id="plstrap">(See TODO) Plant in need of care</p>
-					<p id="pldesc">{{ plant.description }}</p>
-					<div id="pltags" class="tagholder">
-						{% for tag in cats %}
-						<span>#{{ tag.name }}</span>
-						{% endfor %}
-					</div>
-				</div>
-			</div>
+                <div class="leftsect">
+                    <img src="{{ plant.picture.url }}" />
+                    <div class="largebutton">
+                        <a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
+                    </div>
+                    <div id="plantseller">
+                        <img src="{{ plant.owner.picture.url }}">
+                        <p>{{ plant.owner.user.username }}</p>
+                        <p>Member since: {{ plant.owner.user.date_joined.date }}</p>
+                        {% if plant.owner.user_id == user.id %}
+                            <a href="{% url 'treebay:dashboard' %}">View Profile</a>
+                        {% else %}
+                            <a href="TODO">View Profile</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if isStarred %}
+                    <p class="starred" id="plstar">&#9734;</p>
+                {% else %}
+                    <p id="plstar">&#9734;</p>
+                {% endif %}
+
+                <h1>{{ plant.name }}</h1><br />
+                <p id="plloc">{{ plant.location }}</p>
+                <p id="plprice">£{{ plant.price }}</p><br />
+
+                <p id="pldesc"><strong>Description:</strong><br />{{ plant.description }}</p>
+                <br /><br />
+
+                <p id="plviews"><strong>Views: </strong>{{ plant.views }}</p>
+                <div id="pltags" class="tagholder">
+                    <strong>Categories:</strong><br />
+                    {% for cat in cats %}
+                        <span onclick="window.location.href = '{% url 'treebay:show_category' cat.slug %}';">
+                        #{{cat.name}}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
 {% endblock %}

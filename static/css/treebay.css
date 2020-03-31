@@ -204,6 +204,7 @@ div.tagholder > span {
 	border-radius:8px;
 	padding:2px 5px;
 	cursor: pointer;
+	margin: 2px;
 }
 
 
@@ -600,18 +601,15 @@ input.dashaccinp{
 }
 
 #plantmain {
-	margin: 20px 30px;
+	margin: 30px;
 	overflow: auto;
-}
-
-#plantmain > p.mininav {
-	margin-bottom: 15px;
+	font-size: 15pt;
 }
 
 div.leftsect {
 	width: 39.3%;
 	float: left;
-	margin-right: 35px;
+	margin-right: 60px;
 }
 
 div.leftsect > img {
@@ -619,6 +617,7 @@ div.leftsect > img {
 }
 
 #plantseller {
+	font-size:13pt;
 	border: 3px black solid;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -663,6 +662,10 @@ div.leftsect > img {
 	font-size: xxx-large;
 	margin: 0;
 	cursor: pointer;
+}
+
+p#plstar.starred  {
+	color: gold;
 }
 
 #plstar:hover{

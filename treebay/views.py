@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db.models import Count
 from django.urls import reverse
-from treebay.models import Category, Plant
+from treebay.models import Category, Plant, UserProfile
 from treebay.forms import PlantForm, RegisterForm
 from datetime import datetime
 from django.contrib import messages
@@ -85,6 +85,15 @@ def show_plant(request, plant_slug, plant_id):
         visitor_cookie_handler(request)
         # Update view count of the ad
         plant.views = request.session['visits']
+        # Set isStarred to False by default
+        context_dict['isStarred'] = False
+        # Get the current user browsing the plant
+        current_user = request.user.profile
+        # Get all users who starred the plant
+        user_stars_list = UserProfile.objects.filter(starred=plant)
+        # If current user is in those who starred the plant, set isStarred to True
+        if current_user in user_stars_list:
+            context_dict['isStarred'] = True
 
     except Plant.DoesNotExist:
         # If we get here plant does not exist

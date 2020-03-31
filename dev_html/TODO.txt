@@ -1,20 +1,13 @@
 - Delete account action and jQuery confirm popup 				: dashboard
 - Check for rendering glitches in browser dimension scaling 	: general
-- Tag jQuery onclick redirect or <a> 							: index, category
 - Define hot boundary for adverts								: category
 - Count stars and pass											: category
 - Change dashboard/ url to user/								: view-plant, category
 - Dashboard to show a category style list if accessed by any	: dashboard
 	other user, and normal dashboard if by self
 - Can we 404 on a bad object lookup?							: general
-- Remove xor implement plant condition field					: view-plant
-- Add views, maybe star count to template						: view-plant
-- Pass isStarred to template									: view-plant
-- Add default profile pic when user omits it                    : UserProfile model
-- Add default plant pic                                         : Plant model
-( NB - not a good idea to save every default pic in the media
-folder because we've have many identical photos wasting space,
-needs a workaround)
+- Add default profile pic when user omits it                    : dashboard + user profile page + plant page
+- Add default plant pic                                         : everywhere except for login page
 - Extract all inline onclick events to script                   : index
 
 
