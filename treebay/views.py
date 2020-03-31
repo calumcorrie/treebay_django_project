@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db.models import Count
 from django.urls import reverse
+from django.contrib.auth.models import AnonymousUser
 from treebay.models import Category, Plant, UserProfile
 from treebay.forms import PlantForm, RegisterForm
 from datetime import datetime
@@ -85,15 +85,18 @@ def show_plant(request, plant_slug, plant_id):
         visitor_cookie_handler(request)
         # Update view count of the ad
         plant.views = request.session['visits']
+
         # Set isStarred to False by default
         context_dict['isStarred'] = False
-        # Get the current user browsing the plant
-        current_user = request.user.profile
-        # Get all users who starred the plant
-        user_stars_list = UserProfile.objects.filter(starred=plant)
-        # If current user is in those who starred the plant, set isStarred to True
-        if current_user in user_stars_list:
-            context_dict['isStarred'] = True
+        # If user is logged in
+        if not isinstance(request.user, AnonymousUser):
+            # Get the current user profile browsing the plant
+            current_user = request.user.profile
+            # Get all users who starred the plant
+            user_stars_list = UserProfile.objects.filter(starred=plant)
+            # If current user is in those who starred the plant, set isStarred to True
+            if current_user in user_stars_list:
+                context_dict['isStarred'] = True
 
     except Plant.DoesNotExist:
         # If we get here plant does not exist
@@ -115,7 +118,7 @@ def show_category(request, category_name_slug):
         category = Category.objects.get(slug=category_name_slug)
         # Retrieve all of the associated plants.
         # The filter() will return a list of plant objects or an empty list.
-        plants = Plant.objects.filter(categories=category)
+        plants = Plant.objects.filter(categories=category).annotate(stars=Count('starred'))
         # Adds our results list to the template context under name plants.
         context_dict['plants'] = plants
         # We also add the category object from the database to the context dictionary.

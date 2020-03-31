@@ -53,23 +53,32 @@
 				
 				{% if plants %}
 					{% for plnt in plants %}
-				<div class="adcontainer">
+				<div class="adcontainer" onclick="window.location.href = '{% url 'treebay:show_plant' plnt.slug plnt.id %}';">
 					<img src="{{plnt.picture.url}}" />
 					<span class="detail1">
 						<p class="title">
-							<a href="{% url 'treebay:show_plant' plnt.slug plnt.id %}">{{plnt.name}}</a>
+                            {{plnt.name}}
 						</p>
 						<p class="loc">{{plnt.location}}</p>
-						<p class="interest">&#9734;&nbsp;-&nbsp;TODO(view,annotate)</p>
+						<p class="interest">{{ plnt.stars }}&nbsp&#9734;</p>
 					</span>
 					<span class="detail2">
-						<span class="labelhot">&#128901;</span>&nbsp;-&nbsp;TODO
+                        {% if plnt.stars > 2 %}
+						<span class="labelhot">&#128901;</span>
+                        {% endif %}
 					</span>
 					<span class="detail3">
 						<p class="price">£{{plnt.price}}</p>
-						<p class="poster">
-							<a href="TODO{#{% url 'dashboard' %}plnt.owner.slug%}#}">{{plnt.owner}}</a>
-						</p>
+						<p class="owner">
+                            Posted:
+                            {{ plnt.uploadDate.date }}
+                            by
+							{% if plnt.owner.user_id == user.id %}
+                            <a href="{% url 'treebay:dashboard' %}">{{ plnt.owner }}</a>
+                            {% else %}
+                                <a href="TODO">{{ plnt.owner }}</a>
+                            {% endif %}
+                            </p>
 					</span>
 				</div>
 					{% endfor %}

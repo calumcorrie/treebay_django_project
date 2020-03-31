@@ -75,7 +75,7 @@ def add_user(username, email, password):
 def add_user_profile(user):
     user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
     user_profile.picture.save(user_profile.user.username + str(user_profile.id) + ".jpg",
-                              File(open('./static/images/profile_pictures/' + user_profile.user.username + '.jpg', 'rb')))
+                              File(open('./static/img/profile_pictures/' + user_profile.user.username + '.jpg', 'rb')))
     user_profile.save()
     return user_profile
 
@@ -90,7 +90,7 @@ def add_plant(owner, name, description, location, categories, views, price=0.0):
     p = Plant.objects.get_or_create(owner=owner, name=name, description=description, price=price, location=location, views=views)[0]
     p.categories.add(*Category.objects.filter(name__in=categories))
     p.picture.save(p.slug + str(p.id) + ".jpg",
-                              File(open('./static/images/plants/' + p.slug + '.jpg', 'rb')))
+                              File(open('./static/img/plants/' + p.slug + '.jpg', 'rb')))
     p.save()
     return p
 

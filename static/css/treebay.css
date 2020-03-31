@@ -78,6 +78,7 @@ div.header #headerright {
 	left: 100%;
 	transform: translate(-100%,-50%);
 	top: 50%;
+	white-space: nowrap;
 }
 
 div.header #headerright p {
@@ -345,7 +346,7 @@ div.halfloginframe .tooltip:hover .tooltiptext {
 	margin: 25px auto 40px auto;
 	width: 75%;
 	text-align: center;
-	font-size: 1.05em;
+	font-size: 1.3em;
 }
 
 #sortheader {
@@ -353,8 +354,8 @@ div.halfloginframe .tooltip:hover .tooltiptext {
 }
 
 div.adcontainer{
-	margin:20px 0px;
-	padding:10px 15px;
+	margin:20px;
+	padding:15px 35px 15px 35px;
 	overflow: auto;
 	position: relative;
 	background-color: rgba(255,255,255,0.4);
@@ -376,12 +377,12 @@ div.adcontainer span.detail1 {
 
 div.adcontainer span.detail1 p.title {
 	margin:0px;
-	font-size: 1.3em
+	font-size: 1.5em
 }
 
 div.adcontainer span.detail1 p.loc {
 	margin: 3px 0px 0px 0px;
-	font-size:0.85em
+	font-size:1.1em
 }
 
 div.adcontainer span.detail1 p.interest {
@@ -389,6 +390,7 @@ div.adcontainer span.detail1 p.interest {
 	position: absolute;
 	top:100%;
 	transform: translateY(-110%);
+	font-size:1.1em
 }
 
 div.adcontainer span.detail2 {
@@ -408,16 +410,17 @@ div.adcontainer span.detail3 {
 div.adcontainer p.price {
 	margin: 0px;
 	text-align: right;
-	font-size: 1.27em;
+	font-size: 1.4em;
 }
 
-div.adcontainer p.poster {
+div.adcontainer p.owner {
 	position:absolute;
 	top:100%;
 	left: 100%;
 	transform: translate(-100%,-100%);
 	margin: 0px;
-	font-size: 0.85em;
+	font-size: 1.1em;
+	white-space: nowrap;
 }
 
 #innerwrapper {
