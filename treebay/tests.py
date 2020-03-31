@@ -1,11 +1,12 @@
 import os
 from django.test import TestCase
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.conf import settings
 from treebay.models import UserProfile
 from treebay.models import User
 from treebay.models import Category
 from treebay.models import Plant
+from django.core.files import File
 
 
 class ProjectStructureTests(TestCase):
@@ -59,14 +60,19 @@ class ProjectStructureTests(TestCase):
         Tests whether the static directory exists in the correct location.
         """
         does_static_dir_exist = os.path.isdir(self.static_dir)
-        does_images_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'images'))
-        does_profile_pictures_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'images/profile_pictures'))
-        does_plants_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'images/plants'))
+        does_img_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'img'))
+        does_profile_pictures_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'img/profile_pictures'))
+        does_plants_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'img/plants'))
+        does_www_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'img/www'))
+        does_svg_static_dir_exist = os.path.isdir(os.path.join(self.static_dir, 'img/svg'))
 
         self.assertTrue(does_static_dir_exist, "The static directory was not found in the expected location.")
-        self.assertTrue(does_images_static_dir_exist, "The images subdirectory was not found in static directory.")
+        self.assertTrue(does_img_static_dir_exist, "The images subdirectory was not found in static directory.")
         self.assertTrue(does_profile_pictures_static_dir_exist, "The profile_pictures subdirectory was not found in "
-                                                                "static/images directory.")
+                                                                "static/img directory.")
+        self.assertTrue(does_plants_static_dir_exist, "The plants subdirectory was not found in static/img directory.")
+        self.assertTrue(does_www_static_dir_exist, "The www subdirectory was not found in static/img directory.")
+        self.assertTrue(does_svg_static_dir_exist, "The svg subdirectory was not found in static/img directory.")
 
     def test_static_configuration(self):
         """
@@ -91,6 +97,7 @@ class DatabaseConfigurationTests(TestCase):
     Test whether the database is configured in correct way,
     """
 
+    @classmethod
     def does_gitignore_include_database(self, path):
         """
         Takes the path to a .gitignore file, and checks to see whether the db.sqlite3 database is present in that file.
@@ -113,7 +120,6 @@ class DatabaseConfigurationTests(TestCase):
         self.assertTrue(settings.DATABASES, "Settings module does not have a DATABASES variable.")
 
 
-
 class CategoryTests(TestCase):
 
     def setUp(self):
@@ -128,28 +134,13 @@ class CategoryTests(TestCase):
         self.assertEquals(category.slug, "aloe-vera")
 
 
-# class IndexViewTests(TestCase):
-#     def test_index_with_no_categories(self):
-#         """
-#         If no categories exists, the appropriate message should be displayed.
-#         """
-#
-#         response = self.client.get(reverse('treebay:dashboard'))
-#
-#         self.assertEqual(response.status_code, 200)
-#         self.assertContains(response, 'There are no categories present.')
-#         self.assertQuerysetEqual(response.context['categories'], [])
-
-
 class PlantTests(TestCase):
     def test_slug_line_creation(self):
         """
         Check that when a plant is created, an appropriate slug is created
         """
-        user = User(username="test")
-        user.save()
-        user_profile = UserProfile(user_id=user.id)
-        user_profile.save()
+        user = User.objects.get_or_create(username="alice")[0]
+        user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
         plant = Plant(owner=user_profile, name="Very beautiful plant")
         plant.save()
 
@@ -236,3 +227,89 @@ class PopulationScriptTests(TestCase):
 
         self.assertTrue(users_len > 0, "Expecting more than 0 users after running populating script.")
         self.assertTrue('alice' in users_strs, "User 'alice' was expected but it was not created")
+
+
+class FormTests(TestCase):
+    """
+    Checks URL mappings and server output.
+    """
+
+    def test_about_link_in_index_page(self):
+        """
+        Checks if there is a link to about page at the index page.
+        """
+        response = self.client.get(reverse('treebay:index'))
+        content = response.content.decode()
+
+        self.assertTrue('<a href="/treebay/about/">About</a>' in content)
+
+    def test_dashboard_link_in_index_page(self):
+        """
+        Checks if there is a link to dashboard at the index page.
+        """
+        response = self.client.get(reverse('treebay:index'))
+        content = response.content.decode()
+
+        self.assertTrue('<a href="/treebay/dashboard/">MyTreeBay</a>' in content)
+
+
+class ViewExistsTests(TestCase):
+    """
+    Validate the behaviour by views.
+    """
+    def setUp(self):
+        user = User.objects.create_superuser('testAdmin', 'email@email.com', 'adminPassword123')
+        self.client.login(username='testAdmin', password='adminPassword123')
+
+    def test_index_url_exists(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_treebay_url_exists(self):
+        response = self.client.get('/treebay/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_url_exists(self):
+        response = self.client.get('/treebay/login/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_about_url_exists(self):
+        response = self.client.get('/treebay/about/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_show_user_uses_correct_template(self):
+        response = self.client.get(reverse('treebay:show_category', kwargs={'category_name_slug': 'houseplants'}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/category.html')
+
+    # TODO change dashboard to show_user after it is matched
+    def test_show_category_user_correct_template(self):
+        response = self.client.get(reverse('treebay:show_user', kwargs={'user_username': 'testAdmin'}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/dashboard.html')
+
+    def test_add_plant_uses_correct_template(self):
+        response = self.client.get(reverse('treebay:add_plant'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/add_plant.html')
+
+    def test_show_plant_uses_correct_template(self):
+        user = User.objects.get_or_create(username="alice")[0]
+        user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
+        user_profile.picture.save(user_profile.user.username + str(user_profile.id) + ".jpg",
+                                  File(open('./static/img/profile_pictures/alice.jpg',
+                                            'rb')))
+        user_profile.save()
+        plant = Plant(owner=user_profile, name="Test Plant")
+        plant.picture.save(plant.slug + str(plant.id) + ".jpg",
+                       File(open('./static/img/plants/ficus.jpg', 'rb')))
+        plant.save()
+        response = self.client.get(reverse('treebay:show_plant', kwargs={'plant_slug': 'houseplants', 'plant_id': plant.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/show_plant.html')
+
+    def test_admin_url_is_not_accessible_for_non_superusers(self):
+        self.client.logout()
+        response = self.client.get('/admin/')
+        self.assertEqual(response.status_code, 302)
+
