@@ -119,9 +119,7 @@
 
 				<div id="sidebar" class="tagholder">
 				{% for cat in categories %}
-					<span onclick="window.location.href = '{% url 'treebay:show_category' cat.slug %}';">
-                        #{{cat.name}}
-                    </span>
+					<span onclick="window.location.href = '{% url 'treebay:show_category' cat.slug %}';">#{{cat.name}}</span>
 				{% endfor %}
 				</div>
 			</div>

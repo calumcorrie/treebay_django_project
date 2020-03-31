@@ -11,6 +11,9 @@ urlpatterns = [
     path('add_plant/', views.add_plant, name='add_plant'),
     path('login/', views.login_or_register, name='login'),
     path('logout/', views.user_logout, name='logout'),
+	## Intend to remove dashboard/ url (NOT VIEW) in favour of user/ ## 
     path('dashboard/', views.dashboard, name='dashboard'),
     path('star/<int:plant_id>/', views.star_plant, name='star'),
+	path('user/<slug:user_username>/', views.show_user, name='show_user'),
+	path('user/', views.show_user, name='show_self'),
 ]

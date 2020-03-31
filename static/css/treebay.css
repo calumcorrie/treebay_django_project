@@ -141,6 +141,10 @@ div.slidecontainer > div {
 	overflow: hidden;
 }
 
+div.slidecontainer > div * {
+	cursor: pointer;
+}
+
 div.slidecontainer > div > img {
 	height:100px;
 	width:100px;
@@ -360,6 +364,7 @@ div.adcontainer{
 	position: relative;
 	background-color: rgba(255,255,255,0.4);
 	border-radius: 20px;
+	cursor: pointer;
 }
 
 div.adcontainer img{
@@ -739,4 +744,28 @@ div.valid > p:nth-of-type(2){
 	width: -moz-available;
 	width: -webkit-fill-available;
 	width: fill-available;
+}
+
+
+/* Show user */
+#sellerinfo {
+	overflow: auto;
+	width: 50%;
+	margin: 0px auto;
+}
+
+#sellerinfo > img {
+	height: 170px;
+	width: 170px;
+	float: left;
+	margin: 20px 40px 10px 0px;
+	border-radius: 50%;
+}
+
+#sellerinfo > h2, #sellerinfo > p{
+	margin: 0px;
+}
+
+#sellerinfo > h2 {
+	margin-top: 17%;
 }

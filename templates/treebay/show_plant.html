@@ -22,7 +22,7 @@
                         {% if plant.owner.user_id == user.id %}
                             <a href="{% url 'treebay:dashboard' %}">View Profile</a>
                         {% else %}
-                            <a href="TODO">View Profile</a>
+                            <a href="{% url 'treebay:show_user' plant.owner.user.username %}">View Profile</a>
                         {% endif %}
                     </div>
                 </div>
@@ -43,9 +43,7 @@
                 <div id="pltags" class="tagholder">
                     <strong>Categories:</strong><br />
                     {% for cat in cats %}
-                        <span onclick="window.location.href = '{% url 'treebay:show_category' cat.slug %}';">
-                        #{{cat.name}}
-                        </span>
+                        <span onclick="window.location.href = '{% url 'treebay:show_category' cat.slug %}';">#{{cat.name}}</span>
                     {% endfor %}
                 </div>
             </div>

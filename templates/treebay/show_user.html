@@ -1,0 +1,24 @@
+{% extends 'treebay/listic.html' %}
+{% load staticfiles %}
+
+{% if seller %}
+	{% block title_block %}
+		 - {{ seller }}
+	{% endblock %}
+{% endif %}
+
+
+{% block listhead %}
+				{% if seller %}
+					<div id="sellerinfo">
+						<img src="{{ seller.picture.url }}" />
+						<h2>{{ seller }}</h2>
+						<p>Member since<br/>{{ seller.user.date_joined.date }}</p>
+					</div>
+				{% else %}
+					<h2>No such user</h2>
+				{% endif %}
+{% endblock %}
+
+{% block showowner %}
+{% endblock %}

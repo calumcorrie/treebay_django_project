@@ -149,6 +149,28 @@ def dashboard(request):
     context_dict['starred'] = current_user.starred.all()
 
     return render(request, 'treebay/dashboard.html', context=context_dict)
+    
+
+def show_user(request, user_username=None):
+    if user_username == None :
+        if request.user.is_authenticated:
+            return dashboard(request)
+
+        return redirect(reverse('treebay:login'))
+
+    context_dict = {}
+    try:
+        seller = UserProfile.objects.get(user__username=user_username)
+        if seller.user.id == request.user.id:
+            return dashboard(request)
+        context_dict['seller'] = seller
+        context_dict['plants'] = Plant.objects.all().filter(owner=seller).annotate(stars=Count('starred'))
+    except (UserProfile.DoesNotExist, Plant.DoesNotExist):
+        context_dict['seller'] = None
+        context_dict['plants'] = None
+        
+    return render( request, 'treebay/show_user.html', context=context_dict )
+    
 
 
 # View for adding a plant
