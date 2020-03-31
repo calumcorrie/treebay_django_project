@@ -1,5 +1,5 @@
 - Delete account action and jQuery confirm popup 				: dashboard
-- Check for rendering glitches in browser dimention scaling 	: general
+- Check for rendering glitches in browser dimension scaling 	: general
 - Tag jQuery onclick redirect or <a> 							: index, category
 - Define hot boundary for adverts								: category
 - Count stars and pass											: category
@@ -10,3 +10,19 @@
 - Remove xor implement plant condition field					: view-plant
 - Add views, maybe star count to template						: view-plant
 - Pass isStarred to template									: view-plant
+- Add default profile pic when user omits it                    : UserProfile model
+- Add default plant pic                                         : Plant model
+( NB - not a good idea to save every default pic in the media
+folder because we've have many identical photos wasting space,
+needs a workaround)
+- Extract all inline onclick events to script                   : index
+
+
+/ * Submission related * /
+- Delete migration files from GitHub
+- Check if website corresponds to design specs presentation
+- Upload to PythonAnywhere
+- Extract requirements file
+- Delete dev_html before submission
+- Make README file
+- No inline styling

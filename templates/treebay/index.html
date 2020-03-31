@@ -46,7 +46,7 @@
 					
 					var new_p = first_L_pos + mv;
 					
-					kids.animate({left:new_p+"px"},"slow");					
+					kids.animate({left:new_p+"px"},"slow");
 				});
 			});
 		</script>
@@ -68,7 +68,7 @@
 				<h3>Latest</h3>
 				<div class="slidecontainer" ><!--
 					{% for plnt in plant_date %}
-					--><div>
+					--><div onclick="window.location.href = '{% url 'treebay:show_plant' plnt.slug plnt.id %}';">
 						<img src="{{plnt.picture.url}}"/>
 						<p>{{plnt.name}}<br />{{plnt.location}}</p>
 					</div><!--
@@ -85,7 +85,7 @@
 				<h3>Most starred</h3>
 				<div class="slidecontainer" ><!--
 					{% for plnt in plant_interest %}
-					--><div>
+					--><div onclick="window.location.href = '{% url 'treebay:show_plant' plnt.slug plnt.id %}';">
 						<img src="{{plnt.picture.url}}"/>
 						<p>{{plnt.name}}<br />{{plnt.location}}</p>
 					</div><!--
@@ -103,7 +103,7 @@
 				<h3>Most viewed</h3>
 				<div class="slidecontainer" ><!--
 					{% for plnt in plant_views %}
-					--><div>
+					--><div onclick="window.location.href = '{% url 'treebay:show_plant' plnt.slug plnt.id %}';">
 						<img src="{{plnt.picture.url}}"/>
 						<p>{{plnt.name}}<br />{{plnt.location}}</p>
 					</div><!--
@@ -118,8 +118,10 @@
 				</div>
 
 				<div id="sidebar" class="tagholder">
-				{% for tag in categories %}
-					<span>#{{tag.name}}</span>
+				{% for cat in categories %}
+					<span onclick="window.location.href = '{% url 'treebay:show_category' cat.slug %}';">
+                        #{{cat.name}}
+                    </span>
 				{% endfor %}
 				</div>
 			</div>

@@ -129,13 +129,10 @@ def show_category(request, category_name_slug):
 def dashboard(request):
     # Create a context dictionary
     context_dict = {}
-
     # Get current user profile
     current_user = request.user.profile
-    # Get that users plants
-    plants = Plant.objects.all().filter(owner=current_user)
-    # Add them to the context dictionary
-    context_dict['plants'] = plants
+    # Add the users plants to the context dictionary
+    context_dict['plants'] = Plant.objects.all().filter(owner=current_user)
     # add the users starred plants to dictionary
     context_dict['starred'] = current_user.starred.all()
 
