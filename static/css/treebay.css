@@ -232,7 +232,7 @@ div.tagholder > span {
 }
 
 #aboutcontainer > div > p {
-	font-size: 16pt;
+	font-size: 1.4em;
 }
 
 #aboutcontainer > img {
@@ -245,8 +245,8 @@ div.tagholder > span {
 /*Logins*/
 
 #loginframe {
-	height:400px;
-	width:600px;
+	height:450px;
+	width:850px;
 	position:relative;
 	background-color:powderblue;
 	margin: 7% auto;
@@ -255,11 +255,52 @@ div.tagholder > span {
 
 div.halfloginframe {
 	width:calc(50% - 3px);
-	background-color:pink;
+	background-color: #ffc596;
 	height:100%;
 	border-radius:0px 0px 0px 70px;
 	position: absolute;
 	top: 0px;
+	padding: 30px 0 0 20px;
+	box-sizing: border-box;
+}
+
+div.halfloginframe h1{
+	text-align: center;
+}
+
+div.halfloginframe .tooltip{
+	font-size: 13pt;
+}
+
+div.halfloginframe input{
+	font-size: 0.9em;
+}
+
+div.registerbutton{
+	text-align: center;
+	font-size: 16pt;
+}
+
+div.halfloginframe .tooltip .tooltiptext {
+	visibility: hidden;
+	width: 300px;
+	background-color: rgb(192, 216, 171);
+	color: #000000;
+	border-radius: 6px;
+	padding: 10px;
+	font-size: 13pt;
+
+	/* Position the tooltip */
+	position: absolute;
+	margin-left: 10px;
+	z-index: 1;
+}
+
+.required{
+	color: #e72100;
+}
+div.halfloginframe .tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
 #loginmiddiv {
@@ -274,6 +315,17 @@ div.halfloginframe {
 #signinhalf{
 	left: calc(50% + 3px);
 	border-radius: 0px 70px 0px 0px;
+	text-align: center;
+	padding: 60px 20px 0 0;
+	box-sizing: border-box;
+}
+
+#signinhalf form{
+	font-size: 16pt;
+}
+
+#signinhalf input{
+	font-size: 15pt;
 }
 
 /*Category*/

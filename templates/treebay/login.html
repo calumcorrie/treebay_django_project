@@ -1,35 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>login</title>
-    </head>
-    <body>
+{% extends 'treebay/base.html' %}
+{% load staticfiles %}
 
-    {% if messages %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-    {% endif %}
+{% block scripting %}
+    <script>
+        $("document").ready( function () {
+            {% if messages %}
+                {% for message in messages %}
+                    alert('{{ message }}');
+                {% endfor %}
+            {% endif %}
+        });
+</script>
+{% endblock %}
 
-        <h1>Login to Treebay</h1>
-        <form id="login_form" method="post" action="{% url 'treebay:login' %}">
-            {% csrf_token %}
-            Username: <input type="text" name="username" value=""/>
-            <br />
-            Password: <input type="password" name="password"/>
-            <br />
-            <input type="submit" name="submit" value="Log In" />
-        </form>
+{% block main_body %}
+        <div id="loginframe">
 
-        <h1>Register for Treebay</h1>
-        <strong>Register here!</strong><br />
-        <form id="user_form" method="post" action="{% url 'treebay:login' %}" enctype="multipart/form-data">
+			<div class="halfloginframe">
+                <h1>Don't have an account? Register here!</h1><br /><br />
+                <form id="user_form" method="post" action="{% url 'treebay:login' %}" enctype="multipart/form-data">
 
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <input type="submit" name="submit" value="Register" />
-        </form>
-    </body>
-</html>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <label class="tooltip" for="{{ field.auto_id }}">{{ field.label_tag }}
+                        {% if field.field.required %}
+                            <span class="required">*</span>
+                        {% endif %}
+                        {{ field.as_widget }}
+                        {% if field.help_text %}
+                            <span class="tooltiptext">{{ field.help_text }}</span>
+                        {% endif %}
+                        </label><br /><br />
+                    {% endfor %}
+                    <br /><br />
+                    <div class="registerbutton"><input type="submit" name="submit" value="Register" /></div>
+                </form>
+            </div>
+			<div id="loginmiddiv"></div>
+			<div class="halfloginframe" id="signinhalf">
+                <h1>Already a member? <br />Log in!</h1><br /><br />
+                <form id="login_form" method="post" action="{% url 'treebay:login' %}">
+                    {% csrf_token %}
+                    Username: <span class="required">*</span> <input type="text" name="username" value=""/>
+                    <br /><br />
+                    Password: <span class="required">*</span> <input type="password" name="password"/>
+                    <br /><br /><br />
+                    <input type="submit" name="submit" value="Log In" />
+                </form>
+            </div>
+		</div>
+{% endblock %}

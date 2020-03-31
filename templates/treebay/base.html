@@ -39,7 +39,7 @@
 					{% if user.is_authenticated %}
 					Hi, {{user.username}}!    <a href="{% url 'treebay:logout' %}">LOGOUT</a>
 					{% else %}
-					<a href="">LOGIN&nbsp;&amp;&nbsp;REGISTER</a>
+					<a href="{% url 'treebay:login' %}">LOGIN&nbsp;&amp;&nbsp;REGISTER</a>
 					{% endif %}
 				</p>
 			</span>
