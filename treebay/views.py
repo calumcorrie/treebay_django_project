@@ -11,6 +11,7 @@ from django.contrib.auth import update_session_auth_hash
 from datetime import datetime
 from django.contrib import messages
 from django.utils.safestring import mark_safe
+from django.core import serializers
 
 
 LISTIC_CHUNK = 5
@@ -76,6 +77,17 @@ def visitor_cookie_handler(request):
     request.session['visits'] = visits
 
 
+# Helper method to extract error messages from form
+def get_error_messages(form):
+    # Get all errors from the form
+    message_text = ''
+    for subject, list_of_errors in form.errors.as_data().items():
+        for error in list_of_errors:
+            for message in error.messages:
+                message_text += mark_safe(message)
+    return message_text
+
+
 # View for a single plant ad
 # Plant slug is not used in the function, but is needed for the url mapping
 def show_plant(request, plant_slug, plant_id):
@@ -136,7 +148,7 @@ def show_category(request, category_name_slug):
         # The filter() will return a list of plant objects or an empty list.
         
         plants = Plant.objects.filter(categories=category)
-        context_dict = listic( request, plants )
+        context_dict = listic(request, plants)
         context_dict['category'] = category
         
     # Render the response and return it to the client.
@@ -229,7 +241,8 @@ def dashboard(request):
     return render(request, 'treebay/dashboard.html', context=context_dict)
     
 
-def show_user(request, user_username=None):
+# View to show another user's profile
+def show_user(request, user_username=None, user_id=None):
     if user_username is None:
         if request.user.is_authenticated:
             return dashboard(request)
@@ -254,40 +267,43 @@ def show_user(request, user_username=None):
     
 
 # View for adding a plant
-# User must be logged in
 @login_required
-def add_plant(request):
-    form = PlantForm(request.user.profile)
-    if request.method == 'POST':
-        form = PlantForm(request.user, request.POST)
+def add_edit_plant(request, plant_slug=None, plant_id=None):
+    context_dict = {}
+    if plant_id is not None:
+        plant = Plant.objects.get(pk=plant_id)
+    else:
+        plant = Plant()
 
+    if request.method == 'POST':
+        form = PlantForm(request.POST, instance=plant)
         # Check if form is valid
         if form.is_valid():
-
             plant = form.save(commit=False)
-
-            # set owner to the current user uploading plant
-            # This now works
+            # Set owner to the current user uploading plant
             plant.owner = request.user.profile
-
             if 'picture' in request.FILES:
                 plant.picture = request.FILES['picture']
-
             plant.save()
             # Below line needed to save the m2m field category for the plant
             form.save_m2m()
-            # redirect to homepage for now, can also redirect to a success page or such like
-            return redirect('treebay:index')
+            return redirect('treebay:dashboard')
         else:
-            # print form error
-            print(form.errors)
-    else:
-        form = PlantForm(request.user)
+            message_text = get_error_messages(form)
+            messages.add_message(request, messages.ERROR, mark_safe('Errors: ' + message_text))
 
-    return render(request, 'treebay/add_plant.html', {'form': form})
+
+
+    else:
+        form = PlantForm(instance=plant)
+
+    context_dict['form'] = form
+    context_dict['plant'] = plant
+    return render(request, 'treebay/add_edit_plant.html', context=context_dict)
 
 
 # View for starring a plant
+@login_required
 def star_plant(request, plant_id):
 
     # Get the current User
@@ -349,11 +365,7 @@ def login_or_register(request):
             # Invalid registration form
             else:
                 # Get all errors from the form
-                message_text = ''
-                for subject, list_of_errors in form.errors.as_data().items():
-                    for error in list_of_errors:
-                        for message in error.messages:
-                            message_text += mark_safe(message)
+                message_text = get_error_messages(form)
                 messages.add_message(request, messages.ERROR, mark_safe('Registration failed. Errors: ' + message_text))
                 form = RegisterForm()
                 return render(request,
@@ -378,11 +390,7 @@ def edit_profile(request):
         # Invalid registration form
         else:
             # Get the errors from the form
-            message_text = ''
-            for subject, list_of_errors in form.errors.as_data().items():
-                for error in list_of_errors:
-                    for message in error.messages:
-                        message_text += mark_safe(message)
+            message_text = get_error_messages(form)
             messages.add_message(request, messages.ERROR, mark_safe('Editing profile failed. Errors: ' + message_text))
 
         return redirect(reverse('treebay:dashboard'))
@@ -404,11 +412,7 @@ def change_password(request):
 
         else:
             # Get the errors from the form
-            message_text = ''
-            for subject, list_of_errors in form.errors.as_data().items():
-                for error in list_of_errors:
-                    for message in error.messages:
-                        message_text += mark_safe(message)
+            message_text = get_error_messages(form)
             messages.add_message(request, messages.ERROR, mark_safe('Password change failed. Errors: ' + message_text))
 
         return redirect(reverse('treebay:dashboard'))

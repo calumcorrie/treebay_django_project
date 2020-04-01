@@ -743,7 +743,7 @@ p#plstar.starred  {
 	color: gold;
 }
 
-
+/* Add/Edit plant */
 
 #addeditmain {
 	margin: 20px 30px;
@@ -797,6 +797,10 @@ div.valid > p:nth-of-type(2){
 	top:0px;
 	left: 100%;
 	transform: translateX(-100%);
+}
+
+input.monitor{
+	display: inline;
 }
 
 #tagged {

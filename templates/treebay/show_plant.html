@@ -12,9 +12,17 @@
 			<div id="plantmain">
                 <div class="leftsect">
                     <img src="{{ plant.picture.url }}" />
-                    <div class="largebutton">
-                        <a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
-                    </div>
+
+                    {% if user.is_authenticated and user.profile.id == plant.owner.id%}
+                         <div class="largebutton">
+                            <a href="{% url 'treebay:edit_plant' plant.slug plant.id %}">Edit Advert</a>
+                        </div>
+                    {% else %}
+                        <div class="largebutton">
+                            <a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
+                        </div>
+                    {% endif %}
+
                     <div id="plantseller">
                         <img src="{{ plant.owner.picture.url }}">
                         <p>{{ plant.owner.user.username }}</p>
@@ -22,7 +30,7 @@
                         {% if plant.owner.user_id == user.id %}
                             <a href="{% url 'treebay:dashboard' %}">View Profile</a>
                         {% else %}
-                            <a href="{% url 'treebay:show_user' plant.owner.user.username %}">View Profile</a>
+                            <a href="{% url 'treebay:show_user' plant.owner.user.username plant.owner.user.id %}">View Profile</a>
                         {% endif %}
                     </div>
                 </div>

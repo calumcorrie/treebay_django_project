@@ -1,5 +1,5 @@
 from django import forms
-from treebay.models import Plant
+from treebay.models import Plant, Category
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
@@ -27,12 +27,8 @@ class EditProfileForm(UserChangeForm):
 
 # Form for adding a new plant
 class PlantForm(forms.ModelForm):
-
-    def __init__(self, instance, *args, **kwargs):
-        self.instance = instance
-        super(PlantForm, self).__init__(*args, **kwargs)
+    price = forms.DecimalField(max_digits=6, decimal_places=2, required=False)
 
     class Meta:
         model = Plant
-        fields = ('name', 'description', 'price', 'location', 'categories', 'picture')
-        exclude = ('stars', 'owner', 'isSold', 'views', 'uploadDate', 'slug')
+        fields = ('name', 'price', 'location', 'isSold', 'categories', 'description',  'picture')

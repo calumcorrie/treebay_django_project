@@ -50,7 +50,7 @@ class Plant(models.Model):
     LOCATION_MAX_LENGTH = 30
 
     # Django generates a unique integer id automatically
-    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
     description = models.CharField(max_length=DESCRIPTION_MAX_LENGTH)
     picture = models.ImageField(upload_to='plant_images', blank=True)
     uploadDate = models.DateTimeField(auto_now_add=True)

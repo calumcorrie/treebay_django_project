@@ -1,0 +1,134 @@
+{% extends 'treebay/base.html' %}
+{% load staticfiles %}
+
+{% block scripting %}
+		<script>
+			var limits = {
+				"Name": '{{ plant.NAME_MAX_LENGTH }}',
+				"Location" : '{{ plant.LOCATION_MAX_LENGTH }}',
+				"Description" : '{{ plant.DESCRIPTION_MAX_LENGTH }}',
+			};
+		</script>
+		<script>
+            window.onload=showAlerts;
+
+			function onkey( context ) {
+				var valid = context.parents("#addedittable td").children("div.valid");
+				var validfeedb = valid.children();
+				var row = valid.attr("id");
+				if(row === "Price"){
+					if( !( /^\d*\.?\d{0,2}$/g.test( context.val() ) ) ){
+						validfeedb.eq(0).css("visibility","visible");
+						validfeedb.eq(0).text("Invalid price");
+					} else {
+						validfeedb.eq(0).css("visibility","hidden");
+					}
+				} else if( valid.children().length >= 2 && row ){
+					var len = context.val().length;
+					var lim = limits[row];
+					validfeedb.eq(1).text( len + "/" + lim );
+					if( len > lim ){
+						validfeedb.eq(1).css("color","red");
+						validfeedb.eq(0).css("visibility","visible");
+						validfeedb.eq(0).text("Exceeded character limit");
+					} else {
+						validfeedb.eq(1).css("color","unset");
+						validfeedb.eq(0).css("visibility","hidden");
+					}
+				}
+			}
+
+			function refreshCallbacks() {
+				$("div.tagholder > span").click( function() {
+					$(this).remove();
+				});
+			}
+
+			$(document).ready( function() {
+				var inputs = $("#addedittable .monitor");
+
+				inputs.each( function() {
+					onkey($(this));
+				});
+
+				inputs.keyup( function(){
+					onkey($(this));
+				});
+
+				$("#tagadd").click( function(){
+					var toadd = $("#tagselect").val();
+					if( ! $("#tagged > span:contains(" + toadd + ")").length ){
+						$("#tagged").append(" <span>#"+toadd+"</span> ");
+					}
+					refreshCallbacks();
+				});
+
+				refreshCallbacks();
+
+			});
+		</script>
+{% endblock %}
+{% block main_body %}
+    <div id="addeditmain">
+        <h2>&lt; Add / Edit &gt; Plant</h2>
+        <div>
+            Tips:
+            <ul>
+                <li>Keep the title simple</li>
+                <li>Don't be specific with your location</li>
+                <li>Use the description to add specific details about the plant</li>
+                <li>Add at least one tag to help people find your ad</li>
+                <li>Remember to mark your plant as sold once it is rehomed</li>
+            </ul>
+        </div>
+        <table id="addedittable" class="blanktable">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    <tr>
+                        <td>
+                            {% if field.label == 'Name' %}
+                                    Title:
+                                {% elif field.label == 'IsSold' %}
+                                    Mark Sold:
+                                {% elif field.label == 'Price' %}
+                                    Price (in £):
+                                {% else %}
+                                    {{ field.label_tag }}
+                                {% endif %}
+
+                            {% if field.field.required %}
+                                <span class="required">*</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div>
+                                {% if field.label == 'Description' %}
+                                    {{ field.as_textarea }}
+                                {% else %}
+                                    {{ field.as_widget }}
+                                {% endif %}
+
+                            </div>
+
+                            <div class="valid" id="{{  field.label }}">
+                                <p>Validation text</p>
+                                <p></p>
+                            </div>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+            <tr>
+                <td colspan=2 >
+                    <input type="submit" name="submit" value="Save"/>
+                    <input type="submit" name="submit" value="Discard"/>
+                </td>
+            </tr>
+            </form>
+        </table>
+
+
+    </div>
+{% endblock %}
