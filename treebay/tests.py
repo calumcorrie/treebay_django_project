@@ -258,7 +258,20 @@ class ViewExistsTests(TestCase):
     Validate the behaviour by views.
     """
     def setUp(self):
-        user = User.objects.create_superuser('testAdmin', 'email@email.com', 'adminPassword123')
+        # create a user (alice) and a plant
+        user = User.objects.get_or_create(username="alice")[0]
+        user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
+        user_profile.picture.save(user_profile.user.username + str(user_profile.id) + ".jpg",
+                                  File(open('./static/img/profile_pictures/alice.jpg',
+                                            'rb')))
+        user_profile.save()
+        self.plant = Plant(owner=user_profile, name="Test Plant")
+        self.plant.picture.save(self.plant.slug + str(self.plant.id) + ".jpg",
+                           File(open('./static/img/plants/ficus.jpg', 'rb')))
+        self.plant.save()
+
+        # create a superuser and log it in
+        User.objects.create_superuser('testAdmin', 'email@email.com', 'adminPassword123')
         self.client.login(username='testAdmin', password='adminPassword123')
 
     def test_index_url_exists(self):
@@ -277,16 +290,30 @@ class ViewExistsTests(TestCase):
         response = self.client.get('/treebay/about/')
         self.assertEqual(response.status_code, 200)
 
-    def test_show_user_uses_correct_template(self):
+    def test_show_category_uses_correct_template(self):
         response = self.client.get(reverse('treebay:show_category', kwargs={'category_name_slug': 'houseplants'}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/category.html')
 
-    # TODO change dashboard to show_user after it is matched
-    def test_show_category_user_correct_template(self):
-        response = self.client.get(reverse('treebay:show_user', kwargs={'user_username': 'testAdmin'}))
+    def test_show_user_uses_correct_template(self):
+        response = self.client.get(reverse('treebay:show_user', kwargs={'user_username': 'alice'}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'treebay/dashboard.html')
+        self.assertTemplateUsed(response, 'treebay/show_user.html')
+
+    def test_edit_user_uses_correct_template(self):
+        response = self.client.get(reverse('treebay:edit_profile'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/edit_profile.html')
+
+    def test_change_password_uses_correct_template(self):
+        response = self.client.get(reverse('treebay:change_password'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/change_password.html')
+
+    def test_delete_profile_uses_correct_template(self):
+        response = self.client.get(reverse('treebay:delete_profile'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/delete_profile.html')
 
     def test_add_plant_uses_correct_template(self):
         response = self.client.get(reverse('treebay:add_plant'))
@@ -294,17 +321,7 @@ class ViewExistsTests(TestCase):
         self.assertTemplateUsed(response, 'treebay/add_edit_plant.html')
 
     def test_show_plant_uses_correct_template(self):
-        user = User.objects.get_or_create(username="alice")[0]
-        user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
-        user_profile.picture.save(user_profile.user.username + str(user_profile.id) + ".jpg",
-                                  File(open('./static/img/profile_pictures/alice.jpg',
-                                            'rb')))
-        user_profile.save()
-        plant = Plant(owner=user_profile, name="Test Plant")
-        plant.picture.save(plant.slug + str(plant.id) + ".jpg",
-                       File(open('./static/img/plants/ficus.jpg', 'rb')))
-        plant.save()
-        response = self.client.get(reverse('treebay:show_plant', kwargs={'plant_slug': 'houseplants', 'plant_id': plant.id}))
+        response = self.client.get(reverse('treebay:show_plant', kwargs={'plant_slug': 'houseplants', 'plant_id': self.plant.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/show_plant.html')
 
