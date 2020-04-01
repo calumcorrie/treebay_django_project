@@ -1,13 +1,10 @@
 - Delete account action and jQuery confirm popup 				: dashboard
 - Check for rendering glitches in browser dimension scaling 	: general
 ---> Login page looks weird when window shrinks but I don't know how to fix it :( - Martina
-- Dashboard to show a category style list if accessed by any	: dashboard
-	other user, and normal dashboard if by self
 - Can we 404 on a bad object lookup?							: general
 - Add default profile pic when user omits it                    : dashboard + user profile page + plant page
 - Add default plant pic                                         : everywhere except for login page
 - Extract all inline onclick events to script                   : index
-- Add "edit advert" button if plant belongs to current user     : show_plant
 
 
 / * Submission related * /

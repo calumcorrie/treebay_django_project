@@ -291,7 +291,7 @@ class ViewExistsTests(TestCase):
     def test_add_plant_uses_correct_template(self):
         response = self.client.get(reverse('treebay:add_plant'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'treebay/add_plant.html')
+        self.assertTemplateUsed(response, 'treebay/add_edit_plant.html')
 
     def test_show_plant_uses_correct_template(self):
         user = User.objects.get_or_create(username="alice")[0]
