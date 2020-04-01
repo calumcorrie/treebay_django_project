@@ -10,7 +10,7 @@ class UserProfile(models.Model):
     # The User model has username, email, password, date_joined and is_active attributes
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     # The additional attributes
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+    picture = models.ImageField(upload_to='profile_images', default='default.png', blank=True)
     starred = models.ManyToManyField('Plant', related_name='starred')
 
     def __str__(self):
@@ -52,7 +52,7 @@ class Plant(models.Model):
     # Django generates a unique integer id automatically
     name = models.CharField(max_length=NAME_MAX_LENGTH)
     description = models.CharField(max_length=DESCRIPTION_MAX_LENGTH)
-    picture = models.ImageField(upload_to='plant_images', blank=True)
+    picture = models.ImageField(upload_to='plant_images', default='default_plant.png', blank=True)
     uploadDate = models.DateTimeField(auto_now_add=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     location = models.CharField(max_length=LOCATION_MAX_LENGTH)
