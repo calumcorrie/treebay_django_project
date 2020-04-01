@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path
 from treebay import views
 
 app_name = "treebay"
@@ -11,6 +11,9 @@ urlpatterns = [
     path('add_plant/', views.add_plant, name='add_plant'),
     path('login/', views.login_or_register, name='login'),
     path('logout/', views.user_logout, name='logout'),
+    path('user/edit/', views.edit_profile, name='edit_profile'),
+    path('user/change-password/', views.change_password, name='change_password'),
+    path('user/delete-profile/', views.delete_profile, name='delete_profile'),
 	## Intend to remove dashboard/ url (NOT VIEW) in favour of user/ ## 
     path('dashboard/', views.dashboard, name='dashboard'),
     path('star/<int:plant_id>/', views.star_plant, name='star'),

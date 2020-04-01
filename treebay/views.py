@@ -5,7 +5,9 @@ from django.db.models import Count
 from django.urls import reverse
 from django.contrib.auth.models import AnonymousUser
 from treebay.models import Category, Plant, UserProfile
-from treebay.forms import PlantForm, RegisterForm
+from treebay.forms import PlantForm, RegisterForm, EditProfileForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from datetime import datetime
 from django.contrib import messages
 from django.utils.safestring import mark_safe
@@ -137,7 +139,7 @@ def show_category(request, category_name_slug):
     return render(request, 'treebay/category.html', context=context_dict)
 
 
-def listic( request, plants ):
+def listic(request, plants):
     context_dict = {}
 
     try:
@@ -204,7 +206,7 @@ def dashboard(request):
     
 
 def show_user(request, user_username=None):
-    if user_username == None :
+    if user_username is None:
         if request.user.is_authenticated:
             return dashboard(request)
 
@@ -226,7 +228,6 @@ def show_user(request, user_username=None):
         
     return render( request, 'treebay/show_user.html', context=context_dict )
     
-
 
 # View for adding a plant
 # User must be logged in
@@ -328,8 +329,8 @@ def login_or_register(request):
                 for subject, list_of_errors in form.errors.as_data().items():
                     for error in list_of_errors:
                         for message in error.messages:
-                            message_text += mark_safe(message + "<br/>")
-                messages.add_message(request, messages.ERROR, mark_safe('Registration failed. Errors:<br/>' + message_text))
+                            message_text += mark_safe(message)
+                messages.add_message(request, messages.ERROR, mark_safe('Registration failed. Errors: ' + message_text))
                 form = RegisterForm()
                 return render(request,
                               'treebay/login.html',
@@ -340,6 +341,67 @@ def login_or_register(request):
         return render(request,
                       'treebay/login.html',
                       context={'form': form})
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+
+        # Invalid registration form
+        else:
+            # Get the errors from the form
+            message_text = ''
+            for subject, list_of_errors in form.errors.as_data().items():
+                for error in list_of_errors:
+                    for message in error.messages:
+                        message_text += mark_safe(message)
+            messages.add_message(request, messages.ERROR, mark_safe('Editing profile failed. Errors: ' + message_text))
+
+        return redirect(reverse('treebay:dashboard'))
+
+
+    else:
+        form = EditProfileForm(instance=request.user)
+        return render(request, 'treebay/edit_profile.html', context={'form': form})
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+
+        else:
+            # Get the errors from the form
+            message_text = ''
+            for subject, list_of_errors in form.errors.as_data().items():
+                for error in list_of_errors:
+                    for message in error.messages:
+                        message_text += mark_safe(message)
+            messages.add_message(request, messages.ERROR, mark_safe('Password change failed. Errors: ' + message_text))
+
+        return redirect(reverse('treebay:dashboard'))
+
+    else:
+        form = PasswordChangeForm(user=request.user)
+        return render(request, 'treebay/change_password.html', context={'form': form})
+
+
+@login_required
+def delete_profile(request):
+    if request.method == 'POST':
+        request.user.delete()
+        messages.success(request, 'Profile successfully deleted.')
+        return redirect(reverse('treebay:index'))
+    else:
+        return render(request, 'treebay/delete_profile.html')
 
 
 @login_required

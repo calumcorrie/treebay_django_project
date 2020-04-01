@@ -1,0 +1,14 @@
+{% extends 'treebay/base.html' %}
+
+{% block main_body %}
+<div class="container">
+    <form class="deleteprofile" method="post">
+        {% csrf_token %}
+        Are you sure you want to deactivate your account?
+        <p><input type="submit" value="Yes"/><br /><br />
+            <a href="{% url 'treebay:dashboard' %}">Cancel</a></p>
+    </form>
+<br>
+</div>
+
+{% endblock %}

@@ -1,32 +1,204 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-</head>
-<body>
-<div>
-<h1>You are:  {{ user.username }}</h1>
-</div>
-<br />
-<div>
-<h3>Plants that have caught my eye:</h3>
-    {% for p in starred %}
-        <h5>{{ p.name }}</h5>
-        <h5>{{ p.description }}</h5>
-        <h5>{{ p.location }}</h5>
-        <hr />
-    {% endfor %}
-</div>
-<br />
-<div>
-<h3>My plant ads</h3>
-    {% for p in plants %}
-        <h5>{{ p.name }}</h5>
-        <h5>{{ p.description }}</h5>
-        <h5>{{ p.location }}</h5>
-    {% endfor %}
-</div>
+{% extends 'treebay/base.html' %}
+{% load staticfiles %}
 
-</body>
-</html>
+{% block scripting %}
+    <script>
+        // Show alerts from edit account actions on window load
+        window.onload=showAlerts;
+
+        // Toggle between hiding and showing the dropdown contents on each click
+        function toggle() {
+          document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+          if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        };
+
+        function hideSmIfEmpty( table ){
+            if( typeof $("tbody tr:not(tr.visible)",table).first().attr('class') === 'undefined' ){
+                $("tfoot tr",table).hide();
+            }
+        }
+
+        function navToA( a ){
+            window.location.href = a.attr("href");
+        }
+
+        $(document).ready( function(){
+            $("tr.vt0").addClass("visible");
+
+            $("a.tableexpand").each( function() {
+                hideSmIfEmpty( $(this).parents("table.expandingadtable") );
+            });
+
+            $("a.tableexpand").click( function(e) {
+                e.preventDefault();
+                var parent = $(this).parents("table.expandingadtable");
+                var firstunclass = $("tbody tr:not(tr.visible)",parent).first().attr('class');
+                $("tr."+firstunclass,parent).addClass("visible");
+                hideSmIfEmpty(parent);
+            });
+
+            $("div.largebutton").click( function(){
+                navToA($("a",this));
+            });
+
+            $("div.largebutton a").click( function(e){
+                e.preventDefault();
+                navToA($(this));
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block title_block %}
+		 - Dashboard
+{% endblock %}
+
+{% block main_body %}
+    <div id="sellerinfo">
+        <img src="{{ user.profile.picture.url }}" />
+        <h2>{{ user.username }}</h2>
+        <p>Member since<br/>{{ user.date_joined.date }}</p>
+        <div class="dropdown">
+          <button onclick="toggle()" class="dropbtn">&#9998; Edit</button>
+          <div id="myDropdown" class="dropdown-content">
+            <a href="{% url 'treebay:edit_profile' %}">Edit profile details</a>
+            <a href="{% url 'treebay:change_password' %}">Change password</a>
+            <a href="{% url 'treebay:delete_profile' %}">Delete profile</a>
+          </div>
+        </div>
+    </div>
+
+    <h4 class="ditemhead">Adverts</h4>
+
+    <div id="dashadframe" class="dashelmnt">
+        <table class="expandingadtable">
+            <thead>
+                <tr>
+                    <th colspan=2>My Adverts</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- vt(view trigger)0 objects will be shown on first load,
+                        other vt's are used to group the other objects to
+                        load each expansion after. They do not need to be in
+                        order, the function will make "all objects of the next
+                        (layout-wise) non-visible class type in the
+                        expandingadtable" visible. -->
+
+                <tr class="vt0">
+                    <td>One Spikey Boi</td>
+                    <td><span class="labelhot">&#128901;</span></td>
+                </tr>
+                <tr class="vt0">
+                    <td>Another Spikey Boi</td>
+                    <td><span class="labelsold">&#9651;</span></td>
+                </tr>
+                <tr class="vt0">
+                    <td>More Spikey Bois</td>
+                    <td><span class="labelactive">&#9634;</span></td>
+                </tr>
+                <tr class="vt0">
+                    <td>One Spikey Boi</td>
+                    <td></td>
+                </tr>
+                <tr class="vt1">
+                    <td>Another Spikey Boi</td>
+                    <td></td>
+                </tr>
+                <tr class="vt2">
+                    <td>More Spikey Bois</td>
+                    <td></td>
+                </tr>
+                <tr class="vt2">
+                    <td>One Spikey Boi</td>
+                    <td></td>
+                </tr>
+                <tr class="vt2">
+                    <td>Another Spikey Boi</td>
+                    <td></td>
+                </tr>
+                <tr class="vt3">
+                    <td>More Spikey Bois</td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan=2><a href="." class="tableexpand">See more...</a></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table class="expandingadtable">
+            <thead>
+                <tr>
+                    <th colspan=2>Starred</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Explain vts? See above -->
+                <tr class="vt0">
+                    <td>One Spikey Boi</td>
+                    <td><span class="labelhot">&#128901;</span></td>
+                </tr>
+                <tr class="vt0">
+                    <td>Another Spikey Boi</td>
+                    <td><span class="labelsold">&#9651;</span></td>
+                </tr>
+                <tr class="vt0">
+                    <td>More Spikey Bois</td>
+                    <td><span class="labelactive">&#9634;</span></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan=2><a href="." class="tableexpand">See more...</a></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div id="dashadrightpannel">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan=2>
+                            Legend
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="labelhot">&#128901;</span></td>
+                        <td> - Hot</td>
+                    </tr>
+                    <tr>
+                        <td><span class="labelactive">&#9634;</span></td>
+                        <td> - Active</td>
+                    </tr>
+                    <tr>
+                        <td><span class="labelsold">&#9651;</span></td>
+                        <td> - Sold</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="largebutton">
+                <a href="">New Advert</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

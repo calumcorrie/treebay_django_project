@@ -7,6 +7,7 @@
 - Add default profile pic when user omits it                    : dashboard + user profile page + plant page
 - Add default plant pic                                         : everywhere except for login page
 - Extract all inline onclick events to script                   : index
+- Add "edit advert" button if plant belongs to current user     : show_plant
 
 
 / * Submission related * /

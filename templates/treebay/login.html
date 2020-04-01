@@ -3,14 +3,8 @@
 
 {% block scripting %}
     <script>
-        $("document").ready( function () {
-            {% if messages %}
-                {% for message in messages %}
-                    alert('{{ message }}');
-                {% endfor %}
-            {% endif %}
-        });
-</script>
+        window.onload=showAlerts;
+    </script>
 {% endblock %}
 
 {% block main_body %}
