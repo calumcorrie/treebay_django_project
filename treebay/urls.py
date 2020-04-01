@@ -17,5 +17,8 @@ urlpatterns = [
     path('user/delete-profile/', views.delete_profile, name='delete_profile'),
     path('user/', views.dashboard, name='dashboard'),
     path('star/<int:plant_id>/', views.star_plant, name='star'),
+	# Can't we just use this?
+    path('user/<slug:user_username>/', views.show_user, name='show_user'),
+	# Over this?
     path('user/<slug:user_username>-<int:user_id>/', views.show_user, name='show_user'),
 ]
