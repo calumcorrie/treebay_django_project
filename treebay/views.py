@@ -13,8 +13,12 @@ from django.contrib import messages
 from django.utils.safestring import mark_safe
 
 
-LISTIC_CHUNK = 5;
+LISTIC_CHUNK = 5
 ORDER_BY_FIELDS = ["viewed","starred","latest","price_asc","price_desc"]
+
+DASHBOARD_CHUNK = 5
+
+HOT_BOUNDARY = 3
 
 
 # View for the homepage
@@ -197,10 +201,30 @@ def dashboard(request):
     context_dict = {}
     # Get current user profile
     current_user = request.user.profile
+    
     # Add the users plants to the context dictionary
-    context_dict['plants'] = Plant.objects.all().filter(owner=current_user)
+    plants = Plant.objects.all().filter(owner=current_user)
+    
+    allcount = len(plants)
+    
+    for x in range(0,allcount,DASHBOARD_CHUNK):
+        for plant in plants[x:x+DASHBOARD_CHUNK]:
+            plant.annotate(viewtrigger=x)
+    
     # add the users starred plants to dictionary
-    context_dict['starred'] = current_user.starred.all()
+    starred = current_user.starred.all()
+    
+    # someBODY ONCE TOLD ME
+    allstarred = len( starred )
+    
+    for x in range(0,allstarred,DASHBOARD_CHUNK):
+        for plant in starred[x:x+DASHBOARD_CHUNK]:
+            plant.annotate(viewtrigger=x)
+    
+    context_dict['starred'] = starred
+    context_dict['plants'] = plants
+    
+    context_dict['hot'] = HOT_BOUNDARY
 
     return render(request, 'treebay/dashboard.html', context=context_dict)
     

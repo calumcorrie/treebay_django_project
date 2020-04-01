@@ -63,12 +63,12 @@
 {% endblock %}
 
 {% block title_block %}
-		 - Dashboard
+         - Dashboard
 {% endblock %}
 
 {% block main_body %}
     <div id="sellerinfo">
-        <img src="{{ user.profile.picture.url }}" />
+        <img src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/svg/default_profile_picture.svg' %}{% endif %}" />
         <h2>{{ user.username }}</h2>
         <p>Member since<br/>{{ user.date_joined.date }}</p>
         <div class="dropdown">
@@ -98,46 +98,25 @@
                         (layout-wise) non-visible class type in the
                         expandingadtable" visible. -->
 
-                <tr class="vt0">
-                    <td>One Spikey Boi</td>
-                    <td><span class="labelhot">&#128901;</span></td>
+                {% for plnt in plants %}
+                <tr class="vt{{plnt.viewtrigger}}">
+                    <td><a href="TODO">{{plnt.name}}</a></td>
+                    <td>
+					{% if plnt.stars >= hot %}<span class="labelhot">&#128901;</span>
+					{% elif plnt.isSold %}<span class="labelsold">&#9651;</span>
+					{% else %}<span class="labelactive">&#9634;</span>
+					{% endif %}
+					</td>
                 </tr>
-                <tr class="vt0">
-                    <td>Another Spikey Boi</td>
-                    <td><span class="labelsold">&#9651;</span></td>
-                </tr>
-                <tr class="vt0">
-                    <td>More Spikey Bois</td>
-                    <td><span class="labelactive">&#9634;</span></td>
-                </tr>
-                <tr class="vt0">
-                    <td>One Spikey Boi</td>
-                    <td></td>
-                </tr>
-                <tr class="vt1">
-                    <td>Another Spikey Boi</td>
-                    <td></td>
-                </tr>
-                <tr class="vt2">
-                    <td>More Spikey Bois</td>
-                    <td></td>
-                </tr>
-                <tr class="vt2">
-                    <td>One Spikey Boi</td>
-                    <td></td>
-                </tr>
-                <tr class="vt2">
-                    <td>Another Spikey Boi</td>
-                    <td></td>
-                </tr>
-                <tr class="vt3">
-                    <td>More Spikey Bois</td>
-                    <td></td>
-                </tr>
+				{% empty %}
+				<tr class="visible">
+					<td colspan=2><center>- None -</center></td>
+				</tr>
+                {% endfor %}
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan=2><a href="." class="tableexpand">See more...</a></td>
+                    <td colspan=2><a href=":)" class="tableexpand">See more...</a></td>
                 </tr>
             </tfoot>
         </table>
@@ -149,26 +128,32 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Explain vts? See above -->
-                <tr class="vt0">
-                    <td>One Spikey Boi</td>
-                    <td><span class="labelhot">&#128901;</span></td>
+                {% for plnt in starred %}
+                <tr class="vt{{plnt.viewtrigger}}">
+                    <td><a href="TODO">{{plnt.name}}</a></td>
+					
+					<td>
+					{% if plnt.stars >= hot %}<span class="labelhot">&#128901;</span>
+					{% elif plnt.isSold %}<span class="labelsold">&#9651;</span>
+					{% endif %}
+					</td>
+					
                 </tr>
-                <tr class="vt0">
-                    <td>Another Spikey Boi</td>
-                    <td><span class="labelsold">&#9651;</span></td>
-                </tr>
-                <tr class="vt0">
-                    <td>More Spikey Bois</td>
-                    <td><span class="labelactive">&#9634;</span></td>
-                </tr>
+				{% empty %}
+				<tr class="visible">
+					<td colspan=2><center>- None -</center></td>
+				</tr>
+                {% endfor %}
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan=2><a href="." class="tableexpand">See more...</a></td>
+                    <td colspan=2><a href=":)" class="tableexpand">See more...</a></td>
                 </tr>
             </tfoot>
         </table>
+		
+		{# Doesn't do anything, but doesn't work without... and we dont know why #}
+		<br />
 
         <div id="dashadrightpannel">
 

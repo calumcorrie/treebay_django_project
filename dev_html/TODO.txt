@@ -8,6 +8,7 @@
 - Add default plant pic                                         : everywhere except for login page
 - Extract all inline onclick events to script                   : index
 - Add "edit advert" button if plant belongs to current user     : show_plant
+- Photo upload didnt work										: edit-user
 
 
 / * Submission related * /
