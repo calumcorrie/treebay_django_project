@@ -19,7 +19,7 @@ ORDER_BY_FIELDS = ["viewed","starred","latest","price_asc","price_desc"]
 
 DASHBOARD_CHUNK = 5
 
-HOT_BOUNDARY = 3
+HOT_BOUNDARY = 4
 
 
 # View for the homepage
@@ -28,13 +28,13 @@ def index(request):
     category_list = Category.objects.all()
 
     # Query database for top 6 most viewed Plants
-    plant_list_views = Plant.objects.order_by('-views')[:6]
+    plant_list_views = Plant.objects.filter(isSold=False).order_by('-views')[:6]
 
     # Query database for top 6 plants in terms of interest
-    plant_list_interest = Plant.objects.annotate(star_num=Count('starred')).order_by('-star_num')[:6]
+    plant_list_interest = Plant.objects.filter(isSold=False).annotate(star_num=Count('starred')).order_by('-star_num')[:6]
 
     # Query database for 6 most recently added plants
-    plant_list_date = Plant.objects.order_by('-uploadDate')[:6]
+    plant_list_date = Plant.objects.filter(isSold=False).order_by('-uploadDate')[:6]
 
     # Context dictionary we fill with our lists and pass to template
     context_dict = {'categories': category_list, 'plant_interest': plant_list_interest, 'plant_date': plant_list_date,
@@ -147,9 +147,10 @@ def show_category(request, category_name_slug):
         # Retrieve all of the associated plants.
         # The filter() will return a list of plant objects or an empty list.
         
-        plants = Plant.objects.filter(categories=category)
+        plants = Plant.objects.filter(categories=category).filter(isSold=False)
         context_dict = listic(request, plants)
         context_dict['category'] = category
+        context_dict['hot'] = HOT_BOUNDARY
         
     # Render the response and return it to the client.
     return render(request, 'treebay/category.html', context=context_dict)
@@ -215,27 +216,15 @@ def dashboard(request):
     current_user = request.user.profile
     
     # Add the users plants to the context dictionary
-    plants = Plant.objects.all().filter(owner=current_user)
-    
-    allcount = len(plants)
-    
-    for x in range(0,allcount,DASHBOARD_CHUNK):
-        for plant in plants[x:x+DASHBOARD_CHUNK]:
-            plant.annotate(viewtrigger=x)
+    plants = Plant.objects.all().filter(owner=current_user).annotate(stars=Count('starred'))
     
     # add the users starred plants to dictionary
-    starred = current_user.starred.all()
-    
-    # someBODY ONCE TOLD ME
-    allstarred = len( starred )
-    
-    for x in range(0,allstarred,DASHBOARD_CHUNK):
-        for plant in starred[x:x+DASHBOARD_CHUNK]:
-            plant.annotate(viewtrigger=x)
-    
+    starred = current_user.starred.all().annotate(stars=Count('starred'))
+	
     context_dict['starred'] = starred
     context_dict['plants'] = plants
     
+    context_dict['dchunk'] = DASHBOARD_CHUNK
     context_dict['hot'] = HOT_BOUNDARY
 
     return render(request, 'treebay/dashboard.html', context=context_dict)
@@ -262,6 +251,7 @@ def show_user(request, user_username=None, user_id=None):
         plants = Plant.objects.all().filter(owner=seller)
         context_dict = listic( request, plants )
         context_dict['seller'] = seller
+        context_dict['hot'] = HOT_BOUNDARY
         
     return render( request, 'treebay/show_user.html', context=context_dict )
     

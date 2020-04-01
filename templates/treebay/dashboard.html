@@ -26,7 +26,7 @@
         };
 
         function hideSmIfEmpty( table ){
-            if( typeof $("tbody tr:not(tr.visible)",table).first().attr('class') === 'undefined' ){
+            if( $("tbody tr:not(tr.visible)",table).length === 0 ){
                 $("tfoot tr",table).hide();
             }
         }
@@ -34,20 +34,21 @@
         function navToA( a ){
             window.location.href = a.attr("href");
         }
+		
+		function showChunk( table ) {
+			$("tbody tr:not(tr.visible)",table).slice(0,{{ dchunk }}).addClass("visible");
+			hideSmIfEmpty( table );
+		}
 
         $(document).ready( function(){
-            $("tr.vt0").addClass("visible");
 
-            $("a.tableexpand").each( function() {
-                hideSmIfEmpty( $(this).parents("table.expandingadtable") );
+            $("table.expandingadtable").each( function() {
+                showChunk( $(this) );
             });
 
             $("a.tableexpand").click( function(e) {
                 e.preventDefault();
-                var parent = $(this).parents("table.expandingadtable");
-                var firstunclass = $("tbody tr:not(tr.visible)",parent).first().attr('class');
-                $("tr."+firstunclass,parent).addClass("visible");
-                hideSmIfEmpty(parent);
+                showChunk( $(this).parents("table.expandingadtable") );
             });
 
             $("div.largebutton").click( function(){
@@ -91,15 +92,8 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- vt(view trigger)0 objects will be shown on first load,
-                        other vt's are used to group the other objects to
-                        load each expansion after. They do not need to be in
-                        order, the function will make "all objects of the next
-                        (layout-wise) non-visible class type in the
-                        expandingadtable" visible. -->
-
                 {% for plnt in plants %}
-                <tr class="vt{{plnt.viewtrigger}}">
+                <tr>
                     <td><a href="TODO">{{plnt.name}}</a></td>
                     <td>
 					{% if plnt.stars >= hot %}<span class="labelhot">&#128901;</span>
@@ -129,7 +123,7 @@
             </thead>
             <tbody>
                 {% for plnt in starred %}
-                <tr class="vt{{plnt.viewtrigger}}">
+                <tr>
                     <td><a href="TODO">{{plnt.name}}</a></td>
 					
 					<td>
