@@ -13,6 +13,7 @@ class ProjectStructureTests(TestCase):
     """
     Simple tests to probe the file structure.
     """
+
     def setUp(self):
         self.project_base_dir = os.getcwd()
         self.treebay_app_dir = os.path.join(self.project_base_dir, 'treebay')
@@ -180,10 +181,12 @@ class PopulationScriptTests(TestCase):
     Tests whether the population script puts the expected data into a test database.
     """
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         """
         Imports and runs the population script, calling the populate() method.
         """
+        super().setUpClass()
         try:
             import populate_treebay
         except ImportError:
@@ -194,6 +197,16 @@ class PopulationScriptTests(TestCase):
 
         # Call the population script -- any exceptions raised here do not have fancy error messages to help readers.
         populate_treebay.populate()
+
+    @classmethod
+    def tearDownClass(cls):
+        plants = Plant.objects.filter()
+        for plant in plants:
+            plant.picture.delete()
+        users = UserProfile.objects.filter()
+        for user in users:
+            user.picture.delete()
+        super().tearDownClass()
 
     def test_categories(self):
         """
@@ -243,33 +256,38 @@ class FormTests(TestCase):
 
         self.assertTrue('<a href="/treebay/about/">About</a>' in content)
 
-    def test_dashboard_link_in_index_page(self):
-        """
-        Checks if there is a link to dashboard at the index page.
-        """
-        response = self.client.get(reverse('treebay:index'))
-        content = response.content.decode()
-
-        self.assertTrue('<a href="/treebay/dashboard/">MyTreeBay</a>' in content)
-
 
 class ViewExistsTests(TestCase):
     """
     Validate the behaviour by views.
     """
-    def setUp(self):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
         # create a user (alice) and a plant
         user = User.objects.get_or_create(username="alice")[0]
-        user_profile = UserProfile.objects.get_or_create(user_id=user.id)[0]
+        cls.user_id = user.id
+        user_profile = UserProfile.objects.get_or_create(user_id=cls.user_id)[0]
         user_profile.picture.save(user_profile.user.username + str(user_profile.id) + ".jpg",
-                                  File(open('./static/img/profile_pictures/alice.jpg',
-                                            'rb')))
+                                  File(open('./static/img/profile_pictures/alice.jpg', 'rb')))
         user_profile.save()
-        self.plant = Plant(owner=user_profile, name="Test Plant")
-        self.plant.picture.save(self.plant.slug + str(self.plant.id) + ".jpg",
-                           File(open('./static/img/plants/ficus.jpg', 'rb')))
-        self.plant.save()
 
+        cls.plant = Plant(owner=user_profile, name="Test Plant", slug='test-plant')
+        cls.plant.save()
+        cls.plant.picture.save(cls.plant.slug + str(cls.plant.id) + ".jpg",
+                               File(open('./static/img/plants/ficus.jpg', 'rb')))
+        cls.plant.save()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.plant.picture.delete()
+        UserProfile.objects.get(user_id=cls.user_id).picture.delete()
+
+        super().tearDownClass()
+
+    def setUp(self):
         # create a superuser and log it in
         User.objects.create_superuser('testAdmin', 'email@email.com', 'adminPassword123')
         self.client.login(username='testAdmin', password='adminPassword123')
@@ -296,7 +314,8 @@ class ViewExistsTests(TestCase):
         self.assertTemplateUsed(response, 'treebay/category.html')
 
     def test_show_user_uses_correct_template(self):
-        response = self.client.get(reverse('treebay:show_user', kwargs={'user_username': 'alice'}))
+        response = self.client.get(
+            reverse('treebay:show_user', kwargs={'user_username': 'alice', 'user_id': self.user_id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/show_user.html')
 
@@ -321,7 +340,8 @@ class ViewExistsTests(TestCase):
         self.assertTemplateUsed(response, 'treebay/add_edit_plant.html')
 
     def test_show_plant_uses_correct_template(self):
-        response = self.client.get(reverse('treebay:show_plant', kwargs={'plant_slug': 'houseplants', 'plant_id': self.plant.id}))
+        response = self.client.get(
+            reverse('treebay:show_plant', kwargs={'plant_slug': 'houseplants', 'plant_id': self.plant.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/show_plant.html')
 
@@ -329,4 +349,3 @@ class ViewExistsTests(TestCase):
         self.client.logout()
         response = self.client.get('/admin/')
         self.assertEqual(response.status_code, 302)
-
