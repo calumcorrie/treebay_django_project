@@ -7,8 +7,12 @@
 				$("a.scrollback").click( function(e){
 					window.scrollTo({top: 0, behavior: 'smooth'});
 					e.preventDefault();
-				} )
-			} );
+				});
+				
+				$("#sortby").change( function() {
+					window.location.href = "?orderBy=" + $(this).val();
+				});
+			});
 		</script>
 {% endblock %}
 
@@ -20,16 +24,16 @@
 				<hr />
 				<div id="sortheader">
 					<span>Sort by:
-					<select id="sortby">
-						<option value="popular">Most Popular</option>
-						<option value="latest">Latest Added</option>
-						<option value="price_asc">Price (Lowest First)</option>
-						<option value="price_desc">Price (Highest First)</option>
-						<!-- Scope for AJAX use here? Or is there a simpler way? -->
+					<select id="sortby" >
+						<option value="viewed"{% if order_by == "viewed" %} selected="selected"{% endif %}>Most Viewed</option>
+						<option value="starred"{% if order_by == "starred" %} selected="selected"{% endif %}>Most Starred</option>
+						<option value="latest"{% if order_by == "latest" %}selected="selected"{% endif %}>Latest Added</option>
+						<option value="price_asc"{% if order_by == "price_asc" %}selected="selected"{% endif %}>Price (Lowest First)</option>
+						<option value="price_desc"{% if order_by == "price_desc" %}selected="selected"{% endif %}>Price (Highest First)</option>
 					</select>
 					</span>
 					<span style="float:right;">
-						Showing TODO - TODO of TODO
+						Showing {{ chunkbeg }} - {{ chunkend }} of {{ totalcount }}
 					</span>
 				</div>
 				<hr />
@@ -43,7 +47,7 @@
                             {{plnt.name}}
 						</p>
 						<p class="loc">{{plnt.location}}</p>
-						<p class="interest">{{ plnt.stars }}&nbsp&#9734;</p>
+						<p class="interest">{{ plnt.stars }}&nbsp;&#9734;</p>
 					</span>
 					<span class="detail2">
                         {% if plnt.stars > 2 %}
@@ -73,9 +77,15 @@
 				<hr />
 				
 				<div id="catpagenav">
-					<a href="">&lt; Prev</a>
-					<p>TODO - TODO of TODO  ~  <a class="scrollback" href=":)">Back to Top</a></p>
-					<a href="" style="float:right;">Next &gt;</a>
+					{% if pageprev %}
+					<a href="?orderBy={{order_by}}&from={{pageppos}}">&lt;&nbsp;Prev</a>
+					{% endif %}
+					<div>
+						<p>{{ chunkbeg }} - {{ chunkend }} of {{ totalcount }} ~ <a class="scrollback" href=":)">Back to Top</a></p>
+					</div>
+					{% if pagenext %}
+					<a href="?orderBy={{order_by}}&from={{pagenpos}}" style="float:right;">Next&nbsp;&gt;</a>
+					{% endif %}
 				</div>
 				<hr />
 			</div>

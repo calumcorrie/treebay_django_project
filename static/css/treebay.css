@@ -139,10 +139,11 @@ div.slidecontainer > div {
 	display:inline-block;
 	position:relative;
 	overflow: hidden;
+	cursor: pointer;
 }
 
-div.slidecontainer > div * {
-	cursor: pointer;
+div.slidecontainer > div:hover{
+	background-color: rgba(256,256,256,0.35);
 }
 
 div.slidecontainer > div > img {
@@ -155,6 +156,7 @@ div.slidecontainer > div > img {
 
 div.slidecontainer > div > p {
 	margin:0;
+	overflow: hidden;
 }
 
 div.slidecontainer span.pan {
@@ -210,6 +212,11 @@ div.tagholder > span {
 	padding:2px 5px;
 	cursor: pointer;
 	margin: 2px;
+}
+
+div.tagholder > span:hover{
+	border-radius: 20px;
+	background-color: lightgreen;
 }
 
 
@@ -441,14 +448,29 @@ p.mininav{
 #catpagenav {
 	position:relative;
 	overflow:auto;
+	width: 100%;
 }
 
-#catpagenav > p {
-	position:absolute;
-	left:50%;
-	transform:translateX(-50%);
+#catpagenav p {
 	margin: 0px;
-	top: 0px;
+}
+
+#catpagenav > a {
+	position: absolute;
+	transform: translateY(-50%);
+	float:left;
+	top: 50%;
+}
+
+#catpagenav > a:nth-of-type(2){
+	float: right;
+	transform: translate(-100%,-50%);
+	left: 100%;
+}
+
+#catpagenav > div{
+	width: max-content;
+	margin: 0px auto;
 }
 
 /*Dasboard*/

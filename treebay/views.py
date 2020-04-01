@@ -11,6 +11,10 @@ from django.contrib import messages
 from django.utils.safestring import mark_safe
 
 
+LISTIC_CHUNK = 5;
+ORDER_BY_FIELDS = ["viewed","starred","latest","price_asc","price_desc"]
+
+
 # View for the homepage
 def index(request):
     # Query database for all categories
@@ -108,31 +112,79 @@ def show_plant(request, plant_slug, plant_id):
 
 
 def show_category(request, category_name_slug):
-    # Create a context dictionary which we can pass
-    # to the template rendering engine.
+
     context_dict = {}
 
     try:
         # Tries to find a category name slug with the given name
         # .get() returns one model instance or raises an exception if there's no category.
         category = Category.objects.get(slug=category_name_slug)
-        # Retrieve all of the associated plants.
-        # The filter() will return a list of plant objects or an empty list.
-        plants = Plant.objects.filter(categories=category).annotate(stars=Count('starred'))
-        # Adds our results list to the template context under name plants.
-        context_dict['plants'] = plants
-        # We also add the category object from the database to the context dictionary.
-        # We'll use this in the template to verify that the category exists.
-        context_dict['category'] = category
     except Category.DoesNotExist:
         # We get here if we didn't find the specified category.
         # Don't do anything -
         # the template will display the "no category" message for us.
         context_dict['category'] = None
         context_dict['plants'] = None
-
+    else:
+        # Retrieve all of the associated plants.
+        # The filter() will return a list of plant objects or an empty list.
+        
+        plants = Plant.objects.filter(categories=category)
+        context_dict = listic( request, plants )
+        context_dict['category'] = category
+        
     # Render the response and return it to the client.
     return render(request, 'treebay/category.html', context=context_dict)
+
+
+def listic( request, plants ):
+    context_dict = {}
+
+    try:
+        orderfield = request.GET.get('orderBy',None)
+        if orderfield not in ORDER_BY_FIELDS or orderfield == None:
+            raise ValueError
+            
+    except ValueError:
+        orderfield = ORDER_BY_FIELDS[0]
+        
+    try:
+        position = int(request.GET.get('from',0))
+    except ValueError:
+        position = 0
+    
+    if orderfield == ORDER_BY_FIELDS[0]:
+        plants = plants.order_by('-views')
+    elif orderfield == ORDER_BY_FIELDS[1]:
+        plants = plants.annotate(stars=Count('starred')).order_by('-stars')
+    elif orderfield == ORDER_BY_FIELDS[2]:
+        plants = plants.order_by('-uploadDate')
+    elif orderfield == ORDER_BY_FIELDS[3]:
+        plants = plants.order_by('price')
+    else:
+        plants = plants.order_by('-price')
+    
+    allcount = len(plants);
+    
+    if position == None:
+        position = 0
+    
+    plants = plants.annotate(stars=Count('starred'))[position:position+LISTIC_CHUNK]
+    
+    context_dict['plants'] = plants
+    
+    context_dict['order_by'] = orderfield
+    
+    context_dict['totalcount'] = allcount
+    context_dict['chunkbeg'] = position + 1
+    context_dict['chunkend'] = min( position + LISTIC_CHUNK, allcount )
+    
+    context_dict['pageprev'] = position > 0
+    context_dict['pagenext'] = position + LISTIC_CHUNK < allcount
+    context_dict['pageppos'] = position - LISTIC_CHUNK
+    context_dict['pagenpos'] = position + LISTIC_CHUNK
+    
+    return context_dict
 
 
 # View for a users dashboard
@@ -161,13 +213,16 @@ def show_user(request, user_username=None):
     context_dict = {}
     try:
         seller = UserProfile.objects.get(user__username=user_username)
-        if seller.user.id == request.user.id:
-            return dashboard(request)
-        context_dict['seller'] = seller
-        context_dict['plants'] = Plant.objects.all().filter(owner=seller).annotate(stars=Count('starred'))
-    except (UserProfile.DoesNotExist, Plant.DoesNotExist):
+    except UserProfile.DoesNotExist:
         context_dict['seller'] = None
         context_dict['plants'] = None
+    else:
+        if seller.user.id == request.user.id:
+            return dashboard(request)
+        
+        plants = Plant.objects.all().filter(owner=seller)
+        context_dict = listic( request, plants )
+        context_dict['seller'] = seller
         
     return render( request, 'treebay/show_user.html', context=context_dict )
     
