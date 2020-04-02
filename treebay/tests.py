@@ -22,26 +22,6 @@ class ProjectStructureTests(TestCase):
         self.static_dir = os.path.join(self.project_base_dir, 'static')
         self.media_dir = os.path.join(self.project_base_dir, 'media')
 
-    def test_treebay_app_created(self):
-        """
-        Determines whether the Treebay app has been created.
-        """
-        directory_exists = os.path.isdir(self.treebay_app_dir)
-        is_python_package = os.path.isfile(os.path.join(self.treebay_app_dir, '__init__.py'))
-        views_module_exists = os.path.isfile(os.path.join(self.treebay_app_dir, 'views.py'))
-
-        self.assertTrue(directory_exists, "The treebay app directory does not exist.")
-        self.assertTrue(is_python_package, "The treebay directory is missing init file.")
-        self.assertTrue(views_module_exists, "The treebay directory is missing views.")
-
-    def test_is_treebay_app_configured(self):
-        """
-        Is there an INSTALLED_APPS list?
-        """
-        is_app_configured = 'treebay' in settings.INSTALLED_APPS
-
-        self.assertTrue(is_app_configured, "The treebay app is missing from setting's INSTALLED_APPS list.")
-
     def test_templates_directory_exists(self):
         """
         Does the templates/ directory exist?
@@ -98,12 +78,13 @@ class DatabaseConfigurationTests(TestCase):
     Test whether the database is configured in correct way,
     """
 
-    @classmethod
-    def does_gitignore_include_database(self, path):
+    def test_does_gitignore_include_database(self):
         """
         Takes the path to a .gitignore file, and checks to see whether the db.sqlite3 database is present in that file.
         """
-        f = open(path, 'r')
+        git_base_dir = os.popen('git rev-parse --show-toplevel').read().strip()
+        gitignore_path = os.path.join(git_base_dir, '.gitignore')
+        f = open(gitignore_path, 'r')
 
         for line in f:
             line = line.strip()
@@ -312,17 +293,20 @@ class ViewExistsTests(TestCase):
         response = self.client.get(reverse('treebay:show_category', kwargs={'category_name_slug': 'houseplants'}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/category.html')
+        self.assertTemplateUsed(response, 'treebay/base.html')
 
     def test_show_user_uses_correct_template(self):
         response = self.client.get(
             reverse('treebay:show_user', kwargs={'user_username': 'alice'}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/show_user.html')
+        self.assertTemplateUsed(response, 'treebay/base.html')
 
     def test_edit_user_uses_correct_template(self):
         response = self.client.get(reverse('treebay:edit_profile'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/edit_profile.html')
+        self.assertTemplateUsed(response, 'treebay/base.html')
 
     def test_change_password_uses_correct_template(self):
         response = self.client.get(reverse('treebay:change_password'))
@@ -344,6 +328,15 @@ class ViewExistsTests(TestCase):
             reverse('treebay:show_plant', kwargs={'plant_slug': 'houseplants', 'plant_id': self.plant.id}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/show_plant.html')
+
+    def test_dashboard_view_exists_and_uses_correct_template(self):
+        response = self.client.get(reverse('treebay:dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'treebay/dashboard.html')
+
+    def test_starred_view_exists(self):
+        response = self.client.get(reverse('treebay:star'))
+        self.assertEqual(response.status_code, 200)
 
     def test_admin_url_is_not_accessible_for_non_superusers(self):
         self.client.logout()
