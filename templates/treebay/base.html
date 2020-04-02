@@ -21,21 +21,6 @@
                     {% endfor %}
                 {% endif %}
             }
-
-            function navToA( a ){
-                window.location.href = a.attr("href");
-            }
-
-            $(document).ready( function(){
-                $("div.largebutton").click( function(){
-                    navToA($("a",this));
-                });
-
-                $("div.largebutton a").click( function(e){
-                    e.preventDefault();
-                    navToA($(this));
-                });
-            });
             </script>
 		{% block scripting %}
 		{% endblock %}
@@ -45,10 +30,10 @@
 			<span id="headerleft">
 				<p>
 					{% block nav_home %}
-                    <a href="{% url 'treebay:index' %}">Home</a> //
+                    <a href="{% url 'treebay:index' %}">Home</a>
 					{% endblock %}
 					{% block nav_about %}
-					<a href="{% url 'treebay:about' %}">About</a> //
+					<a href="{% url 'treebay:about' %}">About</a>
 					{% endblock %}
 					{% block nav_dash %}
                      <a href="{% url 'treebay:dashboard' %}">MyTreeBay</a>
@@ -63,9 +48,9 @@
 			<span id="headerright">
 				<p>
 					{% if user.is_authenticated %}
-					Hi, {{user.username}}!<br /><a href="{% url 'treebay:logout' %}">LOGOUT</a>
+					Hi, {{user.username}}!&nbsp;&nbsp;&nbsp;<a  class="active" href="{% url 'treebay:logout' %}">Log out</a>
 					{% else %}
-					<a href="{% url 'treebay:login' %}">LOGIN&nbsp;&amp;&nbsp;REGISTER</a>
+					<a class="active" href="{% url 'treebay:login' %}">Log in&nbsp;&amp;&nbsp;Register</a>
 					{% endif %}
 				</p>
 			</span>

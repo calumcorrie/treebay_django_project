@@ -2,6 +2,7 @@
 body {
 	background-image:url("../img/www/grass.jpg");
 	background-repeat:repeat;
+	font-family: Tahoma, Geneva, sans-serif;
 }
 
 h1 {
@@ -46,9 +47,9 @@ div.relcontainer{
 
 div.header {
 	width:100%;
-	background-color:rgb(182,236,138);
+	background-color: rgb(181, 236, 124);
 	position: relative;
-	height: 60px;
+	height: 85px;
 	overflow: visible;
 }
 
@@ -60,8 +61,24 @@ div.header #headerleft {
 }
 
 div.header #headerleft p {
-	margin:0px;
-	padding:0px 0px 0px 10px;
+	margin: 10px;
+	font-size: 15pt;
+}
+
+div.header a {
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	color: black;
+}
+
+.active {
+	font-weight: bold;
+}
+
+
+div.header a:hover {
+	background-color: rgba(256,256,256,0.35);
 }
 
 div.header #headercentre {
@@ -70,6 +87,7 @@ div.header #headercentre {
 	top:50%;
 	left:50%;
 	transform:translate(-50%,-50%);
+	font-size: 17pt;
 }
 
 div.header #headerright {
@@ -78,12 +96,13 @@ div.header #headerright {
 	left: 100%;
 	transform: translate(-100%,-50%);
 	top: 50%;
-	white-space: nowrap;
+
 }
 
 div.header #headerright p {
-	margin:0px;
-	padding:0px 10px 0px 0px;
+	white-space: nowrap;
+	margin: 10px;
+	font-size: 15pt;
 }
 
 #main {
@@ -99,13 +118,11 @@ div.header #headerright p {
 
 #mainbanner {
 	display:block;
-	margin-left:auto;
-	width:70%;
-	margin-right:auto;
+	margin: auto;
+	width:66%;
 	overflow:hidden;
-	position:relative;
-	margin-bottom: 20px;
 	height: 100px;
+	alignment: center;
 }
 
 #mainbanner img {
@@ -115,11 +132,12 @@ div.header #headerright p {
 }
 
 #mainbanner h1 {
-	display:block;
+	text-align: center;
 	position: relative;
-	top:50%;
+	top:60%;
 	transform: translateY(-50%);
 	margin-left: 115px;
+	font-size: 22pt;
 }
 
 div.slidecontainer {
@@ -206,7 +224,7 @@ div.tagholder {
 }
 
 div.tagholder > span {
-	background-color:powderblue;
+	background-color: rgba(138, 210, 94, 0.71);
 	border-style:solid;
 	border-radius:8px;
 	padding:2px 5px;
@@ -217,7 +235,7 @@ div.tagholder > span {
 
 div.tagholder > span:hover{
 	border-radius: 20px;
-	background-color: lightgreen;
+	background-color: rgb(181, 236, 124);
 }
 
 
@@ -243,10 +261,11 @@ div.tagholder > span:hover{
 
 #aboutcontainer > div {
 	overflow: hidden;
+	line-height: 1.5;
 }
 
 #aboutcontainer > div > p {
-	font-size: 1.4em;
+	font-size: 1.2em;
 }
 
 #aboutcontainer > img {
@@ -259,6 +278,7 @@ div.tagholder > span:hover{
 /*Logins*/
 
 #loginframe {
+	overflow: hidden;
 	height:450px;
 	width:880px;
 	position:relative;
@@ -628,7 +648,9 @@ div.largebutton {
 div.largebutton a {
 	color: black;
 	text-decoration: none;
-	font-size: 1.1em
+	font-size: 1.1em;
+	/* vvv makes whole button area clickable*/
+	display: block;
 }
 
 div.dashelmnt:not(#dashadframe) div:not(#dashaccimg,#dashaccsubmitbox) {

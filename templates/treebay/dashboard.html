@@ -54,6 +54,10 @@
          - Dashboard
 {% endblock %}
 
+{% block nav_dash %}
+	<a class="active" href="{% url 'treebay:dashboard' %}">MyTreeBay</a>
+{% endblock %}
+
 {% block main_body %}
     <div id="sellerinfo">
         <img src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/svg/default_profile_picture.svg' %}{% endif %}" />

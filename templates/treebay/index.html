@@ -54,14 +54,14 @@
 
 
 {% block nav_home %}
-					<strong>Home</strong> // 
+    <a class="active" href="{% url 'treebay:index' %}">Home</a>
 {% endblock %}
 
 
 {% block main_body %}
 			<span id="mainbanner">
 				<img src="{% static 'img/svg/treebay_logo_short.svg' %}" />
-				<h1>TreeBay - Find a new home for your plants today!</h1>
+				<h1>Find a new home for your plants today!</h1>
 			</span>
 				<div class="relcontainer">
 				{# The comment gaps are specific and necessary for inlineblock adjacency #}
