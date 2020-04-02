@@ -1,8 +1,6 @@
-- Delete account action and jQuery confirm popup 				: dashboard
 - Check for rendering glitches in browser dimension scaling 	: general
 - Can we 404 on a bad object lookup?							: general
 - Extract all js to static files                                : index
-- Add "edit advert" button if plant belongs to current user     : show_plant
 - Photo upload didnt work										: edit-user
 
 

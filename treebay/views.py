@@ -13,9 +13,8 @@ from django.utils.safestring import mark_safe
 from treebay.forms import PlantForm, RegisterForm, EditProfileForm
 from treebay.models import Category, Plant, UserProfile
 
-
 LISTIC_CHUNK = 5
-ORDER_BY_FIELDS = ["viewed","starred","latest","price_asc","price_desc"]
+ORDER_BY_FIELDS = ["viewed", "starred", "latest", "price_asc", "price_desc"]
 
 DASHBOARD_CHUNK = 5
 
@@ -31,7 +30,8 @@ def index(request):
     plant_list_views = Plant.objects.filter(isSold=False).order_by('-views')[:6]
 
     # Query database for top 6 plants in terms of interest
-    plant_list_interest = Plant.objects.filter(isSold=False).annotate(star_num=Count('starred')).order_by('-star_num')[:6]
+    plant_list_interest = Plant.objects.filter(isSold=False).annotate(star_num=Count('starred')).order_by('-star_num')[
+                          :6]
 
     # Query database for 6 most recently added plants
     plant_list_date = Plant.objects.filter(isSold=False).order_by('-uploadDate')[:6]
@@ -130,7 +130,6 @@ def show_plant(request, plant_slug, plant_id):
 
 
 def show_category(request, category_name_slug):
-
     context_dict = {}
 
     try:
@@ -146,12 +145,12 @@ def show_category(request, category_name_slug):
     else:
         # Retrieve all of the associated plants.
         # The filter() will return a list of plant objects or an empty list.
-        
+
         plants = Plant.objects.filter(categories=category).filter(isSold=False)
         context_dict = listic(request, plants)
         context_dict['category'] = category
         context_dict['hot'] = HOT_BOUNDARY
-        
+
     # Render the response and return it to the client.
     return render(request, 'treebay/category.html', context=context_dict)
 
@@ -160,18 +159,18 @@ def listic(request, plants):
     context_dict = {}
 
     try:
-        orderfield = request.GET.get('orderBy',None)
+        orderfield = request.GET.get('orderBy', None)
         if orderfield not in ORDER_BY_FIELDS or orderfield == None:
             raise ValueError
-            
+
     except ValueError:
         orderfield = ORDER_BY_FIELDS[0]
-        
+
     try:
-        position = int(request.GET.get('from',0))
+        position = int(request.GET.get('from', 0))
     except ValueError:
         position = 0
-    
+
     if orderfield == ORDER_BY_FIELDS[0]:
         plants = plants.order_by('-views')
     elif orderfield == ORDER_BY_FIELDS[1]:
@@ -182,27 +181,27 @@ def listic(request, plants):
         plants = plants.order_by('price')
     else:
         plants = plants.order_by('-price')
-    
+
     allcount = len(plants);
-    
+
     if position == None:
         position = 0
-    
-    plants = plants.annotate(stars=Count('starred'))[position:position+LISTIC_CHUNK]
-    
+
+    plants = plants.annotate(stars=Count('starred'))[position:position + LISTIC_CHUNK]
+
     context_dict['plants'] = plants
-    
+
     context_dict['order_by'] = orderfield
-    
+
     context_dict['totalcount'] = allcount
     context_dict['chunkbeg'] = position + 1
-    context_dict['chunkend'] = min( position + LISTIC_CHUNK, allcount )
-    
+    context_dict['chunkend'] = min(position + LISTIC_CHUNK, allcount)
+
     context_dict['pageprev'] = position > 0
     context_dict['pagenext'] = position + LISTIC_CHUNK < allcount
     context_dict['pageppos'] = position - LISTIC_CHUNK
     context_dict['pagenpos'] = position + LISTIC_CHUNK
-    
+
     return context_dict
 
 
@@ -214,21 +213,21 @@ def dashboard(request):
     context_dict = {}
     # Get current user profile
     current_user = request.user.profile
-    
+
     # Add the users plants to the context dictionary
     plants = Plant.objects.all().filter(owner=current_user).annotate(stars=Count('starred'))
-    
+
     # add the users starred plants to dictionary
     starred = current_user.starred.all().annotate(stars=Count('starred'))
-	
+
     context_dict['starred'] = starred
     context_dict['plants'] = plants
-    
+
     context_dict['dchunk'] = DASHBOARD_CHUNK
     context_dict['hot'] = HOT_BOUNDARY
 
     return render(request, 'treebay/dashboard.html', context=context_dict)
-    
+
 
 # View to show another user's profile
 def show_user(request, user_username=None, user_id=None):
@@ -247,14 +246,14 @@ def show_user(request, user_username=None, user_id=None):
     else:
         if seller.user.id == request.user.id:
             return dashboard(request)
-        
+
         plants = Plant.objects.all().filter(owner=seller)
-        context_dict = listic( request, plants )
+        context_dict = listic(request, plants)
         context_dict['seller'] = seller
         context_dict['hot'] = HOT_BOUNDARY
-        
-    return render( request, 'treebay/show_user.html', context=context_dict )
-    
+
+    return render(request, 'treebay/show_user.html', context=context_dict)
+
 
 # View for adding a plant
 @login_required
@@ -282,8 +281,6 @@ def add_edit_plant(request, plant_slug=None, plant_id=None):
             message_text = get_error_messages(form)
             messages.add_message(request, messages.ERROR, mark_safe('Errors: ' + message_text))
 
-
-
     else:
         form = PlantForm(instance=plant)
 
@@ -294,32 +291,31 @@ def add_edit_plant(request, plant_slug=None, plant_id=None):
 
 @login_required
 def star_plant(request):
-
     # AJAX star plant
-    
+
     try:
-        plant_id = int(request.GET.get('id',-1))
-        
+        plant_id = int(request.GET.get('id', -1))
+
         # 1 as in add star, 0 as in remove star
-        intent = int(request.GET.get('action',1))
-        
+        intent = int(request.GET.get('action', 1))
+
         plant = Plant.objects.get(id=plant_id)
-        if plant_id == -1 or intent not in [0,1]:
+        if plant_id == -1 or intent not in [0, 1]:
             raise ValueError
-    except ( Plant.DoesNotExist, ValueError ):
+    except (Plant.DoesNotExist, ValueError):
         return HttpResponse(-1)
 
     current_user = request.user.profile
-    
+
     if intent == 1:
-        #As in, is now starred
+        # As in, is now starred
         retval = 1
-        current_user.starred.add( plant )
+        current_user.starred.add(plant)
     else:
-        #As in is now removed
-        retval = 0;
-        current_user.starred.remove( plant )
-    
+        # As in is now removed
+        retval = 0
+        current_user.starred.remove(plant)
+
     current_user.save()
     return HttpResponse(retval)
 
@@ -394,6 +390,10 @@ def edit_profile(request):
         form = EditProfileForm(request.POST, instance=request.user)
 
         if form.is_valid():
+            # Get the newly uploaded picture
+            if 'picture' in request.FILES:
+                request.user.profile.picture = request.FILES['picture']
+
             form.save()
 
         # Invalid registration form

@@ -259,7 +259,7 @@ div.tagholder > span:hover{
 
 #loginframe {
 	height:450px;
-	width:850px;
+	width:880px;
 	position:relative;
 	background-color:powderblue;
 	margin: 7% auto;
@@ -286,13 +286,15 @@ div.halfloginframe .tooltip{
 }
 
 div.halfloginframe input{
-	font-size: 0.9em;
+	font-size: 12pt;
 	float: right;
 }
 
 div.registerbutton{
-	text-align: center;
-	font-size: 16pt;
+	position: absolute;
+	bottom: 50px;
+	left: 40%;
+	font-size: 18pt;
 }
 
 div.halfloginframe .tooltip .tooltiptext {
@@ -306,6 +308,7 @@ div.halfloginframe .tooltip .tooltiptext {
 
 	/* Position the tooltip */
 	position: absolute;
+	left:92%;
 	margin-left: 10px;
 	z-index: 1;
 }
@@ -339,6 +342,13 @@ div.halfloginframe .tooltip:hover .tooltiptext {
 
 #signinhalf input{
 	font-size: 15pt;
+}
+
+div.loginbutton{
+	position: absolute;
+	bottom: 50px;
+	right: 40%;
+	font-size: 16pt;
 }
 
 /*Category*/
