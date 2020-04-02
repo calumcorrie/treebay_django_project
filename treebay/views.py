@@ -36,9 +36,11 @@ def index(request):
     # Query database for 6 most recently added plants
     plant_list_date = Plant.objects.filter(isSold=False).order_by('-uploadDate')[:6]
 
+    visitor_cookie_handler(request)
+
     # Context dictionary we fill with our lists and pass to template
     context_dict = {'categories': category_list, 'plant_interest': plant_list_interest, 'plant_date': plant_list_date,
-                    'plant_views': plant_list_views}
+                    'plant_views': plant_list_views, 'visits': request.session['visits']}
 
     # Render the response and send it back!
     return render(request, 'treebay/index.html', context=context_dict)
@@ -66,7 +68,7 @@ def visitor_cookie_handler(request, plant=None):
     last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
     last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
     # If it's been more than a day since the last visit...
-    if (datetime.now() - last_visit_time).seconds > 0:
+    if (datetime.now() - last_visit_time).days > 0:
         visits = visits + 1
         if plant is not None:
             Plant.objects.filter(pk=plant.id).update(views=plant.views + 1)
