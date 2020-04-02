@@ -212,6 +212,7 @@ div.tagholder > span {
 	padding:2px 5px;
 	cursor: pointer;
 	margin: 2px;
+	white-space: nowrap;
 }
 
 div.tagholder > span:hover{
@@ -616,7 +617,7 @@ table.blanktable tr:nth-of-type(even){
 }
 
 div.largebutton {
-	background-color: #fcbfed ;
+	background-color: #ffc596;
 	margin: 30px 0px;
 	text-align: center;
 	padding: 25px 0px;

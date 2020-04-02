@@ -30,10 +30,6 @@
                 $("tfoot tr",table).hide();
             }
         }
-
-        function navToA( a ){
-            window.location.href = a.attr("href");
-        }
 		
 		function showChunk( table ) {
 			$("tbody tr:not(tr.visible)",table).slice(0,{{ dchunk }}).addClass("visible");
@@ -49,15 +45,6 @@
             $("a.tableexpand").click( function(e) {
                 e.preventDefault();
                 showChunk( $(this).parents("table.expandingadtable") );
-            });
-
-            $("div.largebutton").click( function(){
-                navToA($("a",this));
-            });
-
-            $("div.largebutton a").click( function(e){
-                e.preventDefault();
-                navToA($(this));
             });
         });
     </script>

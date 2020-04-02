@@ -14,13 +14,28 @@
 		<link rel="shortcut icon" href="{% static 'img/www/fav.ico' %}" type="image/x-icon"/>		
 		<link rel="stylesheet" type="text/css" href="{% static 'css/treebay.css' %}">
         <script>
-                function showAlerts () {
-                    {% if messages %}
-                        {% for message in messages %}
-                            alert('{{ message }}');
-                        {% endfor %}
-                    {% endif %}
-                }
+            function showAlerts () {
+                {% if messages %}
+                    {% for message in messages %}
+                        alert('{{ message }}');
+                    {% endfor %}
+                {% endif %}
+            }
+
+            function navToA( a ){
+                window.location.href = a.attr("href");
+            }
+
+            $(document).ready( function(){
+                $("div.largebutton").click( function(){
+                    navToA($("a",this));
+                });
+
+                $("div.largebutton a").click( function(e){
+                    e.preventDefault();
+                    navToA($(this));
+                });
+            });
             </script>
 		{% block scripting %}
 		{% endblock %}
