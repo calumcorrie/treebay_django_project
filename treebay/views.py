@@ -57,7 +57,7 @@ def get_server_side_cookie(request, cookie, default_val=None):
     return val
 
 
-def visitor_cookie_handler(request):
+def visitor_cookie_handler(request, plant=None):
     # Get the number of visits to a page.
     # We use the COOKIES.get() function to obtain the visits cookie.
     # If the cookie exists, the value returned is casted to an integer.
@@ -66,8 +66,10 @@ def visitor_cookie_handler(request):
     last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
     last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
     # If it's been more than a day since the last visit...
-    if (datetime.now() - last_visit_time).days > 0:
+    if (datetime.now() - last_visit_time).seconds > 0:
         visits = visits + 1
+        if plant is not None:
+            Plant.objects.filter(pk=plant.id).update(views=plant.views + 1)
         # Update the last visit cookie now that we have updated the count
         request.session['last_visit'] = str(datetime.now())
     else:
@@ -103,10 +105,8 @@ def show_plant(request, plant_slug, plant_id):
         plant_cats = plant.categories.all()
         # Add them to the context dict
         context_dict['cats'] = plant_cats
-        # Call to cookie handler that counts the visits
-        visitor_cookie_handler(request)
-        # Update view count of the ad
-        plant.views = request.session['visits']
+        # Call to cookie handler that counts the visits, and update the count of the ad
+        visitor_cookie_handler(request, plant)
 
         # Set isStarred to False by default
         context_dict['isStarred'] = False
