@@ -1,13 +1,16 @@
 {% extends 'treebay/base.html' %}
 
 {% block main_body %}
-<div class="container">
+<div class="userformcontainer">
     <form class= "editprofile" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit</button>
+        <br><br>
+        <p>
+            <input class="confirmbutton" type="submit" value="Save"/>
+            <a class="cancelbutton" href="{% url 'treebay:dashboard' %}">Discard</a>
+        </p>
     </form>
-    <br>
 </div>
 
 {% endblock %}

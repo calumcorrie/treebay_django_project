@@ -847,8 +847,16 @@ input.monitor{
 }
 
 /* Edit profile */
+div.userformcontainer{
+	margin:	30px;
+}
+
+div.userformcontainer input{
+	font-size: 14pt;
+}
+
 .editprofile{
-	font-size: 16pt;
+	font-size: 15pt;
 }
 
 /* Delete profile */
@@ -859,6 +867,28 @@ input.monitor{
 /* Change password */
 .changepassword{
 	font-size: 15pt;
+}
+
+.changepassword li{
+	font-size: 13pt;
+	line-height: 1.5;
+}
+
+/* Edit profile/Change password/Delete Profile */
+form .confirmbutton{
+	font-size: 14pt;
+}
+a.cancelbutton{
+	padding:10px;
+	margin-left: 40px;
+	display: inline-block;
+	text-decoration: none;
+	color: black;
+	font-size: 14pt;
+}
+
+a.cancelbutton:hover {
+	background-color: rgba(256, 256, 256, 0.35);
 }
 
 /* Show user */
