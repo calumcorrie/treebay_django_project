@@ -395,6 +395,10 @@ div.loginbutton{
 	margin: 11px 1px;
 }
 
+#sortheader > span:nth-child(2){
+	float: right;
+}
+
 div.adcontainer{
 	margin:20px;
 	padding:15px 35px 15px 35px;
@@ -493,7 +497,7 @@ p.mininav{
 	top: 50%;
 }
 
-#catpagenav > a:nth-of-type(2){
+#catpagenav > a.right{
 	float: right;
 	transform: translate(-100%,-50%);
 	left: 100%;
@@ -931,4 +935,8 @@ div.centered {
 div.flright {
 	width: max-content;
 	margin-left: auto;
+}
+
+#tgsel {
+	display: none;
 }

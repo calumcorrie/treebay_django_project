@@ -2,52 +2,11 @@
 {% load staticfiles %}
 
 {% block scripting %}
-    <script>
-        // Show alerts from edit account actions on window load
-        window.onload=showAlerts;
-
-        // Toggle between hiding and showing the dropdown contents on each click
-        function toggle() {
-          document.getElementById("myDropdown").classList.toggle("show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-          if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
-            }
-          }
-        };
-
-        function hideSmIfEmpty( table ){
-            if( $("tbody tr:not(tr.visible)",table).length === 0 ){
-                $("tfoot tr",table).hide();
-            }
-        }
-		
-		function showChunk( table ) {
-			$("tbody tr:not(tr.visible)",table).slice(0,{{ dchunk }}).addClass("visible");
-			hideSmIfEmpty( table );
-		}
-
-        $(document).ready( function(){
-
-            $("table.expandingadtable").each( function() {
-                showChunk( $(this) );
-            });
-
-            $("a.tableexpand").click( function(e) {
-                e.preventDefault();
-                showChunk( $(this).parents("table.expandingadtable") );
-            });
-        });
-    </script>
+	<script>
+		var showchunksize = {{ dchunk }};
+	</script>
+    <script src="{% static 'js/buttonmenu.js' %}"></script>
+    <script src="{% static 'js/expandingadtable.js' %}"></script>
 {% endblock %}
 
 {% block title_block %}

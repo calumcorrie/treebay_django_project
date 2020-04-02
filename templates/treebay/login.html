@@ -1,15 +1,8 @@
 {% extends 'treebay/base.html' %}
 {% load staticfiles %}
 
-{% block scripting %}
-    <script>
-        window.onload=showAlerts;
-    </script>
-{% endblock %}
-
 {% block no-main %}
         <div id="loginframe">
-
 			<div class="halfloginframe">
                 <h1>Don't have an account? Register here!</h1><br /><br />
                 <form id="user_form" method="post" action="{% url 'treebay:login' %}" enctype="multipart/form-data">

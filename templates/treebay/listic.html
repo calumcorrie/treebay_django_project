@@ -2,18 +2,8 @@
 {% load staticfiles %}
 
 {% block scripting %}
-		<script>
-			$(document).ready( function(){
-				$("a.scrollback").click( function(e){
-					window.scrollTo({top: 0, behavior: 'smooth'});
-					e.preventDefault();
-				});
-				
-				$("#sortby").change( function() {
-					window.location.href = "?orderBy=" + $(this).val();
-				});
-			});
-		</script>
+		<script src="{% static 'js/scrollback.js' %}"></script>
+		<script src="{% static 'js/listicsort.js' %}"></script>
 {% endblock %}
 
 {% block main_body %}
@@ -32,14 +22,13 @@
 						<option value="price_desc"{% if order_by == "price_desc" %}selected="selected"{% endif %}>Price (Highest First)</option>
 					</select>
 					</span>
-					<span style="float:right;">
+					<span>
 						Showing {{ chunkbeg }} - {{ chunkend }} of {{ totalcount }}
 					</span>
 				</div>
 				<hr />
 				
-				{% if plants %}
-					{% for plnt in plants %}
+				{% for plnt in plants %}
 				<div class="adcontainer" onclick="window.location.href = '{% url 'treebay:show_plant' plnt.slug plnt.id %}';">
 					<img src="{{plnt.picture.url}}" />
 					<span class="detail1">
@@ -61,19 +50,18 @@
                             {{ plnt.uploadDate.date }}
 							{% block showowner %}
                             by
-							{% if plnt.owner.user_id == user.id %}
+								{% if plnt.owner.user_id == user.id %}
                             <a href="{% url 'treebay:dashboard' %}">{{ plnt.owner }}</a>
-                            {% else %}
-                                <a href="{% url 'treebay:show_user' plnt.owner.user.username %}">{{ plnt.owner }}</a>
-                            {% endif %}
+								{% else %}
+                            <a href="{% url 'treebay:show_user' plnt.owner.user.username %}">{{ plnt.owner }}</a>
+								{% endif %}
 							{% endblock %}
-                            </p>
+						</p>
 					</span>
 				</div>
-					{% endfor %}
-				{% else %}
+				{% empty %}
 				<center><strong>No plants listed</strong></center>
-				{% endif %}
+				{% endfor %}
 				<hr />
 				
 				<div id="catpagenav">
@@ -84,7 +72,7 @@
 						<p>{{ chunkbeg }} - {{ chunkend }} of {{ totalcount }} ~ <a class="scrollback" href=":)">Back to Top</a></p>
 					</div>
 					{% if pagenext %}
-					<a href="?orderBy={{order_by}}&from={{pagenpos}}" style="float:right;">Next&nbsp;&gt;</a>
+					<a class="right" href="?orderBy={{order_by}}&from={{pagenpos}}">Next&nbsp;&gt;</a>
 					{% endif %}
 				</div>
 				<hr />

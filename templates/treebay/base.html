@@ -13,15 +13,18 @@
 		<link rel="icon" href="{% static 'img/www/fav.ico' %}" type="image/x-icon"/>
 		<link rel="shortcut icon" href="{% static 'img/www/fav.ico' %}" type="image/x-icon"/>		
 		<link rel="stylesheet" type="text/css" href="{% static 'css/treebay.css' %}">
-        <script>
+		
+        {% if messages %}
+		<script>
             function showAlerts () {
-                {% if messages %}
                     {% for message in messages %}
                         alert('{{ message }}');
                     {% endfor %}
-                {% endif %}
             }
-            </script>
+            window.onload = showAlerts;
+        </script>
+		{% endif %}
+		
 		{% block scripting %}
 		{% endblock %}
 	</head>
@@ -48,7 +51,7 @@
 			<span id="headerright">
 				<p>
 					{% if user.is_authenticated %}
-					Hi, {{user.username}}!&nbsp;&nbsp;&nbsp;<a  class="active" href="{% url 'treebay:logout' %}">Log out</a>
+					Hi, {{user.username}}!&nbsp;&nbsp;&nbsp;<a class="active" href="{% url 'treebay:logout' %}">Log out</a>
 					{% else %}
 					<a class="active" href="{% url 'treebay:login' %}">Log in&nbsp;&amp;&nbsp;Register</a>
 					{% endif %}

@@ -10,34 +10,11 @@
 {% if user.is_authenticated and plant %}
 	{% block scripting %}
 					<script>
+					var pid = {{plant.id}};
 					var state = {% if isStarred %}1{% else %}0{% endif %};
-					
-					$(document).ready( function(){
-						$('#plstar').click(function() {
-							if(state == 0){
-								$(this).css("color","gold");
-							} else {
-								$(this).html("&#9734;");
-							}
-							
-							$.get( "{% url 'treebay:star' %}",
-								{ 'id':{{plant.id}}, 'action':(1-state) },
-								function(data){
-									if(data==1){
-										state = 1;
-										$('#plstar').addClass("starred");
-										$('#plstar').html("&#9733;");
-									} else {
-										state = 0;
-										$('#plstar').removeClass("starred");
-										$('#plstar').css("color","unset");
-									}
-								}
-							);
-						});
-					});
-					
+					var target = "{% url 'treebay:star' %}";
 					</script>
+					<script src="{% static 'js/ajaxstar.js' %}" ></script>
 	{% endblock %}
 {% endif %}
 
