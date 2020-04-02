@@ -315,7 +315,7 @@ class ViewExistsTests(TestCase):
 
     def test_show_user_uses_correct_template(self):
         response = self.client.get(
-            reverse('treebay:show_user', kwargs={'user_username': 'alice', 'user_id': self.user_id}))
+            reverse('treebay:show_user', kwargs={'user_username': 'alice'}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'treebay/show_user.html')
 

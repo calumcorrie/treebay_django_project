@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import os
 
 
 class UserProfile(models.Model):
@@ -23,6 +24,27 @@ def update_profile_signal(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
     instance.profile.save()
+
+
+@receiver(models.signals.pre_save, sender=UserProfile)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old file from filesystem
+    when corresponding `MediaFile` object is updated
+    with new file.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_pic = sender.objects.get(pk=instance.pk).picture
+    except sender.DoesNotExist:
+        return False
+
+    new_pic = instance.picture
+    if not old_pic == new_pic:
+        if os.path.isfile(old_pic.path):
+            os.remove(old_pic.path)
 
 
 class Category(models.Model):
