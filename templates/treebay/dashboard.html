@@ -30,10 +30,6 @@
                 $("tfoot tr",table).hide();
             }
         }
-
-        function navToA( a ){
-            window.location.href = a.attr("href");
-        }
 		
 		function showChunk( table ) {
 			$("tbody tr:not(tr.visible)",table).slice(0,{{ dchunk }}).addClass("visible");
@@ -50,21 +46,16 @@
                 e.preventDefault();
                 showChunk( $(this).parents("table.expandingadtable") );
             });
-
-            $("div.largebutton").click( function(){
-                navToA($("a",this));
-            });
-
-            $("div.largebutton a").click( function(e){
-                e.preventDefault();
-                navToA($(this));
-            });
         });
     </script>
 {% endblock %}
 
 {% block title_block %}
          - Dashboard
+{% endblock %}
+
+{% block nav_dash %}
+	<a class="active" href="{% url 'treebay:dashboard' %}">MyTreeBay</a>
 {% endblock %}
 
 {% block main_body %}

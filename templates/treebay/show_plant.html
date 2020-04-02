@@ -53,14 +53,18 @@
                         </div>
                     {% else %}
                         <div class="largebutton">
-                            <a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
+                            {% if user.is_authenticated %}
+                                <a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
+                            {% else %}
+                                <a href='{% url 'treebay:login' %}'>Contact Seller</a>
+                            {% endif %}
                         </div>
                     {% endif %}
 
                     <div id="plantseller">
                         <img src="{{ plant.owner.picture.url }}">
                         <p>{{ plant.owner.user.username }}</p>
-                        <p>Member since: {{ plant.owner.user.date_joined.date }}</p>
+                        <p>Member since:<br/>{{ plant.owner.user.date_joined.date }}</p>
                         {% if plant.owner.user_id == user.id %}
                             <a href="{% url 'treebay:dashboard' %}">View Profile</a>
                         {% else %}

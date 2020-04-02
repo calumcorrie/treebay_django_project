@@ -29,9 +29,8 @@ def update_profile_signal(sender, instance, created, **kwargs):
 @receiver(models.signals.pre_save, sender=UserProfile)
 def auto_delete_file_on_change(sender, instance, **kwargs):
     """
-    Deletes old file from filesystem
-    when corresponding `MediaFile` object is updated
-    with new file.
+    Deletes old profile picture from filesystem
+    when corresponding `MediaFile` object is updated.
     """
     if not instance.pk:
         return False
@@ -90,3 +89,23 @@ class Plant(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@receiver(models.signals.pre_save, sender=Plant)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """
+    Deletes old picture of plant from filesystem
+    when corresponding `MediaFile` object is updated.
+    """
+    if not instance.pk:
+        return False
+
+    try:
+        old_pic = sender.objects.get(pk=instance.pk).picture
+    except sender.DoesNotExist:
+        return False
+
+    new_pic = instance.picture
+    if (not old_pic == new_pic) and ('default_plant.png' not in old_pic.path):
+        if os.path.isfile(old_pic.path):
+            os.remove(old_pic.path)

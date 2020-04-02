@@ -14,13 +14,13 @@
 		<link rel="shortcut icon" href="{% static 'img/www/fav.ico' %}" type="image/x-icon"/>		
 		<link rel="stylesheet" type="text/css" href="{% static 'css/treebay.css' %}">
         <script>
-                function showAlerts () {
-                    {% if messages %}
-                        {% for message in messages %}
-                            alert('{{ message }}');
-                        {% endfor %}
-                    {% endif %}
-                }
+            function showAlerts () {
+                {% if messages %}
+                    {% for message in messages %}
+                        alert('{{ message }}');
+                    {% endfor %}
+                {% endif %}
+            }
             </script>
 		{% block scripting %}
 		{% endblock %}
@@ -30,10 +30,10 @@
 			<span id="headerleft">
 				<p>
 					{% block nav_home %}
-                    <a href="{% url 'treebay:index' %}">Home</a> //
+                    <a href="{% url 'treebay:index' %}">Home</a>
 					{% endblock %}
 					{% block nav_about %}
-					<a href="{% url 'treebay:about' %}">About</a> //
+					<a href="{% url 'treebay:about' %}">About</a>
 					{% endblock %}
 					{% block nav_dash %}
                      <a href="{% url 'treebay:dashboard' %}">MyTreeBay</a>
@@ -48,9 +48,9 @@
 			<span id="headerright">
 				<p>
 					{% if user.is_authenticated %}
-					Hi, {{user.username}}!<br /><a href="{% url 'treebay:logout' %}">LOGOUT</a>
+					Hi, {{user.username}}!&nbsp;&nbsp;&nbsp;<a  class="active" href="{% url 'treebay:logout' %}">Log out</a>
 					{% else %}
-					<a href="{% url 'treebay:login' %}">LOGIN&nbsp;&amp;&nbsp;REGISTER</a>
+					<a class="active" href="{% url 'treebay:login' %}">Log in&nbsp;&amp;&nbsp;Register</a>
 					{% endif %}
 				</p>
 			</span>
