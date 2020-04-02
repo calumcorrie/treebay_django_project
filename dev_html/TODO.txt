@@ -1,8 +1,7 @@
 - Delete account action and jQuery confirm popup 				: dashboard
 - Check for rendering glitches in browser dimension scaling 	: general
----> Login page looks weird when window shrinks but I don't know how to fix it :( - Martina
 - Can we 404 on a bad object lookup?							: general
-- Extract all inline onclick events to script                   : index
+- Extract all js to static files                                : index
 - Add "edit advert" button if plant belongs to current user     : show_plant
 - Photo upload didnt work										: edit-user
 

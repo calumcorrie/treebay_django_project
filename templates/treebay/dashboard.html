@@ -124,14 +124,12 @@
             <tbody>
                 {% for plnt in starred %}
                 <tr>
-                    <td><a href="TODO">{{plnt.name}}</a></td>
-					
+                    <td><a href="{% url 'treebay:show_plant' plnt.slug plnt.id %}">{{plnt.name}}</a></td>
 					<td>
 					{% if plnt.stars >= hot %}<span class="labelhot">&#128901;</span>
 					{% elif plnt.isSold %}<span class="labelsold">&#9651;</span>
 					{% endif %}
 					</td>
-					
                 </tr>
 				{% empty %}
 				<tr class="visible">

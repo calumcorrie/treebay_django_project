@@ -1,17 +1,17 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.db.models import Count
-from django.urls import reverse
-from django.contrib.auth.models import AnonymousUser
-from treebay.models import Category, Plant, UserProfile
-from treebay.forms import PlantForm, RegisterForm, EditProfileForm
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
 from datetime import datetime
 from django.contrib import messages
-from django.utils.safestring import mark_safe
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import AnonymousUser
 from django.core import serializers
+from django.db.models import Count
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from treebay.forms import PlantForm, RegisterForm, EditProfileForm
+from treebay.models import Category, Plant, UserProfile
 
 
 LISTIC_CHUNK = 5
@@ -292,17 +292,36 @@ def add_edit_plant(request, plant_slug=None, plant_id=None):
     return render(request, 'treebay/add_edit_plant.html', context=context_dict)
 
 
-# View for starring a plant
 @login_required
-def star_plant(request, plant_id):
+def star_plant(request):
 
-    # Get the current User
+    # AJAX star plant
+    
+    try:
+        plant_id = int(request.GET.get('id',-1))
+        
+        # 1 as in add star, 0 as in remove star
+        intent = int(request.GET.get('action',1))
+        
+        plant = Plant.objects.get(id=plant_id)
+        if plant_id == -1 or intent not in [0,1]:
+            raise ValueError
+    except ( Plant.DoesNotExist, ValueError ):
+        return HttpResponse(-1)
+
     current_user = request.user.profile
-    # Get the current plant
-    plant = Plant.objects.get(id=plant_id)
-    current_user.starred.add(plant)
-
-    return redirect('treebay:dashboard')
+    
+    if intent == 1:
+        #As in, is now starred
+        retval = 1
+        current_user.starred.add( plant )
+    else:
+        #As in is now removed
+        retval = 0;
+        current_user.starred.remove( plant )
+    
+    current_user.save()
+    return HttpResponse(retval)
 
 
 def login_or_register(request):

@@ -273,7 +273,7 @@ div.halfloginframe {
 	border-radius:0px 0px 0px 70px;
 	position: absolute;
 	top: 0px;
-	padding: 30px 0 0 20px;
+	padding: 30px 30px 0px;
 	box-sizing: border-box;
 }
 
@@ -287,6 +287,7 @@ div.halfloginframe .tooltip{
 
 div.halfloginframe input{
 	font-size: 0.9em;
+	float: right;
 }
 
 div.registerbutton{
@@ -329,7 +330,6 @@ div.halfloginframe .tooltip:hover .tooltiptext {
 	left: calc(50% + 3px);
 	border-radius: 0px 70px 0px 0px;
 	text-align: center;
-	padding: 60px 20px 0 0;
 	box-sizing: border-box;
 }
 

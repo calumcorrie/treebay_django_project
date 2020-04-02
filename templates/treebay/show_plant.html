@@ -7,6 +7,40 @@
 	{% endblock %}
 {% endif %}
 
+{% if user.is_authenticated and plant %}
+	{% block scripting %}
+					<script>
+					var state = {% if isStarred %}1{% else %}0{% endif %};
+					
+					$(document).ready( function(){
+						$('#plstar').click(function() {
+							if(state == 0){
+								$(this).css("color","gold");
+							} else {
+								$(this).html("&#9734;");
+							}
+							
+							$.get( "{% url 'treebay:star' %}",
+								{ 'id':{{plant.id}}, 'action':(1-state) },
+								function(data){
+									if(data==1){
+										state = 1;
+										$('#plstar').addClass("starred");
+										$('#plstar').html("&#9733;");
+									} else {
+										state = 0;
+										$('#plstar').removeClass("starred");
+										$('#plstar').css("color","unset");
+									}
+								}
+							);
+						});
+					});
+					
+					</script>
+	{% endblock %}
+{% endif %}
+
 		
 {% block main_body %}
 			<div id="plantmain">
@@ -30,13 +64,14 @@
                         {% if plant.owner.user_id == user.id %}
                             <a href="{% url 'treebay:dashboard' %}">View Profile</a>
                         {% else %}
-                            <a href="{% url 'treebay:show_user' plant.owner.user.username plant.owner.user.id %}">View Profile</a>
+                            <a href="{% url 'treebay:show_user' plant.owner.user.username %}">View Profile</a>
                         {% endif %}
                     </div>
                 </div>
+				
                 {% if isStarred %}
-                    <p class="starred" id="plstar">&#9734;</p>
-                {% else %}
+                    <p class="starred" id="plstar">&#9733;</p>
+                {% elif user.is_authenticated %}
                     <p id="plstar">&#9734;</p>
                 {% endif %}
 

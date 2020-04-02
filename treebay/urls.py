@@ -16,6 +16,6 @@ urlpatterns = [
     path('user/change-password/', views.change_password, name='change_password'),
     path('user/delete-profile/', views.delete_profile, name='delete_profile'),
     path('user/', views.dashboard, name='dashboard'),
-    path('star/<int:plant_id>/', views.star_plant, name='star'),
     path('user/<slug:user_username>/', views.show_user, name='show_user'),
+    path('star/', views.star_plant, name='star'),
 ]
