@@ -28,6 +28,7 @@ class EditProfileForm(UserChangeForm):
 # Form for adding a new plant
 class PlantForm(forms.ModelForm):
     price = forms.DecimalField(max_digits=6, decimal_places=2, required=False)
+    description = forms.CharField(widget=forms.Textarea)
 
     class Meta:
         model = Plant

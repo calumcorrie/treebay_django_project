@@ -261,8 +261,11 @@ def add_edit_plant(request, plant_slug=None, plant_id=None):
     context_dict = {}
     if plant_id is not None:
         plant = Plant.objects.get(pk=plant_id)
+        context_dict["editing"] = True
     else:
         plant = Plant()
+        context_dict["editing"] = False
+        
 
     if request.method == 'POST':
         form = PlantForm(request.POST, instance=plant)
@@ -286,6 +289,8 @@ def add_edit_plant(request, plant_slug=None, plant_id=None):
 
     context_dict['form'] = form
     context_dict['plant'] = plant
+    context_dict['monitors'] = [ "Name", "Description", "Location", "Price" ]
+    
     return render(request, 'treebay/add_edit_plant.html', context=context_dict)
 
 

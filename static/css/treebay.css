@@ -212,6 +212,7 @@ div.tagholder > span {
 	padding:2px 5px;
 	cursor: pointer;
 	margin: 2px;
+	white-space: nowrap;
 }
 
 div.tagholder > span:hover{
@@ -756,7 +757,7 @@ p#plstar.starred  {
 /* Add/Edit plant */
 
 #addeditmain {
-	margin: 20px 30px;
+	margin: 30px 20%;
 	overflow: auto;
 }
 
@@ -859,4 +860,23 @@ input.monitor{
 
 #sellerinfo > h2 {
 	margin-top: 17%;
+}
+
+#addeditmain > h2{
+	 font-size: 3em;
+	margin: 0px 0px 60px 0px;
+}
+
+#addeditmain input[type="text"], #addeditmain textarea {
+	width: 98%
+}
+
+div.centered {
+	width: max-content;
+	margin: 30px auto 0;
+}
+
+div.flright {
+	width: max-content;
+	margin-left: auto;
 }

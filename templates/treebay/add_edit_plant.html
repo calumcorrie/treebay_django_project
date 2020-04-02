@@ -8,24 +8,27 @@
 				"Location" : '{{ plant.LOCATION_MAX_LENGTH }}',
 				"Description" : '{{ plant.DESCRIPTION_MAX_LENGTH }}',
 			};
-		</script>
-		<script>
+
             window.onload=showAlerts;
 
-			function onkey( context ) {
-				var valid = context.parents("#addedittable td").children("div.valid");
+			function onkey( context, ev="eval" ) {
+				var tablerow = context.parents("#addedittable tr");
+				var valid = $("td",tablerow).children("div.valid");
 				var validfeedb = valid.children();
-				var row = valid.attr("id");
-				if(row === "Price"){
-					if( !( /^\d*\.?\d{0,2}$/g.test( context.val() ) ) ){
-						validfeedb.eq(0).css("visibility","visible");
-						validfeedb.eq(0).text("Invalid price");
-					} else {
-						validfeedb.eq(0).css("visibility","hidden");
+				var field = valid.attr("id");
+				if(field === "Price" ){
+					if( ev == "eval" ){
+						//alert( context.val() + /^\d{1,4}\.?\d{0,2}$/g.test( context.val() ) );
+						if( !( /^\d{1,4}\.?\d{0,2}$/g.test( context.val() ) ) ){
+							validfeedb.eq(0).css("visibility","visible");
+							validfeedb.eq(0).text("Invalid price");
+						} else {
+							validfeedb.eq(0).css("visibility","hidden");
+						}
 					}
-				} else if( valid.children().length >= 2 && row ){
+				} else if( valid.children().length >= 2 && tablerow.hasClass("monitor")){
 					var len = context.val().length;
-					var lim = limits[row];
+					var lim = limits[field];
 					validfeedb.eq(1).text( len + "/" + lim );
 					if( len > lim ){
 						validfeedb.eq(1).css("color","red");
@@ -41,37 +44,134 @@
 			function refreshCallbacks() {
 				$("div.tagholder > span").click( function() {
 					$(this).remove();
+					var torem = $(this).text().slice(1);
+					$("#tgsel > select > option:contains("+torem+")").prop("selected",false);
 				});
 			}
 
+			function addSelected(){
+				add( $("#tagselect option:selected").text() );
+			}
+			
+			function add( toadd ){
+				$("#tagged").css("border-color","unset");
+				if( ! $("#tagged > span:contains(" + toadd + ")").length ){
+					$("#tagged").append("<span>#"+toadd+"</span> ");
+				}
+				$("#tgsel > select > option:contains("+toadd+")").prop("selected",true).attr("selected","selected");
+				refreshCallbacks();
+			}
+			
+			function resetToBase(){	
+				$("#tagged > span").remove();
+				$("#tgsel > select > option:selected").each( function() {
+					add( $(this).text() );
+				});
+			}
+				
+
 			$(document).ready( function() {
-				var inputs = $("#addedittable .monitor");
+				var inputs = $("#addedittable tr.monitor input, #addeditmain tr.monitor textarea");
 
 				inputs.each( function() {
-					onkey($(this));
+					onkey($(this),"setup");
 				});
 
 				inputs.keyup( function(){
 					onkey($(this));
 				});
+			
+				/* Resets tagcontainer to underlying select */
+				resetToBase();
+				
+				/* Failsafe in case of meddling */
+				$("#tgsel > select").change( resetToBase );
+				
+				/* Set up add select */
+				$("#tgsel").parent().children("select").html( $("#tgsel > select").html() );
 
-				$("#tagadd").click( function(){
-					var toadd = $("#tagselect").val();
-					if( ! $("#tagged > span:contains(" + toadd + ")").length ){
-						$("#tagged").append(" <span>#"+toadd+"</span> ");
-					}
-					refreshCallbacks();
+				$("#tagadd").click( function( e ){
+					e.preventDefault();
+					addSelected();
 				});
 
 				refreshCallbacks();
+				
+				$("#subbttn").click( function(e){
+					if($("textarea").val().length >  limits["Description"]){
+						e.preventDefault();
+					} else if($("#tgsel > select > option:selected").length == 0){
+						/*Doesnt override default action*/
+						$("#tagged").css("border-color","red");
+					}
+				});
+				
+				/* Nasty little fix to get rid of Currently part of django modelfield form object */
+				var s = $("#picture-clear_id").parent();
+				s.html( s.html().match( /<input[\s\S]*/g ) );
 
 			});
 		</script>
 {% endblock %}
 {% block main_body %}
     <div id="addeditmain">
-        <h2>&lt; Add / Edit &gt; Plant</h2>
-        <div>
+        <h2>{% if editing %}Edit{% else %}Add{% endif %} Plant</h2>
+		<form method="post" enctype="multipart/form-data">
+			<table id="addedittable" class="blanktable">
+                {% for field in form %}
+				<tr {% if field.label in monitors %}class="monitor"{% endif %}>
+					<td>
+						{% if field.label == 'Name' %}
+							Title:
+						{% elif field.label == 'IsSold' %}
+							Mark Sold:
+						{% elif field.label == 'Price' %}
+							Price (in £):
+						{% else %}
+							{{ field.label_tag }}
+						{% endif %}
+
+						{% if field.field.required %}
+							<span class="required">*</span>
+						{% endif %}
+					</td>
+
+					<td>
+						<div>
+							{% if field.label == 'Categories' %}
+							<div id="tgsel" style="display:none;">
+								{{ field.as_widget }}
+							</div>
+							<div id="tagged" class="tagholder"></div>
+							<select id="tagselect">
+							</select>
+							<button type="button" formtarget="_blank" id="tagadd">Add</button>
+							{% else %}
+								{{ field.as_widget }}
+							{% endif %}
+						</div>
+
+						<div class="valid" id="{{ field.label }}">
+							<p>Validation text</p>
+							<p></p>
+						</div>
+					</td>
+				</tr>
+                {% endfor %}
+				<tr>
+					<td colspan=2 >
+						{% csrf_token %}
+						<div class="flright">
+							<input type="submit" name="submit" value="Discard"/>
+							<input id="subbttn" type="submit" name="submit" value="Save"/>
+						</div>
+					</td>
+				</tr>
+			</table>
+        </form>
+		
+		
+        <div class="centered">
             Tips:
             <ul>
                 <li>Keep the title simple</li>
@@ -81,53 +181,6 @@
                 <li>Remember to mark your plant as sold once it is rehomed</li>
             </ul>
         </div>
-        <table id="addedittable" class="blanktable">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% for field in form %}
-                    <tr>
-                        <td>
-                            {% if field.label == 'Name' %}
-                                    Title:
-                                {% elif field.label == 'IsSold' %}
-                                    Mark Sold:
-                                {% elif field.label == 'Price' %}
-                                    Price (in £):
-                                {% else %}
-                                    {{ field.label_tag }}
-                                {% endif %}
-
-                            {% if field.field.required %}
-                                <span class="required">*</span>
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            <div>
-                                {% if field.label == 'Description' %}
-                                    {{ field.as_textarea }}
-                                {% else %}
-                                    {{ field.as_widget }}
-                                {% endif %}
-
-                            </div>
-
-                            <div class="valid" id="{{  field.label }}">
-                                <p>Validation text</p>
-                                <p></p>
-                            </div>
-                        </td>
-
-                    </tr>
-                {% endfor %}
-            <tr>
-                <td colspan=2 >
-                    <input type="submit" name="submit" value="Save"/>
-                    <input type="submit" name="submit" value="Discard"/>
-                </td>
-            </tr>
-            </form>
-        </table>
 
 
     </div>
