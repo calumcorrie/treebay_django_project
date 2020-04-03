@@ -81,7 +81,7 @@ class Plant(models.Model):
     isSold = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
