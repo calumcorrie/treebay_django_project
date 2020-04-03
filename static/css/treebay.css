@@ -1,3 +1,4 @@
+/* General */
 
 body {
 	background-image:url("../img/www/grass.jpg");
@@ -45,6 +46,52 @@ div.relcontainer{
 	position: relative;
 }
 
+div.tagholder {
+	border-style: solid;
+	padding: 15px;
+	line-height: 220%;
+}
+
+div.tagholder > span {
+	/*background-color: rgba(138, 210, 94, 0.71);*/
+	background-color: powderblue;
+	border-style:solid;
+	border-radius:8px;
+	padding:2px 5px;
+	cursor: pointer;
+	margin: 2px;
+	white-space: nowrap;
+}
+
+div.tagholder > span:hover{
+	border-radius: 20px;
+	background-color: rgb(181, 236, 124);
+}
+
+div.largebutton {
+	background-color: #ffc596;
+	margin: 30px 0px;
+	text-align: center;
+	padding: 25px 0px;
+	border: 2px solid black;
+	cursor: pointer;
+	border-radius: 20px;
+}
+
+div.largebutton .sold{
+	background-color: #e6ffe5;
+	color: #e72100;
+}
+
+div.largebutton a {
+	color: black;
+	text-decoration: none;
+	font-size: 1.1em;
+	display: block;
+}
+
+/* Header */
+
 div.header {
 	width:100%;
 	background-color: rgb(181, 236, 124);
@@ -80,7 +127,6 @@ div.header a {
 	font-weight: bold;
 }
 
-
 div.header a:hover {
 	background-color: rgba(256,256,256,0.35);
 }
@@ -110,6 +156,8 @@ div.header #headerright p {
 	font-size: 15pt;
 }
 
+/* Main */
+
 #main {
 	margin-left:auto;
 	margin-right:auto;
@@ -121,13 +169,29 @@ div.header #headerright p {
 	min-width: 564px;
 }
 
+/* Footer */
+
+#footer {
+	margin:60px 0px 0px 0px;
+	position: relative;
+}
+
+#footer p {
+	position:relative;
+	left:100%;
+	transform:translateX(-100%);
+	padding: 0px 20px;
+	margin: 20px 0px 0px 0px;
+}
+
+/* Index */
+
 #mainbanner {
 	display:block;
 	margin: auto;
 	width:66%;
 	overflow:hidden;
 	height: 100px;
-	alignment: center;
 }
 
 #mainbanner img {
@@ -222,43 +286,7 @@ span.pan img.right {
 	margin: 0px 0px 0px 20px;
 }
 
-div.tagholder {
-	border-style: solid;
-	padding: 15px;
-	line-height: 220%;
-}
-
-div.tagholder > span {
-	/*background-color: rgba(138, 210, 94, 0.71);*/
-	background-color: powderblue;
-	border-style:solid;
-	border-radius:8px;
-	padding:2px 5px;
-	cursor: pointer;
-	margin: 2px;
-	white-space: nowrap;
-}
-
-div.tagholder > span:hover{
-	border-radius: 20px;
-	background-color: rgb(181, 236, 124);
-}
-
-
-#footer {
-	margin:60px 0px 0px 0px;
-	position: relative;
-}
-
-#footer p {
-	position:relative;
-	left:100%;
-	transform:translateX(-100%);
-	padding: 0px 20px;
-	margin: 20px 0px 0px 0px;
-}
-
-/*About*/
+/* About */
 
 #aboutcontainer {
     padding: 20px;
@@ -281,7 +309,7 @@ div.tagholder > span:hover{
 	height: 250px;
 }
 
-/*Logins*/
+/* Logins */
 
 #loginframe {
 	overflow: hidden;
@@ -378,7 +406,7 @@ div.loginbutton{
 	font-size: 16pt;
 }
 
-/*Category*/
+/* Category */
 
 #centeredbanner {
 	margin-left: auto;
@@ -396,6 +424,8 @@ div.loginbutton{
 	text-align: center;
 	font-size: 1.3em;
 }
+
+/* Listic */
 
 #sortheader {
 	margin: 11px 1px;
@@ -519,7 +549,7 @@ p.mininav{
 	margin: 0px auto;
 }
 
-/*Dasboard*/
+/* Dasboard */
 
 .dropbtn {
 	background-color: rgba(255, 197, 150, 0);
@@ -651,29 +681,6 @@ table.blanktable tr:nth-of-type(even){
 	padding-left: 20px;
 }
 
-div.largebutton {
-	background-color: #ffc596;
-	margin: 30px 0px;
-	text-align: center;
-	padding: 25px 0px;
-	border: 2px solid black;
-	cursor: pointer;
-	border-radius: 20px;
-}
-
-div.largebutton .sold{
-	background-color: #e6ffe5;
-	color: #e72100;
-}
-
-div.largebutton a {
-	color: black;
-	text-decoration: none;
-	font-size: 1.1em;
-	/* vvv makes whole button area clickable*/
-	display: block;
-}
-
 div.dashelmnt:not(#dashadframe) div:not(#dashaccimg,#dashaccsubmitbox) {
 	padding: 0px 30px;
 }
@@ -725,6 +732,8 @@ input.dashaccinp{
     background-color: lightgray;
 }
 
+/* Show plant */
+
 #plantmain {
 	margin: 30px;
 	overflow: auto;
@@ -751,9 +760,7 @@ div.leftsect > img {
 
 #plantseller > img {
 	height:110px;
-	/*width:110px;*/
 	float:left;
-	/*! padding: 10px 20px 10px 10px; */
 	margin-right: 20px;
 }
 
@@ -804,13 +811,32 @@ p#plstar.starred  {
 }
 
 #addeditmain > h2 {
-	margin-top: 0;
 	text-align: center;
-	font-size: xx-large
+	font-size: 3em;
+	margin: 0px 0px 60px 0px;
 }
 
 #addeditmain div.leftsect > div.largebutton {
 	padding: 8px;
+}
+
+#addeditmain input[type="text"], #addeditmain textarea {
+	width: 98%;
+	resize: none;
+}
+
+div.centered {
+	width: max-content;
+	margin: 30px auto 0;
+}
+
+div.flright {
+	width: max-content;
+	margin-left: auto;
+}
+
+#tgsel {
+	display: none;
 }
 
 #addeditrighsection {
@@ -867,6 +893,7 @@ input.monitor{
 }
 
 /* Edit profile */
+
 div.userformcontainer{
 	margin:	30px;
 }
@@ -880,11 +907,13 @@ div.userformcontainer input{
 }
 
 /* Delete profile */
+
 .deleteprofile{
 	font-size: 16pt;
 }
 
 /* Change password */
+
 .changepassword{
 	font-size: 15pt;
 }
@@ -895,6 +924,7 @@ div.userformcontainer input{
 }
 
 /* Edit profile/Change password/Delete Profile */
+
 form .confirmbutton{
 	font-size: 14pt;
 }
@@ -912,6 +942,7 @@ a.cancelbutton:hover {
 }
 
 /* Show user */
+
 #sellerinfo {
 	overflow: auto;
 	width: 50%;
@@ -932,28 +963,4 @@ a.cancelbutton:hover {
 
 #sellerinfo > h2 {
 	margin-top: 17%;
-}
-
-#addeditmain > h2{
-	 font-size: 3em;
-	margin: 0px 0px 60px 0px;
-}
-
-#addeditmain input[type="text"], #addeditmain textarea {
-	width: 98%;
-	resize: none;
-}
-
-div.centered {
-	width: max-content;
-	margin: 30px auto 0;
-}
-
-div.flright {
-	width: max-content;
-	margin-left: auto;
-}
-
-#tgsel {
-	display: none;
 }

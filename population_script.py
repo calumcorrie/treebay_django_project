@@ -14,7 +14,6 @@ from django.core.files import File
 
 
 def populate():
-
     # all plants
     plants = pd.read_excel("treebay_testing_data/plants.xlsx", index_col=0)
     plants['categories'] = plants.categories.apply(lambda x: x.split(', '))
@@ -119,3 +118,4 @@ def delete_plants():
 if __name__ == '__main__':
     print('Starting Treebay population script...')
     populate()
+    print('Done')

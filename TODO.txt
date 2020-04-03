@@ -1,5 +1,6 @@
 - Complete deployment security checklist
 - Empty media/plant_images and profile_images
+- Use of external resources (ie jQuery)
 
 / * Submission related * /
 - Delete migration files from GitHub

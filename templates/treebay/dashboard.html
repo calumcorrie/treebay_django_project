@@ -19,7 +19,8 @@
 
 {% block main_body %}
     <div id="sellerinfo">
-        <img src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/svg/default_profile_picture.svg' %}{% endif %}" />
+		{# {% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/svg/default_profile_picture.svg' %}{% endif %} #}
+        <img src="{{ user.profile.picture.url }}" />
         <h2>{{ user.username }}</h2>
         <p>Member since<br/>{{ user.date_joined.date }}</p>
         <div class="dropdown">

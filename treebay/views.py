@@ -13,11 +13,10 @@ from django.utils.safestring import mark_safe
 from treebay.forms import PlantForm, RegisterForm, EditProfileForm
 from treebay.models import Category, Plant, UserProfile
 
+# Costants
 LISTIC_CHUNK = 5
 ORDER_BY_FIELDS = ["viewed", "starred", "latest", "price_asc", "price_desc"]
-
 DASHBOARD_CHUNK = 5
-
 HOT_BOUNDARY = 4
 
 
@@ -30,8 +29,7 @@ def index(request):
     plant_list_views = Plant.objects.filter(isSold=False).order_by('-views')[:6]
 
     # Query database for top 6 plants in terms of interest
-    plant_list_interest = Plant.objects.filter(isSold=False).annotate(star_num=Count('starred')).order_by('-star_num')[
-                          :6]
+    plant_list_interest = Plant.objects.filter(isSold=False).annotate(star_num=Count('starred')).order_by('-star_num')[:6]
 
     # Query database for 6 most recently added plants
     plant_list_date = Plant.objects.filter(isSold=False).order_by('-uploadDate')[:6]
@@ -147,30 +145,36 @@ def show_category(request, category_name_slug):
     else:
         # Retrieve all of the associated plants.
         # The filter() will return a list of plant objects or an empty list.
-
         plants = Plant.objects.filter(categories=category).filter(isSold=False)
+        # This is a listic view so get context variables as appropriate
         context_dict = listic(request, plants)
+        # Add category
         context_dict['category'] = category
-        context_dict['hot'] = HOT_BOUNDARY
 
     # Render the response and return it to the client.
     return render(request, 'treebay/category.html', context=context_dict)
 
-
+# Helper function for views using the listic template
 def listic(request, plants):
+    # Create relevant context to provide listic view
+
     context_dict = {}
 
     try:
+        # Get orderBy if present in GET
         orderfield = request.GET.get('orderBy', None)
         if orderfield not in ORDER_BY_FIELDS or orderfield == None:
             raise ValueError
 
     except ValueError:
+        # Else order by views
         orderfield = ORDER_BY_FIELDS[0]
 
     try:
-        position = int(request.GET.get('from', 0))
+        # Get postion from GET
+        position = abs(int(request.GET.get('from', 0)))
     except ValueError:
+        # Else
         position = 0
 
     if orderfield == ORDER_BY_FIELDS[0]:
@@ -186,15 +190,18 @@ def listic(request, plants):
 
     allcount = len(plants);
 
-    if position == None:
-        position = 0
-
+    # Add starred count
     plants = plants.annotate(stars=Count('starred'))[position:position + LISTIC_CHUNK]
 
+    # Include sorted filtered plants
     context_dict['plants'] = plants
+    
+    # Boaundary constant
+    context_dict['hot'] = HOT_BOUNDARY
 
+    # Variables for paging mechanism
     context_dict['order_by'] = orderfield
-
+    
     context_dict['totalcount'] = allcount
     context_dict['chunkbeg'] = position + 1
     context_dict['chunkend'] = min(position + LISTIC_CHUNK, allcount)
@@ -234,12 +241,14 @@ def dashboard(request):
 # View to show another user's profile
 def show_user(request, user_username=None, user_id=None):
     if user_username is None:
+        # If no user provided, show dashboard or redirect to login
         if request.user.is_authenticated:
             return dashboard(request)
 
         return redirect(reverse('treebay:login'))
 
     context_dict = {}
+    
     try:
         seller = UserProfile.objects.get(user__username=user_username)
     except UserProfile.DoesNotExist:
@@ -247,6 +256,7 @@ def show_user(request, user_username=None, user_id=None):
         context_dict['plants'] = None
     else:
         if seller.user.id == request.user.id:
+            # If you navigate to yourself
             return dashboard(request)
 
         plants = Plant.objects.all().filter(owner=seller)
@@ -257,14 +267,16 @@ def show_user(request, user_username=None, user_id=None):
     return render(request, 'treebay/show_user.html', context=context_dict)
 
 
-# View for adding a plant
+# View for adding and editing a plant
 @login_required
 def add_edit_plant(request, plant_slug=None, plant_id=None):
     context_dict = {}
     if plant_id is not None:
+        # Edit mode
         plant = Plant.objects.get(pk=plant_id)
         context_dict["editing"] = True
     else:
+        # Add mode
         plant = Plant()
         context_dict["editing"] = False
         
@@ -294,7 +306,6 @@ def add_edit_plant(request, plant_slug=None, plant_id=None):
     context_dict['monitors'] = [ "Name", "Description", "Location", "Price" ]
     
     return render(request, 'treebay/add_edit_plant.html', context=context_dict)
-
 
 @login_required
 def star_plant(request):

@@ -5,13 +5,16 @@ $(document).ready( function(){
 		var firstchild = kids.first();
 		var fullmv = firstchild.outerWidth();
 		
+		/* Container restraints */
 		var vp_left = 0;
 		var vp_right = vp_left + container.outerWidth();
 		
+		/* Parse current position */
 		var first_L_pos = firstchild.position().left;
 		var	last_R_pos = (fullmv * kids.length) + first_L_pos;
 		
-		var scrollleft = $(this).attr("class") == "pan panLeft";
+		/* Get direction from event target */
+		var scrollleft = $(this).hasClass("panLeft");
 		var mv = 0;
 		
 		if(scrollleft){
@@ -39,6 +42,7 @@ $(document).ready( function(){
 		
 		var new_p = first_L_pos + mv;
 		
+		/* Udjust relative offset of children to new_p */
 		kids.animate({left:new_p+"px"},"slow");
 	});
 });
