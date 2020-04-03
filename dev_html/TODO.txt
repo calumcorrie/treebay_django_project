@@ -1,5 +1,4 @@
 - Check for rendering glitches in browser dimension scaling 	: general
-- Can we 404 on a bad object lookup?							: general
 - Photo upload didnt work										: edit-user
 
 
@@ -10,3 +9,6 @@
 - Extract requirements file
 - Delete dev_html before submission
 - Make README file
+
+/* Low priority / Rejects */
+- Can we 404 on a bad object lookup?							: general

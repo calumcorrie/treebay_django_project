@@ -51,6 +51,8 @@ div.header {
 	position: relative;
 	height: 85px;
 	overflow: visible;
+	z-index: 0;
+	min-width: 444px;
 }
 
 div.header #headerleft {
@@ -58,6 +60,8 @@ div.header #headerleft {
 	left: 0px;
 	top: 50%;
 	transform: translateY(-50%);
+	z-index: 1;
+	background-color: inherit;
 }
 
 div.header #headerleft p {
@@ -97,6 +101,7 @@ div.header #headerright {
 	transform: translate(-100%,-50%);
 	top: 50%;
 
+	z-index: 0;
 }
 
 div.header #headerright p {
@@ -214,17 +219,18 @@ span.pan img.right {
 	float: right;
 	top: 32px;
 	left: 61%;
-	margin: 0px 20px 0px 20px;
+	margin: 0px 0px 0px 20px;
 }
 
 div.tagholder {
 	border-style: solid;
 	padding: 15px;
-	line-height: 190%;
+	line-height: 220%;
 }
 
 div.tagholder > span {
-	background-color: rgba(138, 210, 94, 0.71);
+	/*background-color: rgba(138, 210, 94, 0.71);*/
+	background-color: powderblue;
 	border-style:solid;
 	border-radius:8px;
 	padding:2px 5px;
@@ -647,6 +653,7 @@ div.largebutton {
 	padding: 25px 0px;
 	border: 2px solid black;
 	cursor: pointer;
+	border-radius: 20px;
 }
 
 div.largebutton a {
@@ -784,7 +791,6 @@ p#plstar.starred  {
 
 #addeditmain {
 	margin: 30px 20%;
-	overflow: auto;
 }
 
 #addeditmain > h2 {
@@ -924,7 +930,8 @@ a.cancelbutton:hover {
 }
 
 #addeditmain input[type="text"], #addeditmain textarea {
-	width: 98%
+	width: 98%;
+	resize: none;
 }
 
 div.centered {
