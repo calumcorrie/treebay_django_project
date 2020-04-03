@@ -7,16 +7,17 @@
 	{% endblock %}
 {% endif %}
 
-{% if user.is_authenticated and plant %}
-	{% block scripting %}
+{% block scripting %}
+	{% if user.is_authenticated and plant %}
 					<script>
-					var pid = {{plant.id}};
-					var state = {% if isStarred %}1{% else %}0{% endif %};
-					var target = "{% url 'treebay:star' %}";
+						var pid = {{plant.id}};
+						var state = {% if isStarred %}1{% else %}0{% endif %};
+						var target = "{% url 'treebay:star' %}";
 					</script>
 					<script src="{% static 'js/ajaxstar.js' %}" ></script>
-	{% endblock %}
-{% endif %}
+	{% endif %}
+					<script src="{% static 'js/largebutton.js' %}" ></script>
+{% endblock %}
 
 		
 {% block main_body %}
@@ -33,7 +34,7 @@
                             {% if user.is_authenticated %}
                                 <a href="mailto://{{ plant.owner.user.email }}">Contact Seller</a>
                             {% else %}
-                                <a href='{% url 'treebay:login' %}'>Contact Seller</a>
+                                <a href="{% url 'treebay:login' %}">Contact Seller</a>
                             {% endif %}
                         </div>
                     {% endif %}

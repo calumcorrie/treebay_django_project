@@ -7,6 +7,7 @@
 	</script>
     <script src="{% static 'js/buttonmenu.js' %}"></script>
     <script src="{% static 'js/expandingadtable.js' %}"></script>
+    <script src="{% static 'js/largebutton.js' %}"></script>
 {% endblock %}
 
 {% block title_block %}
@@ -19,7 +20,6 @@
 
 {% block main_body %}
     <div id="sellerinfo">
-		{# {% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/svg/default_profile_picture.svg' %}{% endif %} #}
         <img src="{{ user.profile.picture.url }}" />
         <h2>{{ user.username }}</h2>
         <p>Member since<br/>{{ user.date_joined.date }}</p>
