@@ -61,8 +61,8 @@
 					<td colspan=2 >
 						{% csrf_token %}
 						<div class="flright">
-							<input type="submit" name="submit" value="Discard"/>
 							<input id="subbttn" type="submit" name="submit" value="Save"/>
+                            <a class="cancelbutton" href="{% url 'treebay:dashboard' %}">Discard</a>
 						</div>
 					</td>
 				</tr>
