@@ -1,13 +1,11 @@
 import os
 import pandas as pd
-import math
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                      'treebay_django_project.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','treebay_django_project.settings')
 
 import django
-
 django.setup()
+
 from treebay.models import Category, Plant, UserProfile
 from django.contrib.auth.models import User
 from django.core.files import File
