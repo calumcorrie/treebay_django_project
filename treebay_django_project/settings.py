@@ -27,9 +27,9 @@ LOGIN_URL = 'treebay:login'
 SECRET_KEY = 'e!n07%bggcm3l=8r4uh0zn)4rlsjn%m4#r1a!e(z0na2z-(in3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["treebay.pythonanywhere.com"]
 
 
 # Application definition

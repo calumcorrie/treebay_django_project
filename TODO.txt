@@ -3,13 +3,11 @@
 ! - ie "@newUser" currently suceeds to be created but fails on reverse lookup
 !!!!!!!!!!!!
 
+- Complete deployment security checklist
 
 / * Submission related * /
 - Delete migration files from GitHub
 - Check if website corresponds to design specs presentation
-- Upload to PythonAnywhere
-- Extract requirements file
-- Delete dev_html before submission
 - Make README file
 
 /* Low priority / Rejects */
