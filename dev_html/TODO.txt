@@ -1,5 +1,7 @@
-- Check for rendering glitches in browser dimension scaling 	: general
-- Photo upload didnt work										: edit-user
+!!!!!!!!!!!!
+! - Constrict username validation to [-a-zA-Z0-9_]
+! - ie "@newUser" currently suceeds to be created but fails on reverse lookup
+!!!!!!!!!!!!
 
 
 / * Submission related * /
@@ -11,4 +13,7 @@
 - Make README file
 
 /* Low priority / Rejects */
+
 - Can we 404 on a bad object lookup?							: general
+-- We could but thats like a whole bunch of work
+	that replaces cases we've already handled
