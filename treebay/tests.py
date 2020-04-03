@@ -169,15 +169,15 @@ class PopulationScriptTests(TestCase):
         """
         super().setUpClass()
         try:
-            import populate_treebay
+            import population_script
         except ImportError:
             raise ImportError("Populate Treebay could not be imported. Check it's in the right location.")
 
-        if 'populate' not in dir(populate_treebay):
+        if 'populate' not in dir(population_script):
             raise NameError("The populate() function does not exist in the populate_treebay module.")
 
         # Call the population script -- any exceptions raised here do not have fancy error messages to help readers.
-        populate_treebay.populate()
+        population_script.populate()
 
     @classmethod
     def tearDownClass(cls):

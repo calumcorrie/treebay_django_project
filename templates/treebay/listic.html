@@ -34,6 +34,9 @@
 					<span class="detail1">
 						<p class="title">
                             {{plnt.name}}
+                            {% if plnt.isSold %}
+                                <strong> - Sold</strong>
+                            {% endif %}
 						</p>
 						<p class="loc">{{plnt.location}}</p>
 						<p class="interest">{{ plnt.stars }}&nbsp;&#9734;</p>

@@ -433,6 +433,11 @@ div.adcontainer span.detail1 p.title {
 	font-size: 1.5em
 }
 
+div.adcontainer span.detail1 p.title strong {
+	color: #e72100;
+}
+
+
 div.adcontainer span.detail1 p.loc {
 	margin: 3px 0px 0px 0px;
 	font-size:1.1em
@@ -654,6 +659,11 @@ div.largebutton {
 	border: 2px solid black;
 	cursor: pointer;
 	border-radius: 20px;
+}
+
+div.largebutton .sold{
+	background-color: #e6ffe5;
+	color: #e72100;
 }
 
 div.largebutton a {

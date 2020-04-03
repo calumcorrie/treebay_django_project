@@ -1,9 +1,5 @@
-!!!!!!!!!!!!
-! - Constrict username validation to [-a-zA-Z0-9_]
-! - ie "@newUser" currently suceeds to be created but fails on reverse lookup
-!!!!!!!!!!!!
-
 - Complete deployment security checklist
+- Empty media/plant_images and profile_images
 
 / * Submission related * /
 - Delete migration files from GitHub
